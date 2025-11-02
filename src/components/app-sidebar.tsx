@@ -18,6 +18,19 @@ import Subscription from "./icons/susbscription";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useRoute } from "@/hooks/use-route";
+import Help from "./icons/help";
+import Settings from "./icons/settings";
+import { Avatar, AvatarImage } from "./ui/avatar";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import Options from "./icons/options";
+
+// TODO: change to using useAuth (getting actual user)
+const CURRENT_USER = {
+  image: "/avatars/person.png",
+  email: "Luissilvery@gmail.com",
+  firstName: "Actadium",
+  lastName: "by Shadcn",
+};
 
 const SIDEBAR_MENU_ITEMS = [
   {
@@ -40,15 +53,17 @@ const SIDEBAR_MENU_ITEMS = [
 ];
 
 export function AppSidebar() {
-  // TODO: change the background of active item based on useRoute
+  // TODO: change the help link
   const route = useRoute();
 
   return (
     <Sidebar>
       <SidebarHeader className="border-b-white border-b-1 py-2">
-        <h1 className="text-white my-1">Brand Logo</h1>
+        <Link to={ROUTES.DASHBOARD.path} className="cursor-pointer w-fit">
+          <h1 className="text-white my-1">Brand Logo</h1>
+        </Link>
       </SidebarHeader>
-      <SidebarContent className="pt-3">
+      <SidebarContent className="pt-3 justify-between">
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -71,8 +86,64 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem key={"settings"}>
+                <SidebarMenuButton
+                  asChild
+                  className={cn(
+                    "hover:bg-card-foreground active:bg-card-foreground",
+                    route?.path === "settings" && "bg-card-foreground"
+                  )}
+                >
+                  <Link to={ROUTES.SETTINGS.path}>
+                    <Settings />
+                    <span className="text-white">{ROUTES.SETTINGS.title}</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
+              <SidebarMenuItem key={"help"}>
+                <SidebarMenuButton
+                  asChild
+                  className={cn(
+                    "hover:bg-card-foreground active:bg-card-foreground",
+                    route?.path === "help" && "bg-card-foreground"
+                  )}
+                >
+                  <Link to={ROUTES.SETTINGS.path}>
+                    <Help />
+                    <span className="text-white">{ROUTES.SETTINGS.title}</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter></SidebarFooter>
+      <SidebarFooter className="mb-8">
+        {/* maybe this should be a link to profile  */}
+        <div className="flex items-center justify-between px-2">
+          <div className="flex gap-2">
+            <Avatar>
+              <AvatarImage src={CURRENT_USER.image} />
+            </Avatar>
+            <div>
+              <h3 className="text-white font-semibold text-sm">{`${CURRENT_USER.firstName} ${CURRENT_USER.lastName}`}</h3>
+              <h4 className="text-white font-normal text-xs">
+                {CURRENT_USER.email}
+              </h4>
+            </div>
+          </div>
+          <Popover>
+            <PopoverTrigger>
+              <Options />
+            </PopoverTrigger>
+            <PopoverContent>this is content to be filled</PopoverContent>
+          </Popover>
+        </div>
+      </SidebarFooter>
     </Sidebar>
   );
 }
