@@ -1,6 +1,6 @@
 import { Outlet } from "react-router";
 import { AppHeader } from "./app-header";
-import { SidebarProvider, SidebarTrigger } from "./ui/sidebar";
+import { SidebarProvider } from "./ui/sidebar";
 import { AppSidebar } from "./app-sidebar";
 import { useRoute } from "@/hooks/use-route";
 
