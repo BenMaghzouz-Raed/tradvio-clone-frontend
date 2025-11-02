@@ -12,8 +12,8 @@ export function AppHeader({ title }: { title: string }) {
   return (
     <div
       className={cn(
-        "bg-background sticky top-0 z-50 border-b flex justify-between pb-1 pt-2 pr-8",
-        isMobile ? "pl-4" : "pl-8"
+        "bg-background sticky top-0 z-50 border-b flex justify-between pb-1 pt-2",
+        isMobile ? "pl-4 pr-4" : "pl-8 pr-8"
       )}
     >
       <div className="flex items-center gap-1">
