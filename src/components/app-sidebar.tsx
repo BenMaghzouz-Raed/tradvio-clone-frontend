@@ -16,6 +16,8 @@ import Journal from "./icons/journal";
 import History from "./icons/history";
 import Subscription from "./icons/susbscription";
 import { Link } from "react-router-dom";
+import { cn } from "@/lib/utils";
+import { useRoute } from "@/hooks/use-route";
 
 const SIDEBAR_MENU_ITEMS = [
   {
@@ -39,21 +41,29 @@ const SIDEBAR_MENU_ITEMS = [
 
 export function AppSidebar() {
   // TODO: change the background of active item based on useRoute
+  const route = useRoute();
+
   return (
     <Sidebar>
-      <SidebarHeader>
-        <h1>Brand Logo</h1>
+      <SidebarHeader className="border-b-white border-b-1 py-2">
+        <h1 className="text-white my-1">Brand Logo</h1>
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="pt-3">
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
               {SIDEBAR_MENU_ITEMS.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton
+                    asChild
+                    className={cn(
+                      "hover:bg-card-foreground active:bg-card-foreground",
+                      route?.path === item.url && "bg-card-foreground"
+                    )}
+                  >
                     <Link to={item.url}>
                       <item.icon />
-                      <span>{item.title}</span>
+                      <span className="text-white">{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -62,7 +72,7 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter />
+      <SidebarFooter></SidebarFooter>
     </Sidebar>
   );
 }

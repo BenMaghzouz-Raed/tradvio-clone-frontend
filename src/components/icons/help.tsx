@@ -1,0 +1,40 @@
+import { cn } from "@/lib/utils";
+
+export default function Help({
+  className,
+  ...props
+}: React.HTMLAttributes<SVGElement>) {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn(
+        "icon icon-tabler icons-tabler-outline icon-tabler-brand-github",
+        className
+      )}
+      {...props}
+    >
+      <path
+        d="M2 8C2 8.78793 2.15519 9.56815 2.45672 10.2961C2.75825 11.0241 3.20021 11.6855 3.75736 12.2426C4.31451 12.7998 4.97595 13.2417 5.7039 13.5433C6.43185 13.8448 7.21207 14 8 14C8.78793 14 9.56815 13.8448 10.2961 13.5433C11.0241 13.2417 11.6855 12.7998 12.2426 12.2426C12.7998 11.6855 13.2417 11.0241 13.5433 10.2961C13.8448 9.56815 14 8.78793 14 8C14 6.4087 13.3679 4.88258 12.2426 3.75736C11.1174 2.63214 9.5913 2 8 2C6.4087 2 4.88258 2.63214 3.75736 3.75736C2.63214 4.88258 2 6.4087 2 8Z"
+        stroke="#FAFAFA"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M8 10.6667V10.6734"
+        stroke="#FAFAFA"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M8 8.66675C8.29983 8.66765 8.59122 8.56747 8.8271 8.38237C9.06299 8.19728 9.2296 7.93808 9.30003 7.64664C9.37046 7.35519 9.34061 7.04851 9.21529 6.77613C9.08996 6.50374 8.87649 6.28154 8.60933 6.14542C8.34412 6.00956 8.04074 5.96744 7.74854 6.0259C7.45634 6.08436 7.19252 6.23997 7 6.46742"
+        stroke="#FAFAFA"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+}

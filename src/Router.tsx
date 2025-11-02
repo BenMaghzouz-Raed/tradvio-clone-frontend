@@ -6,9 +6,10 @@ import Analyser from "./pages/Analyser";
 import History from "./pages/History";
 import Journal from "./pages/Journal";
 import { ROUTES } from "./services/LinksService";
-import LogIn from "./pages/Login";
 import Register from "./pages/Register";
 import Subscription from "./pages/Subscription";
+import LogIn from "./pages/Login";
+import Settings from "./pages/Settings";
 
 export default function Router() {
   return (
@@ -19,10 +20,11 @@ export default function Router() {
         <Route path={ROUTES.HISTORY.path} element={<History />} />
         <Route path={ROUTES.JOURNAL.path} element={<Journal />} />
         <Route path={ROUTES.SUBSCRIPTION.path} element={<Subscription />} />
-        <Route path={ROUTES.LOGIN.path} element={<LogIn />} />
-        <Route path={ROUTES.REGISTER.path} element={<Register />} />
-        <Route path="*" element={<NotMatch />} />
+        <Route path={ROUTES.SETTINGS.path} element={<Settings />} />
       </Route>
+      <Route path={ROUTES.LOGIN.path} element={<LogIn />} />
+      <Route path={ROUTES.REGISTER.path} element={<Register />} />
+      <Route path="*" element={<NotMatch />} />
     </Routes>
   );
 }

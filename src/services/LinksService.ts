@@ -1,11 +1,20 @@
 export const ROUTES = {
-  LOGIN: { path: "/login", title: null },
-  REGISTER: { path: "/register", title: null },
-  DASHBOARD: { path: "/", title: "Dashboard" },
-  ANALYSER: { path: "analyser", title: "Trade Analyzer" },
-  HISTORY: { path: "history", title: "Analysis History" },
-  JOURNAL: { path: "journal", title: "Trade Journal" },
-  SUBSCRIPTION: { path: "subscribe", title: "Subscription Plan" },
+  LOGIN: { path: "login", title: null, authenticated: false },
+  REGISTER: { path: "register", title: null, authenticated: false },
+  DASHBOARD: { path: "", title: "Dashboard", authenticated: true },
+  ANALYSER: { path: "analyser", title: "Trade Analyzer", authenticated: true },
+  HISTORY: { path: "history", title: "Analysis History", authenticated: true },
+  JOURNAL: { path: "journal", title: "Trade Journal", authenticated: true },
+  SETTINGS: {
+    path: "settings",
+    title: "Settings",
+    authenticated: true,
+  },
+  SUBSCRIPTION: {
+    path: "subscribe",
+    title: "Subscription Plan",
+    authenticated: true,
+  },
 };
 
 export const getRoute = (pathname: string) => {

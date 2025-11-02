@@ -1,3 +1,3 @@
 export default function Journal() {
-  return <div></div>;
+  return <div>this is journal page</div>;
 }
