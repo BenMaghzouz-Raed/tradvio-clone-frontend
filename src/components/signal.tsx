@@ -15,7 +15,9 @@ export function Signal({
   variant: "success" | "error" | "warning" | "neutural";
 }) {
   return (
-    <div className={cn("w-fit p-2 rounded-md", VARIANT_COLOR_MAP[variant])}>
+    <div
+      className={cn("w-fit py-1 px-4 rounded-md", VARIANT_COLOR_MAP[variant])}
+    >
       <h3 className="text-white">{label}</h3>
     </div>
   );

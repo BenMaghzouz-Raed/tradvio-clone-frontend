@@ -3,7 +3,9 @@ import { Signal } from "@/components/signal";
 import StatsCard, { StatsCardLoader } from "@/components/stats-card";
 import Status from "@/components/status";
 import Tag from "@/components/tag";
+import TrandeCard from "@/components/trade-card";
 import Upload from "@/components/upload";
+import { TRADES } from "@/seeds/trade";
 
 const infoCardData = [
   { label: "Direction:", value: "Long" },
@@ -47,6 +49,12 @@ export default function Dashboard() {
       <Signal label="inActive" variant="error" />
       <Signal label="wating" variant="warning" />
       <Signal label="none" variant="neutural" />
+
+      <div className="flex flex-wrap gap-3">
+        {TRADES.map((trade) => (
+          <TrandeCard key={trade.id} trade={trade} />
+        ))}
+      </div>
     </>
   );
 }
