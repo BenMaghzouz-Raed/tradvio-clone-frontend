@@ -1,4 +1,5 @@
 import InfoCard, { InfoCardLoader } from "@/components/info-card";
+import { Signal } from "@/components/signal";
 import StatsCard, { StatsCardLoader } from "@/components/stats-card";
 import Status from "@/components/status";
 import Tag from "@/components/tag";
@@ -41,6 +42,11 @@ export default function Dashboard() {
       <Status label="inActive" variant="error" />
       <Status label="wating" variant="warning" />
       <Status label="none" variant="neutural" />
+
+      <Signal label="Active" variant="success" />
+      <Signal label="inActive" variant="error" />
+      <Signal label="wating" variant="warning" />
+      <Signal label="none" variant="neutural" />
     </>
   );
 }
