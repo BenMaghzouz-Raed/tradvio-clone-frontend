@@ -1,5 +1,5 @@
 import InfoCard, { InfoCardLoader } from "@/components/info-card";
-import StatsCard, { StatsCardLoader } from "@/components/StatsCard";
+import StatsCard, { StatsCardLoader } from "@/components/stats-card";
 import Tag from "@/components/tag";
 import Upload from "@/components/upload";
 
