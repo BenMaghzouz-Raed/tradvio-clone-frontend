@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 
+// TODO: add a fill parameter for all icons
 export default function PlusCircle({
   className,
   ...props

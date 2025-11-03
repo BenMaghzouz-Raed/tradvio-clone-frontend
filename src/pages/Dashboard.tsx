@@ -1,5 +1,6 @@
 import InfoCard, { InfoCardLoader } from "@/components/info-card";
 import StatsCard, { StatsCardLoader } from "@/components/stats-card";
+import Status from "@/components/status";
 import Tag from "@/components/tag";
 import Upload from "@/components/upload";
 
@@ -35,6 +36,11 @@ export default function Dashboard() {
       <InfoCard title="Analysis Results" data={infoCardData} />
       <InfoCardLoader title="Analysis Results" />
       <InfoCardLoader />
+
+      <Status label="Active" variant="success" />
+      <Status label="inActive" variant="error" />
+      <Status label="wating" variant="warning" />
+      <Status label="none" variant="neutural" />
     </>
   );
 }
