@@ -27,13 +27,13 @@ export default function TrandeCard({ trade }: { trade: ITrade }) {
         <div className="flex flex-col gap-2">
           <div className="flex gap-2">
             {trade.tags.map((tag) => (
-              <Tag label={tag} variant="neutural" key={tag} />
+              <Tag label={tag} variant="neutral" key={tag} />
             ))}
           </div>
           <div className="flex gap-2 items-center">
             <Signal
               label={trade.signal}
-              variant={trade.signal === "BUY" ? "success" : "neutural"}
+              variant={trade.signal === "BUY" ? "success" : "neutral"}
             />
             <h2>${trade.value}</h2>
           </div>

@@ -35,7 +35,7 @@ export default function Dashboard() {
       <Tag label="Win" variant="success" />
       <Tag label="Loss" variant="error" />
       <Tag label="Not Taken" variant="warning" />
-      <Tag label="Long" variant="neutural" />
+      <Tag label="Long" variant="neutral" />
       <InfoCard title="Analysis Results" data={infoCardData} />
       <InfoCardLoader title="Analysis Results" />
       <InfoCardLoader />
@@ -43,12 +43,12 @@ export default function Dashboard() {
       <Status label="Active" variant="success" />
       <Status label="inActive" variant="error" />
       <Status label="wating" variant="warning" />
-      <Status label="none" variant="neutural" />
+      <Status label="none" variant="neutral" />
 
       <Signal label="Active" variant="success" />
       <Signal label="inActive" variant="error" />
       <Signal label="wating" variant="warning" />
-      <Signal label="none" variant="neutural" />
+      <Signal label="none" variant="neutral" />
 
       <div className="flex flex-wrap gap-3">
         {TRADES.map((trade) => (

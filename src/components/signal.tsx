@@ -4,7 +4,7 @@ const VARIANT_COLOR_MAP = {
   success: "bg-[#22C55E]",
   error: "bg-[#FF383C]",
   warning: "bg-[#F97316]",
-  neutural: "bg-gray",
+  neutral: "bg-gray",
 };
 
 export function Signal({
@@ -12,7 +12,7 @@ export function Signal({
   variant,
 }: {
   label: string;
-  variant: "success" | "error" | "warning" | "neutural";
+  variant: "success" | "error" | "warning" | "neutral";
 }) {
   return (
     <div
