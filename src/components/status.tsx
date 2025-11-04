@@ -11,7 +11,7 @@ const VARIANT_TEXT_MAP = {
   success: "text-[#14B8A6]",
   warning: "text-[#F97316]",
   error: "text-[#FF383C]",
-  neutural: "text-[#737373]",
+  neutural: "text-gray",
 };
 
 export default function Status({

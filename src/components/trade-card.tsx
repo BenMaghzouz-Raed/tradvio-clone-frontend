@@ -14,7 +14,7 @@ export default function TrandeCard({ trade }: { trade: ITrade }) {
           <h2 className="font-bold text-[#171717] text-lg">
             Ascending Triangle - Daily
           </h2>
-          <h3 className="text-[#737373] font-[400 text-sm]">
+          <h3 className="text-gray font-[400 text-sm]">
             {formatDate(trade.date)}
           </h3>
         </div>

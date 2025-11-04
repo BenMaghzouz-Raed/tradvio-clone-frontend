@@ -11,7 +11,7 @@ const VARIANT_TEXT_MAP = {
   success: "text-teal-500",
   error: "text-[#FF383C]",
   warning: "text-orange-500",
-  neutural: "text-[#737373]",
+  neutural: "text-gray",
 };
 
 export default function Tag({

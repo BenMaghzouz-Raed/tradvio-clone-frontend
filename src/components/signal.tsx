@@ -4,7 +4,7 @@ const VARIANT_COLOR_MAP = {
   success: "bg-[#22C55E]",
   error: "bg-[#FF383C]",
   warning: "bg-[#F97316]",
-  neutural: "bg-[#737373]",
+  neutural: "bg-gray",
 };
 
 export function Signal({
