@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { registerSchema, type RegisterFormValues } from "@/lib/validation";
 import { useForm } from "react-hook-form";
@@ -26,14 +25,7 @@ export default function Register() {
   return (
     <div className="flex min-h-screen text-white">
       {/* LEFT SIDE */}
-      <div
-        style={{
-          backgroundImage: "url('/images/background_image.jpeg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-        className="hidden lg:flex w-1/2 relative items-center justify-center"
-      >
+      <div className="hidden lg:flex w-1/2 relative items-center justify-center bg-[url('/images/background_image.jpeg')] bg-cover bg-center">
         <div className="absolute inset-0 bg-black/50"></div>
 
         <div className="relative z-10 p-8 rounded-2xl max-w-lg">
@@ -122,6 +114,9 @@ export default function Register() {
                   className="bg-neutral-800 border-neutral-700 text-white"
                   {...form.register("password")}
                 />
+                <span className="text-[12px] font-[400] text-[#999999]">
+                  At least 8 characters, with numbers and symbols.
+                </span>
                 {form.formState.errors.password && (
                   <p className="text-sm text-red-400 mt-1">
                     {form.formState.errors.password.message}
@@ -144,7 +139,11 @@ export default function Register() {
               </div>
 
               {/* SUBMIT BUTTON */}
-              <Button type="submit" variant="default" className="w-full cursor-pointer">
+              <Button
+                type="submit"
+                variant="default"
+                className="w-full cursor-pointer"
+              >
                 Register
               </Button>
 

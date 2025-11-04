@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { loginSchema, type LoginFormValues } from "@/lib/validation";
 import { useForm } from "react-hook-form";
@@ -24,14 +23,7 @@ export default function LogIn() {
   return (
     <div className="flex min-h-screen text-white">
       {/* LEFT SIDE */}
-      <div
-        style={{
-          backgroundImage: "url('/images/background_image.jpeg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-        className="hidden lg:flex w-1/2 relative items-center justify-center"
-      >
+      <div className="hidden lg:flex w-1/2 relative items-center justify-center bg-[url('/images/background_image.jpeg')] bg-cover bg-center">
         <div className="absolute inset-0 bg-black/50"></div>
 
         <div className="relative z-10 p-8 rounded-2xl max-w-lg">
@@ -76,7 +68,9 @@ export default function LogIn() {
 
               {/* PASSWORD */}
               <div className="space-y-1">
-                <label className="text-sm text-neutral-300 block">Password</label>
+                <label className="text-sm text-neutral-300 block">
+                  Password
+                </label>
                 <Input
                   type="password"
                   placeholder="********"
@@ -105,7 +99,11 @@ export default function LogIn() {
               </div>
 
               {/* BUTTON */}
-              <Button type="submit" variant="default" className="w-full cursor-pointer">
+              <Button
+                type="submit"
+                variant="default"
+                className="w-full cursor-pointer"
+              >
                 Log In
               </Button>
 

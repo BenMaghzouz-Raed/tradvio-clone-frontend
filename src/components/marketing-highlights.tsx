@@ -1,24 +1,11 @@
-import React from "react";
-
 interface MarketingHighlightProps {
   label: string;
-  gradient?: string;
 }
 
-const MarketingHighlight: React.FC<MarketingHighlightProps> = ({
-  label,
-  gradient = "linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.075) 100%)",
-}) => {
+export default function MarketingHighlight({ label }: MarketingHighlightProps) {
   return (
-    <span
-      className="text-sm px-4 py-2 rounded-full"
-      style={{
-        background: gradient,
-      }}
-    >
+    <span className="text-sm px-4 py-2 rounded-full bg-gradient-to-b from-white/30 to-white/10">
       {label}
     </span>
   );
-};
-
-export default MarketingHighlight;
+}

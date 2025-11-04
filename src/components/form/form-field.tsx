@@ -8,9 +8,13 @@ interface FormFieldProps {
   render: (props: { field: any; fieldState: any }) => React.ReactNode;
 }
 
-export const FormField: React.FC<FormFieldProps> = ({ control, name, render }) => {
+export function FormField({ control, name, render }: FormFieldProps) {
   const controller = useController({ name, control });
-  return <>{render({ field: controller.field, fieldState: controller.fieldState })}</>;
-};
+  return (
+    <>
+      {render({ field: controller.field, fieldState: controller.fieldState })}
+    </>
+  );
+}
 
 export default FormField;
