@@ -14,7 +14,7 @@ export default function InfoCard({
       <h4 className="font-medium text-sm text-[#0A0A0A]">{title}</h4>
       <div className="flex flex-col gap-4">
         {data.map((item) => (
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center" key={item.label}>
             <h5 className="font-[400] text-[14px] text-[#B4B4B4]">
               {item.label}
             </h5>
@@ -28,6 +28,7 @@ export default function InfoCard({
   );
 }
 
+// TODO: add key to
 export function InfoCardLoader({
   title,
   rows = 5,
