@@ -1,15 +1,13 @@
 import { cn } from "@/lib/utils";
+import { IconParams } from "@/types/param-types";
 
-export default function History({
-  className,
-  ...props
-}: React.HTMLAttributes<SVGElement>) {
+export default function History({ className, fill, ...props }: IconParams) {
   return (
     <svg
       width="16"
       height="16"
       viewBox="0 0 16 16"
-      fill="none"
+      fill={fill}
       xmlns="http://www.w3.org/2000/svg"
       className={cn(
         "icon icon-tabler icons-tabler-outline icon-tabler-brand-github",
