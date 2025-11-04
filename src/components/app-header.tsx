@@ -6,7 +6,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { SidebarTrigger } from "./ui/sidebar";
 import { cn } from "@/lib/utils";
 
-export function AppHeader({ title }: { title: string }) {
+export function AppHeader({ title = "title" }: { title?: string }) {
   const isMobile = useIsMobile();
 
   return (
