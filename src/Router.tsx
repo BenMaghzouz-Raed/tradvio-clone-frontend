@@ -8,7 +8,7 @@ import Journal from "./pages/Journal";
 import { ROUTES } from "./services/LinksService";
 import Register from "./pages/Register";
 import Subscription from "./pages/Subscription";
-import LogIn from "./pages/Login";
+import LogIn from "./pages/LogIn";
 import Settings from "./pages/Settings";
 
 export default function Router() {
