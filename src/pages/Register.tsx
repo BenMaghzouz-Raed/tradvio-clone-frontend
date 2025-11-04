@@ -1,59 +1,16 @@
-"use client";
-
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useController } from "react-hook-form";
-import React from "react";
-
-const Checkbox: React.FC<React.InputHTMLAttributes<HTMLInputElement>> = ({
-  id,
-  ...props
-}) => (
-  <input
-    id={id}
-    type="checkbox"
-    className="w-4 h-4 rounded bg-neutral-800 border-neutral-700 text-indigo-600"
-    {...props}
-  />
-);
-
-const Form: React.FC<any> = ({ children }) => <>{children}</>;
-const FormControl: React.FC<any> = ({ children }) => <>{children}</>;
-const FormItem: React.FC<any> = ({ children }) => (
-  <div className="space-y-1">{children}</div>
-);
-const FormLabel: React.FC<any> = ({ children }) => (
-  <label className="text-sm text-neutral-300 block">{children}</label>
-);
-const FormMessage: React.FC<{ children?: React.ReactNode }> = ({ children }) =>
-  children ? <p className="text-sm text-red-400 mt-1">{children}</p> : null;
-
-const FormField: React.FC<{
-  control: any;
-  name: string;
-  render: (props: { field: any; fieldState: any }) => React.ReactNode;
-}> = ({ control, name, render }) => {
-  const controller = useController({ name, control });
-  return <>{render({ field: controller.field, fieldState: controller.fieldState })}</>;
-};
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { FcGoogle } from "react-icons/fc";
-
-// ✅ Validation schema
-const formSchema = z.object({
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().min(1, "Last name is required"),
-  email: z.string().email("Enter a valid email"),
-  password: z.string().min(8, "At least 8 characters"),
-});
+import { registerSchema, type RegisterFormValues } from "@/lib/validation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import MarketingHighlight from "@/components/marketing-highlights";
 
 export default function Register() {
-  const form = useForm({
-    resolver: zodResolver(formSchema),
+  const form = useForm<RegisterFormValues>({
+    resolver: zodResolver(registerSchema),
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -62,7 +19,7 @@ export default function Register() {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = (values: RegisterFormValues) => {
     console.log(values);
   };
 
@@ -83,43 +40,12 @@ export default function Register() {
           <h1 className="text-5xl font-bold mb-6 leading-tight">
             Navigate the <br /> Markets with <br /> Confidence
           </h1>
+
           <div className="flex flex-wrap gap-2">
-            <span
-              className="text-sm px-4 py-2 rounded-full"
-              style={{
-                background:
-                  "linear-gradient(180deg, rgba(255, 255, 255, 0.15) 10%, rgba(255, 255, 255, 0.075) 100%)",
-              }}
-            >
-              AI-Powered Trade Plans
-            </span>
-            <span
-              className="text-sm px-4 py-2 rounded-full"
-              style={{
-                background:
-                  "linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.075) 100%)",
-              }}
-            >
-              Integrated Risk Management
-            </span>
-            <span
-              className="text-sm px-4 py-2 rounded-full"
-              style={{
-                background:
-                  "linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.075) 100%)",
-              }}
-            >
-              Next-Gen Trade Journal
-            </span>
-            <span
-              className="text-sm px-4 py-2 rounded-full"
-              style={{
-                background:
-                  "linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.075) 100%)",
-              }}
-            >
-              Customer Support
-            </span>
+            <MarketingHighlight label="AI-Powered Trade Plans" />
+            <MarketingHighlight label="Integrated Risk Management" />
+            <MarketingHighlight label="Next-Gen Trade Journal" />
+            <MarketingHighlight label="Customer Support" />
           </div>
         </div>
       </div>
@@ -130,117 +56,105 @@ export default function Register() {
           <CardHeader>
             <CardTitle className="text-center text-2xl">Register</CardTitle>
           </CardHeader>
+
           <CardContent>
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                {/* First & Last Name */}
-                <div className="flex space-x-2">
-                  <FormField
-                    control={form.control}
-                    name="firstName"
-                    render={({ field, fieldState }) => (
-                      <FormItem className="w-1/2">
-                        <FormLabel>First Name</FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="John"
-                            className="bg-neutral-800 border-neutral-700 text-white"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage>{fieldState?.error?.message}</FormMessage>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="lastName"
-                    render={({ field, fieldState }) => (
-                      <FormItem className="w-1/2">
-                        <FormLabel>Last Name</FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="Doe"
-                            className="bg-neutral-800 border-neutral-700 text-white"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage>{fieldState?.error?.message}</FormMessage>
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                {/* Email */}
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field, fieldState }) => (
-                    <FormItem>
-                      <FormLabel>Email Address</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="you@example.com"
-                          className="bg-neutral-800 border-neutral-700 text-white"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage>{fieldState?.error?.message}</FormMessage>
-                    </FormItem>
-                  )}
-                />
-
-                {/* Password */}
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field, fieldState }) => (
-                    <FormItem>
-                      <FormLabel>Password</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="password"
-                          placeholder="********"
-                          className="bg-neutral-800 border-neutral-700 text-white"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage>{fieldState?.error?.message}</FormMessage>
-                    </FormItem>
-                  )}
-                />
-
-                {/* Remember checkbox */}
-                <div className="flex items-center space-x-2">
-                  <Checkbox id="remember" />
-                  <label htmlFor="remember" className="text-sm text-neutral-400 leading-none">
-                    Remember this device
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              {/* FIRST & LAST NAME */}
+              <div className="flex space-x-2">
+                <div className="w-1/2 space-y-1">
+                  <label className="text-sm text-neutral-300 block">
+                    First Name
                   </label>
+                  <Input
+                    placeholder="John"
+                    className="bg-neutral-800 border-neutral-700 text-white"
+                    {...form.register("firstName")}
+                  />
+                  {form.formState.errors.firstName && (
+                    <p className="text-sm text-red-400 mt-1">
+                      {form.formState.errors.firstName.message}
+                    </p>
+                  )}
                 </div>
 
-                <Button
-                  type="submit"
-                  className="w-full bg-indigo-600 hover:bg-indigo-700 rounded bg-[#8B5CF6] py-2"
-                >
-                  Register
-                </Button>
-
-                <div className="flex items-center gap-2">
-                  <div className="flex-1 h-px bg-neutral-700"></div>
-                  <span className="text-sm text-neutral-500">or</span>
-                  <div className="flex-1 h-px bg-neutral-700"></div>
+                <div className="w-1/2 space-y-1">
+                  <label className="text-sm text-neutral-300 block">
+                    Last Name
+                  </label>
+                  <Input
+                    placeholder="Doe"
+                    className="bg-neutral-800 border-neutral-700 text-white"
+                    {...form.register("lastName")}
+                  />
+                  {form.formState.errors.lastName && (
+                    <p className="text-sm text-red-400 mt-1">
+                      {form.formState.errors.lastName.message}
+                    </p>
+                  )}
                 </div>
+              </div>
 
-                <Button
-                  variant="outline"
-                  type="button"
-                  className="w-full bg-neutral-800 border-neutral-700 text-white hover:bg-neutral-700"
+              {/* EMAIL */}
+              <div className="space-y-1">
+                <label className="text-sm text-neutral-300 block">
+                  Email Address
+                </label>
+                <Input
+                  placeholder="you@example.com"
+                  className="bg-neutral-800 border-neutral-700 text-white"
+                  {...form.register("email")}
+                />
+                {form.formState.errors.email && (
+                  <p className="text-sm text-red-400 mt-1">
+                    {form.formState.errors.email.message}
+                  </p>
+                )}
+              </div>
+
+              {/* PASSWORD */}
+              <div className="space-y-1">
+                <label className="text-sm text-neutral-300 block">
+                  Password
+                </label>
+                <Input
+                  type="password"
+                  placeholder="********"
+                  className="bg-neutral-800 border-neutral-700 text-white"
+                  {...form.register("password")}
+                />
+                {form.formState.errors.password && (
+                  <p className="text-sm text-red-400 mt-1">
+                    {form.formState.errors.password.message}
+                  </p>
+                )}
+              </div>
+
+              {/* REMEMBER CHECKBOX */}
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="remember"
+                  className="border-neutral-700 data-[state=checked]:bg-[#8B5CF6] data-[state=checked]:border-[#8B5CF6]"
+                />
+                <label
+                  htmlFor="remember"
+                  className="text-sm text-neutral-400 leading-none cursor-pointer"
                 >
-                  <FcGoogle className="mr-2 text-lg" />
-                  Sign up with Google
-                </Button>
-              </form>
-            </Form>
+                  Remember this device
+                </label>
+              </div>
+
+              {/* SUBMIT BUTTON */}
+              <Button type="submit" variant="default" className="w-full cursor-pointer">
+                Register
+              </Button>
+
+              {/* SEPARATOR */}
+              <div className="flex items-center gap-2">
+                <div className="flex-1 h-px bg-neutral-700"></div>
+                <span className="text-sm text-neutral-500">or</span>
+                <div className="flex-1 h-px bg-neutral-700"></div>
+              </div>
+            </form>
           </CardContent>
         </Card>
       </div>
