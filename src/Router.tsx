@@ -4,7 +4,7 @@ import NotMatch from "./pages/NotMatch";
 import Dashboard from "./pages/Dashboard";
 import Analyser from "./pages/Analyser";
 import History from "./pages/History";
-import Journal from "./pages/Journal";
+import TradeJournal from "./pages/TradeJournal";
 import { ROUTES } from "./services/LinksService";
 import Register from "./pages/Register";
 import Subscription from "./pages/Subscription";
@@ -18,7 +18,7 @@ export default function Router() {
         <Route path={ROUTES.DASHBOARD.path} element={<Dashboard />} />
         <Route path={ROUTES.ANALYSER.path} element={<Analyser />} />
         <Route path={ROUTES.HISTORY.path} element={<History />} />
-        <Route path={ROUTES.JOURNAL.path} element={<Journal />} />
+        <Route path={ROUTES.JOURNAL.path} element={<TradeJournal />} />
         <Route path={ROUTES.SUBSCRIPTION.path} element={<Subscription />} />
         <Route path={ROUTES.SETTINGS.path} element={<Settings />} />
       </Route>

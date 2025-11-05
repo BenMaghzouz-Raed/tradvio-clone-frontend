@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
+import Checkbox from "@/components/ui/checkbox";
 import MarketingHighlight from "@/components/marketing-highlights";
 
 export default function LogIn() {
