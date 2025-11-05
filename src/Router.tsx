@@ -5,7 +5,6 @@ import NotMatch from "./pages/NotMatch";
 import Dashboard from "./pages/Dashboard";
 import Analyser from "./pages/Analyser";
 import History from "./pages/History";
-// @ts-expect-error
 import TradeJournal from "./pages/TradeJournal";
 import { ROUTES } from "./services/LinksService";
 import Register from "./pages/Register";
