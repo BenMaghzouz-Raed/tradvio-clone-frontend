@@ -43,7 +43,11 @@ const SIDEBAR_MENU_ITEMS = [
     url: ROUTES.ANALYSER.path,
     icon: Analyser,
   },
-  { title: ROUTES.JOURNAL.title, url: ROUTES.JOURNAL.path, icon: Journal },
+  {
+    title: ROUTES.JOURNAL.title,
+    url: ROUTES.JOURNAL.path,
+    icon: Journal,
+  },
   { title: ROUTES.HISTORY.title, url: ROUTES.HISTORY.path, icon: History },
   {
     title: ROUTES.SUBSCRIPTION.title,

@@ -1,9 +1,9 @@
-import { ITrade, TradeOutcome } from "@/types/trade";
-import { Checkbox } from "@/components/ui/checkbox";
-import { ColumnDef } from "@tanstack/react-table";
-import { formatAmount, formatDate } from "./utils";
-import Tag from "@/components/tag";
 import Options from "@/components/icons/options";
+import Tag from "@/components/tag";
+import { Checkbox } from "@/components/ui/checkbox";
+import { formatAmount, formatDate } from "@/lib/utils";
+import { ITrade, TradeOutcome } from "@/types/trade";
+import { ColumnDef } from "@tanstack/react-table";
 
 export const columns: ColumnDef<ITrade>[] = [
   {
@@ -83,7 +83,10 @@ export const columns: ColumnDef<ITrade>[] = [
   {
     accessorKey: "type",
     header: "Trade Type",
-    cell: ({ row }) => <Tag label={row.getValue("type")} variant="neutral" />,
+    cell: ({ row }) => {
+      console.log(row.original);
+      return <Tag label={row.getValue("type")} variant="neutral" />;
+    },
     enableSorting: false,
     enableHiding: false,
   },
