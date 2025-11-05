@@ -1,4 +1,4 @@
-import { formatDate } from "@/lib/utils";
+import { formatAmount, formatDate } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { Signal } from "./signal";
@@ -35,7 +35,7 @@ export default function TrandeCard({ trade }: { trade: ITrade }) {
               label={trade.signal}
               variant={trade.signal === "BUY" ? "success" : "neutral"}
             />
-            <h2>${trade.value}</h2>
+            <h2>{formatAmount(trade.value)}</h2>
           </div>
         </div>
         <Button className="flex gap-2 cursor-pointer" variant="outline">
