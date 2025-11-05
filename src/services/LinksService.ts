@@ -15,7 +15,7 @@ export const ROUTES: {
   DASHBOARD: { path: "", title: "Dashboard", authenticated: true },
   ANALYSER: { path: "analyser", title: "Trade Analyzer", authenticated: true },
   HISTORY: { path: "history", title: "Analysis History", authenticated: true },
-  TRADEJOURNAL: { path: "journal", title: "Trade Journal", authenticated: true },
+  JOURNAL: { path: "journal", title: "Trade Journal", authenticated: true },
 
   SETTINGS: {
     path: "settings",

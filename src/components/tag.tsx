@@ -8,10 +8,10 @@ const VARIANT_CONTAINER_MAP = {
 };
 
 const VARIANT_TEXT_MAP = {
-  success: "text-teal-600",
+  success: "text-teal-500",
   error: "text-[#FF383C]",
   warning: "text-orange-500",
-  neutral: "text-gray",
+  neutral: "text-[#737373]",
 };
 
 export default function Tag({
@@ -24,11 +24,11 @@ export default function Tag({
   return (
     <div
       className={cn(
-        "border w-fit px-2 py-1 rounded-md",
+        "border-1 w-fit p-2 rounded-md",
         VARIANT_CONTAINER_MAP[variant]
       )}
     >
-      <p className={cn("font-medium text-xs", VARIANT_TEXT_MAP[variant])}>
+      <p className={cn("font-medium text-xs ", VARIANT_TEXT_MAP[variant])}>
         {label}
       </p>
     </div>

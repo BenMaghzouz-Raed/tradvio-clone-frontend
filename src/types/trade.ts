@@ -7,8 +7,12 @@ export interface ITrade {
   value?: number;
   title?: string;
   pnl?: number;
-  outcome?: "Win" | "Loss" | "Not Taken";
-  tradeType?: "Long" | "Short";
+  outcome?: TradeOutcome;
+  tradeType?: TradeType;
   entry?: number;
   exit?: number;
 }
+
+export type TradeOutcome = "Win" | "Loss" | "Not Taken";
+
+export type TradeType = "Long" | "Short";

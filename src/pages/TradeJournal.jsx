@@ -1,17 +1,15 @@
-"use client";
-
 import { useState } from "react";
 import PaginationComponent from "../components/pagination";
 import tradesData from "../seeds/trades.ts";
 import StatsCard from "../components/stats-card";
-import TradeTable from "../components/trade-table";
 import Filter from "../components/icons/filter"; 
+import DataTable from "../components/data-table";
+import { columns } from "../lib/columns.tsx";
 
 function TradeJournal() {
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 10;
   const totalPages = Math.ceil(tradesData.length / rowsPerPage);
-
   const startIndex = (currentPage - 1) * rowsPerPage;
   const currentRows = tradesData.slice(startIndex, startIndex + rowsPerPage);
 
@@ -39,11 +37,8 @@ function TradeJournal() {
         </div>
       </div>
 
+      <DataTable columns={columns} data={currentRows} onRowSelectionChange={(values)=>console.log(values)} />
 
-      {/* Table */}
-      <TradeTable trades={currentRows} />
-
-      {/* Pagination */}
       <div className="mt-6 w-full flex justify-end">
         <div className="w-fit">
           <PaginationComponent
