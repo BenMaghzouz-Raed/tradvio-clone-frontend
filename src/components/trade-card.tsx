@@ -14,7 +14,7 @@ export default function TrandeCard({ trade }: { trade: ITrade }) {
           <h2 className="font-bold text-[#171717] text-lg">
             Ascending Triangle - Daily
           </h2>
-          <h3 className="text-[#737373] font-[400 text-sm]">
+          <h3 className="text-gray font-[400 text-sm]">
             {formatDate(trade.date)}
           </h3>
         </div>
@@ -27,13 +27,13 @@ export default function TrandeCard({ trade }: { trade: ITrade }) {
         <div className="flex flex-col gap-2">
           <div className="flex gap-2">
             {trade.tags.map((tag) => (
-              <Tag label={tag} variant="neutural" key={tag} />
+              <Tag label={tag} variant="neutral" key={tag} />
             ))}
           </div>
           <div className="flex gap-2 items-center">
             <Signal
               label={trade.signal}
-              variant={trade.signal === "BUY" ? "success" : "neutural"}
+              variant={trade.signal === "BUY" ? "success" : "neutral"}
             />
             <h2>${trade.value}</h2>
           </div>

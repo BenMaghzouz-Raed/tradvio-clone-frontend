@@ -1,10 +1,11 @@
 import { cn } from "@/lib/utils";
+import { IconParams } from "@/types/param-types";
 
-// TODO: add a fill parameter for all icons
 export default function PlusCircle({
   className,
+  fill = "#FFFFFF",
   ...props
-}: React.HTMLAttributes<SVGElement>) {
+}: IconParams) {
   return (
     <svg
       width="800px"
@@ -28,7 +29,7 @@ export default function PlusCircle({
         <g
           id="Dribbble-Light-Preview"
           transform="translate(-259.000000, -600.000000)"
-          fill="#FFFFFF"
+          fill={fill}
         >
           <g id="icons" transform="translate(56.000000, 160.000000)">
             <path

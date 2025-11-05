@@ -59,7 +59,7 @@ function TradeTable({ trades = [] }) {
                         ? "success"
                         : trade.pnl < 0
                         ? "error"
-                        : "neutural"
+                        : "neutral"
                     }
                   />
                 </TableCell>
@@ -80,7 +80,7 @@ function TradeTable({ trades = [] }) {
 
                 {/* Trade Type */}
                 <TableCell className="p-3 align-top text-sm">
-                  <Tag label={trade.tradeType} variant="neutural" />
+                  <Tag label={trade.tradeType} variant="neutral" />
                 </TableCell>
 
                 {/* Entry / Exit */}
