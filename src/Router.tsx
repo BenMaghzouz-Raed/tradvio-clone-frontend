@@ -1,16 +1,15 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Routes, Route } from "react-router-dom";
 import { AppLayout } from "./components/app-layout";
 import NotMatch from "./pages/NotMatch";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/dashboard";
 import Analyser from "./pages/Analyser";
 import History from "./pages/History";
-import TradeJournal from "./pages/TradeJournal";
 import { ROUTES } from "./services/LinksService";
 import Register from "./pages/Register";
 import Subscription from "./pages/Subscription";
 import LogIn from "./pages/LogIn";
 import Settings from "./pages/Settings";
+import TradeJournal from "./pages/TradeJournal";
 
 export default function Router() {
   return (

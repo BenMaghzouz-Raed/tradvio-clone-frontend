@@ -1,5 +1,3 @@
-"use client";
-import React from "react";
 import {
   Pagination,
   PaginationContent,
@@ -10,11 +8,21 @@ import {
   PaginationEllipsis,
 } from "@/components/ui/pagination";
 
-const PaginationComponent = ({ currentPage, totalPages, onPageChange }) => {
+const PaginationComponent = ({
+  currentPage,
+  totalPages,
+  onPageChange,
+  className,
+}: {
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+  className?: string;
+}) => {
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   return (
-    <Pagination>
+    <Pagination className={className}>
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious
