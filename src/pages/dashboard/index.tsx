@@ -16,7 +16,7 @@ export default function Dashboard() {
     <div className="space-y-4">
       <TopBanner firstName="Youssef" lastName="Ghorbel" />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+      <div className="flex flex-wrap justify-around gap-4">
         <StatsCard label="Swing Trades Analyzed" value="2" />
         <StatsCard label="Scalp Trades Analyzed" value="8" />
         <StatsCard label="Win Rate" value="50%" />
