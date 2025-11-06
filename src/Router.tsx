@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import { AppLayout } from "./components/app-layout";
 import NotMatch from "./pages/NotMatch";
 import Dashboard from "./pages/dashboard";
-import Analyser from "./pages/Analyser";
+import Analyser from "./pages/analyser";
 import History from "./pages/History";
 import { ROUTES } from "./services/LinksService";
 import Register from "./pages/Register";
