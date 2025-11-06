@@ -6,20 +6,49 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import MarketingHighlight from "@/components/marketing-highlights";
+import { useState } from "react";
+import { register } from "@/services/domain/AuthService";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "@/services/LinksService";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function Register() {
+  const [loading, setLaoding] = useState(false);
+  const navigate = useNavigate();
+
+  useAuth();
+
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
       firstName: "",
       lastName: "",
+      username: "",
       email: "",
       password: "",
+      timezone: "UTC",
+      avatarUrl:
+        "https://img.freepik.com/vecteurs-libre/illustration-du-jeune-homme-souriant_1308-174669.jpg",
     },
   });
 
-  const onSubmit = (values: RegisterFormValues) => {
-    console.log(values);
+  const onSubmit = async (values: RegisterFormValues) => {
+    setLaoding(true);
+    try {
+      await register({
+        ...values,
+        avatar_url: values.avatarUrl,
+        email: values.email,
+        first_name: values.firstName,
+        last_name: values.lastName,
+      });
+      navigate(`/${ROUTES.LOGIN.path}`);
+    } catch (err) {
+      // TODO: change to toast
+      console.log(err);
+    } finally {
+      setLaoding(false);
+    }
   };
 
   return (
@@ -103,6 +132,23 @@ export default function Register() {
                 )}
               </div>
 
+              {/* Username */}
+              <div className="space-y-1">
+                <label className="text-sm text-neutral-300 block">
+                  Username
+                </label>
+                <Input
+                  placeholder="username"
+                  className="bg-neutral-800 border-neutral-700 text-white"
+                  {...form.register("username")}
+                />
+                {form.formState.errors.username && (
+                  <p className="text-sm text-red-400 mt-1">
+                    {form.formState.errors.username.message}
+                  </p>
+                )}
+              </div>
+
               {/* PASSWORD */}
               <div className="space-y-1">
                 <label className="text-sm text-neutral-300 block">
@@ -140,6 +186,7 @@ export default function Register() {
 
               {/* SUBMIT BUTTON */}
               <Button
+                disabled={loading}
                 type="submit"
                 variant="default"
                 className="w-full cursor-pointer"

@@ -6,18 +6,37 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import MarketingHighlight from "@/components/marketing-highlights";
+import { login } from "@/services/domain/AuthService";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "@/services/LinksService";
+import { useState } from "react";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function LogIn() {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
+  useAuth();
+
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "",
+      username: "",
       password: "",
     },
   });
 
-  const onSubmit = (values: LoginFormValues) => {
-    console.log(values);
+  const onSubmit = async (values: LoginFormValues) => {
+    try {
+      setLoading(true);
+      await login(values);
+      navigate(`/${ROUTES.DASHBOARD.path}`);
+    } catch (err) {
+      // TODO: change to toast an error
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -52,16 +71,16 @@ export default function LogIn() {
               {/* EMAIL */}
               <div className="space-y-1">
                 <label className="text-sm text-neutral-300 block">
-                  Email Address
+                  Username
                 </label>
                 <Input
-                  placeholder="you@example.com"
+                  placeholder="username"
                   className="bg-neutral-800 border-neutral-700 text-white"
-                  {...form.register("email")}
+                  {...form.register("username")}
                 />
-                {form.formState.errors.email && (
+                {form.formState.errors.username && (
                   <p className="text-sm text-red-400 mt-1">
-                    {form.formState.errors.email.message}
+                    {form.formState.errors.username.message}
                   </p>
                 )}
               </div>
@@ -100,6 +119,7 @@ export default function LogIn() {
 
               {/* BUTTON */}
               <Button
+                disabled={loading}
                 type="submit"
                 variant="default"
                 className="w-full cursor-pointer"

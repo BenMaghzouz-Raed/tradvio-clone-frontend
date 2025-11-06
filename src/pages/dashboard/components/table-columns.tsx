@@ -84,7 +84,6 @@ export const columns: ColumnDef<ITrade>[] = [
     accessorKey: "type",
     header: "Trade Type",
     cell: ({ row }) => {
-      console.log(row.original);
       return <Tag label={row.getValue("type")} variant="neutral" />;
     },
     enableSorting: false,

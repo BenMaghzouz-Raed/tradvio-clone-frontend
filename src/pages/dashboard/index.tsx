@@ -6,9 +6,11 @@ import SubscriptionAlert from "./components/subscription-alert";
 import trades from "@/seeds/trades";
 import DataTable from "@/components/data-table";
 import { columns } from "./components/table-columns";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function Dashboard() {
   const [daysLeft] = useState(7);
+  useAuth();
 
   return (
     <div className="space-y-4">
