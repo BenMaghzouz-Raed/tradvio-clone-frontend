@@ -9,7 +9,7 @@ import Register from "./pages/Register";
 import Subscription from "./pages/Subscription";
 import LogIn from "./pages/LogIn";
 import Settings from "./pages/Settings";
-import TradeJournal from "./pages/TradeJournal";
+import TradeJournal from "./pages/trade-journal";
 
 export default function Router() {
   return (
