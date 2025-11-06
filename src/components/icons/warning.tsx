@@ -1,11 +1,7 @@
 import { cn } from "@/lib/utils";
 import { IconParams } from "@/types/param-types";
 
-export default function Warning({
-  className,
-  fill = "white",
-  ...props
-}: IconParams) {
+export function Warning({ className, fill = "white", ...props }: IconParams) {
   return (
     <svg
       width="20"
@@ -14,15 +10,15 @@ export default function Warning({
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={cn(
-        "icon icon-tabler icons-tabler-outline icon-tabler-brand-github",
+        "icon icon-tabler icons-tabler-outline icon-tabler-warning",
         className
       )}
       {...props}
     >
-      <g clip-path="url(#clip0_254_688)">
+      <g clipPath="url(#clip0_254_688)">
         <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
+          fillRule="evenodd"
+          clipRule="evenodd"
           d="M8.88245 0.322835C9.21895 0.117141 9.60569 0.00830078 10.0001 0.00830078C10.3945 0.00830078 10.7812 0.117141 11.1177 0.322835C11.4542 0.528529 11.7274 0.823096 11.9072 1.1741L11.9104 1.18033L19.7665 16.8926C19.9305 17.2185 20.0092 17.5821 19.9939 17.9466C19.9786 18.3116 19.8703 18.6666 19.6792 18.9779C19.488 19.2892 19.2206 19.5465 18.902 19.7254C18.5836 19.9042 18.2246 19.9986 17.8593 19.9998H17.8572H2.14293H2.14076C1.77549 19.9986 1.41655 19.9042 1.09805 19.7254C0.779552 19.5465 0.512058 19.2892 0.320973 18.9779C0.12989 18.6666 0.0215603 18.3116 0.00627238 17.9466C-0.00899769 17.5821 0.0690632 17.2196 0.233048 16.8938L8.08976 1.18035L8.09289 1.17408C8.27271 0.82308 8.54596 0.528529 8.88245 0.322835ZM10 5.89279C10.5918 5.89279 11.0715 6.37249 11.0715 6.96422V11.6071C11.0715 12.1988 10.5918 12.6785 10 12.6785C9.40831 12.6785 8.92861 12.1988 8.92861 11.6071V6.96422C8.92861 6.37249 9.40831 5.89279 10 5.89279ZM11.4286 15.5356C11.4286 16.3246 10.789 16.9642 10 16.9642C9.21106 16.9642 8.57146 16.3246 8.57146 15.5356C8.57146 14.7466 9.21106 14.1071 10 14.1071C10.789 14.1071 11.4286 14.7466 11.4286 15.5356Z"
           fill={fill}
         />
@@ -32,6 +28,33 @@ export default function Warning({
           <rect width="20" height="20" fill="white" />
         </clipPath>
       </defs>
+    </svg>
+  );
+}
+
+export default function BudgetWarning({
+  className,
+
+  ...props
+}: IconParams) {
+  return (
+    <svg
+      width="40"
+      height="40"
+      viewBox="0 0 40 40"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn("", className)}
+      {...props}
+    >
+      <circle cx="20" cy="20" r="20" fill="#FEF9C3" />
+      <path
+        d="M20 17.5V19.1667M20 22.5H20.0083M14.2267 25.8334H25.7733C27.0567 25.8334 27.8583 24.4442 27.2167 23.3334L21.4433 13.3334C20.8017 12.2225 19.1983 12.2225 18.5567 13.3334L12.7833 23.3334C12.1417 24.4442 12.9433 25.8334 14.2267 25.8334Z"
+        stroke="#CA8A04"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }

@@ -9,6 +9,7 @@ import Register from "./pages/Register";
 import Subscription from "./pages/Subscription";
 import LogIn from "./pages/LogIn";
 import Settings from "./pages/Settings";
+import AdminPanel from "./pages/AdminPanel";
 import TradeJournal from "./pages/TradeJournal";
 
 export default function Router() {
@@ -21,6 +22,7 @@ export default function Router() {
         <Route path={ROUTES.JOURNAL.path} element={<TradeJournal />} />
         <Route path={ROUTES.SUBSCRIPTION.path} element={<Subscription />} />
         <Route path={ROUTES.SETTINGS.path} element={<Settings />} />
+        <Route path={ROUTES.ADMIN.path} element={<AdminPanel />} />
       </Route>
       <Route path={ROUTES.LOGIN.path} element={<LogIn />} />
       <Route path={ROUTES.REGISTER.path} element={<Register />} />

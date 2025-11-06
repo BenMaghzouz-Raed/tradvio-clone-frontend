@@ -2,6 +2,7 @@ import { RouteType } from "@/types/route-type";
 
 export const ROUTES: {
   LOGIN: RouteType;
+  ADMIN:RouteType;
   REGISTER: RouteType;
   DASHBOARD: RouteType;
   ANALYSER: RouteType;
@@ -16,6 +17,7 @@ export const ROUTES: {
   ANALYSER: { path: "analyser", title: "Trade Analyzer", authenticated: true },
   HISTORY: { path: "history", title: "Analysis History", authenticated: true },
   JOURNAL: { path: "journal", title: "Trade Journal", authenticated: true },
+  ADMIN: { path: "admin", title: "Admin Panel", authenticated: true },
 
   SETTINGS: {
     path: "settings",
