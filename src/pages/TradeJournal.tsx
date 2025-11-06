@@ -6,14 +6,6 @@ import Filter from "../components/icons/filter.tsx";
 import DataTable from "../components/data-table.tsx";
 import { columns } from "../lib/columns.tsx";
 import { Button } from "@/components/ui/button.tsx";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select.tsx";
 import PageSizeSelector from "@/components/page-size-selector.tsx";
 
 function TradeJournal() {
@@ -25,7 +17,7 @@ function TradeJournal() {
   const [itemsPerPage, setItemsPerPage] = useState<number>(10);
 
   return (
-    <div className="p-6">
+    <div>
       <div className="grid grid-cols-4 gap-4 mb-6">
         <StatsCard label="Total P&L" value="$178.11" />
         <StatsCard label="Win Rate" value="50%" />
