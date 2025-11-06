@@ -141,9 +141,10 @@ export function AppSidebar() {
             <PopoverTrigger>
               <Options className="cursor-pointer" />
             </PopoverTrigger>
-            <PopoverContent>
+            <PopoverContent className="p-1">
               <div>
                 <Button
+                  className="w-full cursor-pointer"
                   variant="ghost"
                   onClick={() =>
                     logout().then(() => navigate(`/${ROUTES.LOGIN.path}`))
