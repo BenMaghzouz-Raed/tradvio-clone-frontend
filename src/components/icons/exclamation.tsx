@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { IconParams } from "@/types/param-types";
 
-export default function Exclamation({
+export default function Info({
   className,
   fill = "none",
   ...props

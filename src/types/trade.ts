@@ -1,7 +1,5 @@
-export type TradeOutcome = "Win" | "Loss" | "Not Taken";
-
 export type TradeType = "Long" | "Short";
-
+export type TradeOutcome = "Win" | "Loss" | "Not Taken";
 export interface ITrade {
   id?: string;
   title?: string;
