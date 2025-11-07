@@ -92,6 +92,21 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
+              <SidebarMenuItem key={"admin"}>
+                <SidebarMenuButton
+                  asChild
+                  className={cn(
+                    "hover:bg-card-foreground active:bg-card-foreground",
+                    route?.path === "help" && "bg-card-foreground"
+                  )}
+                >
+                  <Link to={ROUTES.ADMIN.path}>
+                    <Help />
+                    <span className="text-white">{ROUTES.ADMIN.title}</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
               <SidebarMenuItem key={"settings"}>
                 <SidebarMenuButton
                   asChild

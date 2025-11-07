@@ -2,6 +2,7 @@ import { RouteType } from "@/types/route-type";
 
 export const ROUTES: {
   LOGIN: RouteType;
+  ADMIN: RouteType;
   REGISTER: RouteType;
   DASHBOARD: RouteType;
   ANALYSER: RouteType;
@@ -58,6 +59,12 @@ export const ROUTES: {
     title: "Subscription Plan",
     protected: true,
     role: "user",
+  },
+  ADMIN: {
+    path: "admin",
+    title: "Admin Panel",
+    protected: true,
+    role: "admin",
   },
 };
 
