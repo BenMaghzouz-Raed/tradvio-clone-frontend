@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import {
   Sidebar,
   SidebarContent,
@@ -20,12 +21,13 @@ import { cn } from "@/lib/utils";
 import { useRoute } from "@/hooks/use-route";
 import Help from "./icons/help";
 import Settings from "./icons/settings";
-import { Avatar, AvatarImage } from "./ui/avatar";
+import { Avatar } from "./ui/avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import Options from "./icons/options";
 import { Button } from "./ui/button";
 import { logout } from "@/services/domain/AuthService";
 import { useAuth } from "@/hooks/use-auth";
+import InitialsAvatar from "./initials-avatar";
 
 const SIDEBAR_MENU_ITEMS = [
   {
@@ -128,7 +130,10 @@ export function AppSidebar() {
         <div className="flex items-center justify-between px-2">
           <div className="flex gap-2">
             <Avatar>
-              <AvatarImage src={currentUser?.avatar_url} />
+              <InitialsAvatar
+                firstName={currentUser?.first_name!}
+                lastName={currentUser?.last_name!}
+              />
             </Avatar>
             <div>
               <h3 className="text-white font-semibold text-sm">{`${currentUser?.first_name} ${currentUser?.last_name}`}</h3>
