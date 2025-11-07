@@ -10,6 +10,8 @@ export const ROUTES: {
   JOURNAL: RouteType;
   SETTINGS: RouteType;
   SUBSCRIPTION: RouteType;
+  FORGOTPASSWORD: RouteType;
+  RESETPASSWORD: RouteType;
 } = {
   LOGIN: {
     path: "login",
@@ -65,6 +67,18 @@ export const ROUTES: {
     title: "Admin Panel",
     protected: true,
     role: "admin",
+  },
+  FORGOTPASSWORD: {
+    path: "forgot-password",
+    title: "Forgot Password",
+    protected: false,
+    role: undefined,
+  },
+  RESETPASSWORD: {
+    path: "reset-password",
+    title: "Reset Password",
+    protected: false,
+    role: undefined,
   },
 };
 

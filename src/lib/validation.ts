@@ -23,6 +23,16 @@ export const registerSchema = z.object({
   avatarUrl: z.string().url(),
 });
 
+export const resetPasswordSchema = z
+  .object({
+    newPassword: registerSchema.shape.password,
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
+
 export const profileSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
@@ -43,7 +53,13 @@ export const updatePasswordSchema = z
     path: ["confirmPassword"],
   });
 
+export const forgotPasswordSchema = z.object({
+  email: z.email(),
+});
+
+export type ResetPasswordFormValues = z.infer<typeof resetPasswordSchema>;
 export type LoginFormValues = z.infer<typeof loginSchema>;
 export type RegisterFormValues = z.infer<typeof registerSchema>;
 export type ProfileFormValues = z.infer<typeof profileSchema>;
 export type UpdatePasswordFormValues = z.infer<typeof updatePasswordSchema>;
+export type ForgotPasswordFormValues = z.infer<typeof forgotPasswordSchema>;

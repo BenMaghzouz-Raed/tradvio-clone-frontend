@@ -3,14 +3,16 @@ import { AppLayout } from "./components/app-layout";
 import NotMatch from "./pages/NotMatch";
 import Dashboard from "./pages/dashboard";
 import Analyser from "./pages/analyser";
-import History from "./pages/History";
+import History from "./pages/history";
 import { ROUTES } from "./services/LinksService";
-import Register from "./pages/Register";
-import Subscription from "./pages/Subscription";
-import LogIn from "./pages/login/LogIn";
+import Register from "./pages/auth/register";
+import Subscription from "./pages/subscription";
+import LogIn from "./pages/auth/login";
 import Settings from "./pages/settings";
 import TradeJournal from "./pages/trade-journal";
 import AdminPanel from "./pages/admin-panel";
+import ForgotPassword from "./pages/auth/forgot-password";
+import ResetPassword from "./pages/auth/reset-password";
 
 export default function Router() {
   return (
@@ -24,6 +26,8 @@ export default function Router() {
         <Route path={ROUTES.SETTINGS.path} element={<Settings />} />
         <Route path={ROUTES.ADMIN.path} element={<AdminPanel />} />
       </Route>
+      <Route path={ROUTES.FORGOTPASSWORD.path} element={<ForgotPassword />} />
+      <Route path={ROUTES.RESETPASSWORD.path} element={<ResetPassword />} />
       <Route path={ROUTES.LOGIN.path} element={<LogIn />} />
       <Route path={ROUTES.REGISTER.path} element={<Register />} />
       <Route path="*" element={<NotMatch />} />
