@@ -10,11 +10,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { profileSchema } from "@/lib/validation";
+import { ProfileFormValues, profileSchema } from "@/lib/validation";
 import { UserType } from "@/types/user-types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
 
 export default function UpdateProfileForm({
   currentUser,
@@ -33,7 +32,7 @@ export default function UpdateProfileForm({
     },
   });
 
-  const handleProfileSubmit = (data: z.infer<typeof profileSchema>) => {
+  const handleProfileSubmit = (data: ProfileFormValues) => {
     console.log("Profile updated:", data);
   };
 
@@ -43,7 +42,6 @@ export default function UpdateProfileForm({
         onSubmit={profileForm.handleSubmit(handleProfileSubmit)}
         className="space-y-4 mb-12"
       >
-        {/* First Name & Last Name Row */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <FormField
             control={profileForm.control}
@@ -80,7 +78,6 @@ export default function UpdateProfileForm({
           />
         </div>
 
-        {/* Gender & Country Row */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <FormField
             control={profileForm.control}
@@ -131,7 +128,6 @@ export default function UpdateProfileForm({
           />
         </div>
 
-        {/* Language & Time Zone Row */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <FormField
             control={profileForm.control}

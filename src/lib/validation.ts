@@ -23,9 +23,6 @@ export const registerSchema = z.object({
   avatarUrl: z.string().url(),
 });
 
-export type LoginFormValues = z.infer<typeof loginSchema>;
-export type RegisterFormValues = z.infer<typeof registerSchema>;
-
 export const profileSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
@@ -35,7 +32,7 @@ export const profileSchema = z.object({
   timeZone: z.string().optional(),
 });
 
-export const securitySchema = z
+export const updatePasswordSchema = z
   .object({
     currentPassword: z.string().min(1, "Current password required"),
     newPassword: passwordRule,
@@ -45,3 +42,8 @@ export const securitySchema = z
     message: "Passwords do not match",
     path: ["confirmPassword"],
   });
+
+export type LoginFormValues = z.infer<typeof loginSchema>;
+export type RegisterFormValues = z.infer<typeof registerSchema>;
+export type ProfileFormValues = z.infer<typeof profileSchema>;
+export type UpdatePasswordFormValues = z.infer<typeof updatePasswordSchema>;

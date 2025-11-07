@@ -1,15 +1,24 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form } from "@/components/ui/form";
 import FormField from "@/components/form/form-field";
-import { securitySchema } from "@/lib/validation";
+import {
+  UpdatePasswordFormValues,
+  updatePasswordSchema,
+} from "@/lib/validation";
+import { useState } from "react";
+import { changePassword } from "@/services/domain/AuthService";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "@/services/LinksService";
 
 export default function UpdatePasswordForm() {
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
   const securityForm = useForm({
-    resolver: zodResolver(securitySchema),
+    resolver: zodResolver(updatePasswordSchema),
     defaultValues: {
       currentPassword: "",
       newPassword: "",
@@ -17,8 +26,21 @@ export default function UpdatePasswordForm() {
     },
   });
 
-  const handleSecuritySubmit = (data: z.infer<typeof securitySchema>) => {
-    console.log("Password updated:", data);
+  const handleSecuritySubmit = async (data: UpdatePasswordFormValues) => {
+    try {
+      setLoading(true);
+      await changePassword({
+        current_password: data.currentPassword,
+        new_password: data.newPassword,
+      });
+      // TODO: add success toast
+      navigate(`/${ROUTES.LOGIN.path}`);
+    } catch (err) {
+      // TODO: change to toast
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -64,6 +86,7 @@ export default function UpdatePasswordForm() {
                   New Password
                 </label>
                 <Input
+                  disabled={loading}
                   type="password"
                   placeholder="New Password"
                   {...field}
@@ -89,6 +112,7 @@ export default function UpdatePasswordForm() {
                   Confirm New Password
                 </label>
                 <Input
+                  disabled={loading}
                   type="password"
                   placeholder="Confirm New Password"
                   {...field}
@@ -107,6 +131,7 @@ export default function UpdatePasswordForm() {
 
           <div className="flex justify-end pt-4">
             <Button
+              disabled={loading}
               type="submit"
               className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-2 cursor-pointer"
             >
