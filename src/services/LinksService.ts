@@ -69,13 +69,13 @@ export const ROUTES: {
     role: "admin",
   },
   FORGOTPASSWORD: {
-    path: "forgot_password",
+    path: "forgot-password",
     title: "Forgot Password",
     protected: false,
     role: undefined,
   },
   RESETPASSWORD: {
-    path: "reset_password",
+    path: "reset-password",
     title: "Reset Password",
     protected: false,
     role: undefined,
