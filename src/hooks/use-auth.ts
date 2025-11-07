@@ -13,7 +13,6 @@ export function useAuth() {
   const navigate = useNavigate();
 
   const protectRoute = (user?: UserType) => {
-    console.log({ user, route });
     if (!route?.protected && user) {
       navigate(`/${ROUTES.DASHBOARD.path}`);
     } else if (user?.role != route?.role && route?.protected) {
@@ -36,7 +35,6 @@ export function useAuth() {
                 protectRoute(res.data.user);
               })
               .catch(() => {
-                console.log("refreshing failed");
                 protectRoute(undefined);
               });
           })
