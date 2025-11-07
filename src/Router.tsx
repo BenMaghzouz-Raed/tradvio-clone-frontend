@@ -10,7 +10,7 @@ import Subscription from "./pages/Subscription";
 import LogIn from "./pages/login/LogIn";
 import Settings from "./pages/settings";
 import TradeJournal from "./pages/trade-journal";
-import AdminPanel from "./pages/AdminPanel";
+import AdminPanel from "./pages/admin-panel";
 
 export default function Router() {
   return (
