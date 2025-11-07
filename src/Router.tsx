@@ -8,7 +8,7 @@ import { ROUTES } from "./services/LinksService";
 import Register from "./pages/Register";
 import Subscription from "./pages/Subscription";
 import LogIn from "./pages/login/LogIn";
-import Settings from "./pages/Settings";
+import Settings from "./pages/settings";
 import TradeJournal from "./pages/trade-journal";
 
 export default function Router() {
