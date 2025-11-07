@@ -12,11 +12,12 @@ export function useAuth() {
   const route = useRoute();
   const navigate = useNavigate();
 
-  const protectRoute = (user: UserType) => {
-    if (user?.role != route?.role && route?.authenticated) {
-      navigate(`/${ROUTES.LOGIN.path}`);
-    } else if (!route?.authenticated) {
+  const protectRoute = (user?: UserType) => {
+    console.log({ user, route });
+    if (!route?.protected && user) {
       navigate(`/${ROUTES.DASHBOARD.path}`);
+    } else if (user?.role != route?.role && route?.protected) {
+      navigate(`/${ROUTES.LOGIN.path}`);
     }
   };
   // TODO: enhance this part
@@ -36,12 +37,12 @@ export function useAuth() {
               })
               .catch(() => {
                 console.log("refreshing failed");
-                navigate(`/${ROUTES.LOGIN.path}`);
+                protectRoute(undefined);
               });
           })
           .catch((err) => {
             console.log(err);
-            navigate(`/${ROUTES.LOGIN.path}`);
+            protectRoute(undefined);
           });
       });
   };

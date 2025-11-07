@@ -8,7 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import MarketingHighlight from "@/components/marketing-highlights";
 import { useState } from "react";
 import { register } from "@/services/domain/AuthService";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "@/services/LinksService";
 import { useAuth } from "@/hooks/use-auth";
 
@@ -201,6 +201,9 @@ export default function Register() {
                 <div className="flex-1 h-px bg-neutral-700"></div>
               </div>
             </form>
+            <div className="mt-2 text-sm text-neutral-400 cursor-pointer text-center hover:underline">
+              <Link to={`/${ROUTES.LOGIN.path}`}>Already have an account</Link>
+            </div>
           </CardContent>
         </Card>
       </div>

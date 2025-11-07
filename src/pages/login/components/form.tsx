@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { login } from "@/services/domain/AuthService";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "@/services/LinksService";
 import { useState } from "react";
 
@@ -104,6 +104,9 @@ export default function Form() {
             <div className="flex-1 h-px bg-neutral-700"></div>
           </div>
         </form>
+        <div className="mt-2 text-sm text-neutral-400 cursor-pointer text-center hover:underline">
+          <Link to={`/${ROUTES.REGISTER.path}`}>Create and Account</Link>
+        </div>
       </CardContent>
     </Card>
   );
