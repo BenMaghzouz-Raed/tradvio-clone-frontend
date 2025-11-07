@@ -11,6 +11,8 @@ import LogIn from "./pages/LogIn";
 import Settings from "./pages/Settings";
 import AdminPanel from "./pages/AdminPanel";
 import TradeJournal from "./pages/TradeJournal";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 export default function Router() {
   return (
@@ -24,6 +26,8 @@ export default function Router() {
         <Route path={ROUTES.SETTINGS.path} element={<Settings />} />
         <Route path={ROUTES.ADMIN.path} element={<AdminPanel />} />
       </Route>
+      <Route path={ROUTES.FORGOTPASSWORD.path} element={<ForgotPassword />} />
+      <Route path={ROUTES.RESETPASSWORD.path} element={<ResetPassword />} />
       <Route path={ROUTES.LOGIN.path} element={<LogIn />} />
       <Route path={ROUTES.REGISTER.path} element={<Register />} />
       <Route path="*" element={<NotMatch />} />

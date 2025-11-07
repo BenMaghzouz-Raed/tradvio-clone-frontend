@@ -10,6 +10,8 @@ export const ROUTES: {
   JOURNAL: RouteType;
   SETTINGS: RouteType;
   SUBSCRIPTION: RouteType;
+  FORGOTPASSWORD:RouteType;
+  RESETPASSWORD:RouteType;
 } = {
   LOGIN: { path: "login", title: undefined, authenticated: false },
   REGISTER: { path: "register", title: undefined, authenticated: false },
@@ -18,7 +20,8 @@ export const ROUTES: {
   HISTORY: { path: "history", title: "Analysis History", authenticated: true },
   JOURNAL: { path: "journal", title: "Trade Journal", authenticated: true },
   ADMIN: { path: "admin", title: "Admin Panel", authenticated: true },
-
+  FORGOTPASSWORD: { path: "forgot_password", title: "Forgot Password", authenticated: false },
+  RESETPASSWORD: { path: "reset_password", title: "Reset Password", authenticated: false },
   SETTINGS: {
     path: "settings",
     title: "Settings",
