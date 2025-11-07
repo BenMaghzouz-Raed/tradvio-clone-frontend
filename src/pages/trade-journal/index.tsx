@@ -1,12 +1,13 @@
 import { useState } from "react";
-import PaginationComponent from "../components/pagination";
-import tradesData from "../seeds/trades.ts";
-import StatsCard from "../components/stats-card.tsx";
-import Filter from "../components/icons/filter.tsx";
-import DataTable from "../components/data-table.tsx";
-import { columns } from "../lib/columns.tsx";
+import PaginationComponent from "@/components/pagination";
+import tradesData from "@/seeds/trades.ts";
+import StatsCard from "@/components/stats-card.tsx";
+import Filter from "@/components/icons/filter.tsx";
+import DataTable from "@/components/data-table.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import PageSizeSelector from "@/components/page-size-selector.tsx";
+import { columns } from "./components/columns";
+import { useAuth } from "@/hooks/use-auth";
 
 function TradeJournal() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -15,6 +16,8 @@ function TradeJournal() {
   const startIndex = (currentPage - 1) * rowsPerPage;
   const currentRows = tradesData.slice(startIndex, startIndex + rowsPerPage);
   const [itemsPerPage, setItemsPerPage] = useState<number>(10);
+
+  useAuth();
 
   return (
     <div>

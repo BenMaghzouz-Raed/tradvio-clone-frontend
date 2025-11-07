@@ -7,10 +7,10 @@ import History from "./pages/History";
 import { ROUTES } from "./services/LinksService";
 import Register from "./pages/Register";
 import Subscription from "./pages/Subscription";
-import LogIn from "./pages/LogIn";
-import Settings from "./pages/Settings";
+import LogIn from "./pages/login/LogIn";
+import Settings from "./pages/settings";
+import TradeJournal from "./pages/trade-journal";
 import AdminPanel from "./pages/AdminPanel";
-import TradeJournal from "./pages/TradeJournal";
 
 export default function Router() {
   return (

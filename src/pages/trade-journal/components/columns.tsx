@@ -1,7 +1,7 @@
 import { ITrade, TradeOutcome } from "@/types/trade";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
-import { formatAmount, formatDate } from "./utils";
+import { formatAmount, formatDate } from "../../../lib/utils";
 import Tag from "@/components/tag";
 import Options from "@/components/icons/options";
 
