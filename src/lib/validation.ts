@@ -1,12 +1,8 @@
 import * as z from "zod";
 const passwordRule = z
   .string()
-  .regex(
-    new RegExp(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+={}[\]|\\:;"'<>,.?/~`]).{8,}$/
-    ),
-    "enter a valid password"
-  );
+  .min(8, "Password must be at least 8 characters long");
+
 export const loginSchema = z.object({
   username: z.string(),
   password: z.string(),
@@ -17,7 +13,7 @@ export const registerSchema = z.object({
   lastName: z.string().min(1, "Last name is required"),
   username: z.string().min(8, "Username must be at least 8 characters"),
   email: z.string().email("Enter a valid email"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
+  password: passwordRule,
   timezone: z
     .string()
     .regex(

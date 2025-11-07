@@ -1,9 +1,8 @@
-import { cn } from "@/lib/utils";
 import { useMemo } from "react";
 
 interface InitialsAvatarProps {
-  firstName: string;
-  lastName: string;
+  firstName?: string;
+  lastName?: string;
   size?: number;
 }
 
@@ -26,8 +25,8 @@ export default function InitialsAvatar({
   size = 32,
 }: InitialsAvatarProps) {
   const initials =
-    (firstName?.[0]?.toUpperCase() ?? "") +
-    (lastName?.[0]?.toUpperCase() ?? "");
+    (firstName?.[0]?.toUpperCase() ?? "N") +
+    (lastName?.[0]?.toUpperCase() ?? "C");
 
   const bgColor = useMemo(() => {
     const randomIndex = Math.floor(Math.random() * lightColors.length);
