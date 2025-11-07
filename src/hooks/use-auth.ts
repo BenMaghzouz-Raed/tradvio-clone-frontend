@@ -40,8 +40,7 @@ export function useAuth() {
                 protectRoute(undefined);
               });
           })
-          .catch((err) => {
-            console.log(err);
+          .catch(() => {
             protectRoute(undefined);
           });
       });
