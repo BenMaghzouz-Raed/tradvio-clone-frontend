@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import {
   Sidebar,
   SidebarContent,
@@ -15,22 +16,18 @@ import Analyser from "./icons/analyser";
 import Journal from "./icons/journal";
 import History from "./icons/history";
 import Subscription from "./icons/susbscription";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useRoute } from "@/hooks/use-route";
 import Help from "./icons/help";
 import Settings from "./icons/settings";
-import { Avatar, AvatarImage } from "./ui/avatar";
+import { Avatar } from "./ui/avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import Options from "./icons/options";
-
-// TODO: change to using useAuth (getting actual user)
-const CURRENT_USER = {
-  image: "/avatars/person.png",
-  email: "Luissilvery@gmail.com",
-  firstName: "Actadium",
-  lastName: "by Shadcn",
-};
+import { Button } from "./ui/button";
+import { logout } from "@/services/domain/AuthService";
+import { useAuth } from "@/hooks/use-auth";
+import InitialsAvatar from "./initials-avatar";
 
 const SIDEBAR_MENU_ITEMS = [
   {
@@ -59,6 +56,8 @@ const SIDEBAR_MENU_ITEMS = [
 export function AppSidebar() {
   // TODO: change the help link
   const route = useRoute();
+  const { currentUser } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <Sidebar>
@@ -131,20 +130,35 @@ export function AppSidebar() {
         <div className="flex items-center justify-between px-2">
           <div className="flex gap-2">
             <Avatar>
-              <AvatarImage src={CURRENT_USER.image} />
+              <InitialsAvatar
+                firstName={currentUser?.first_name!}
+                lastName={currentUser?.last_name!}
+              />
             </Avatar>
             <div>
-              <h3 className="text-white font-semibold text-sm">{`${CURRENT_USER.firstName} ${CURRENT_USER.lastName}`}</h3>
+              <h3 className="text-white font-semibold text-sm">{`${currentUser?.first_name} ${currentUser?.last_name}`}</h3>
               <h4 className="text-white font-normal text-xs">
-                {CURRENT_USER.email}
+                {currentUser?.email}
               </h4>
             </div>
           </div>
           <Popover>
             <PopoverTrigger>
-              <Options />
+              <Options className="cursor-pointer" />
             </PopoverTrigger>
-            <PopoverContent>this is content to be filled</PopoverContent>
+            <PopoverContent className="p-1">
+              <div>
+                <Button
+                  className="w-full cursor-pointer"
+                  variant="ghost"
+                  onClick={() =>
+                    logout().then(() => navigate(`/${ROUTES.LOGIN.path}`))
+                  }
+                >
+                  Logout
+                </Button>
+              </div>
+            </PopoverContent>
           </Popover>
         </div>
       </SidebarFooter>

@@ -10,22 +10,54 @@ export const ROUTES: {
   SETTINGS: RouteType;
   SUBSCRIPTION: RouteType;
 } = {
-  LOGIN: { path: "login", title: undefined, authenticated: false },
-  REGISTER: { path: "register", title: undefined, authenticated: false },
-  DASHBOARD: { path: "", title: "Dashboard", authenticated: true },
-  ANALYSER: { path: "analyser", title: "Trade Analyzer", authenticated: true },
-  HISTORY: { path: "history", title: "Analysis History", authenticated: true },
-  JOURNAL: { path: "journal", title: "Trade Journal", authenticated: true },
+  LOGIN: {
+    path: "login",
+    title: undefined,
+    protected: false,
+    role: undefined,
+  },
+  REGISTER: {
+    path: "register",
+    title: undefined,
+    protected: false,
+    role: undefined,
+  },
+  DASHBOARD: {
+    path: "",
+    title: "Dashboard",
+    protected: true,
+    role: "user",
+  },
+  ANALYSER: {
+    path: "analyser",
+    title: "Trade Analyzer",
+    protected: true,
+    role: "user",
+  },
+  HISTORY: {
+    path: "history",
+    title: "Analysis History",
+    protected: true,
+    role: "user",
+  },
+  JOURNAL: {
+    path: "journal",
+    title: "Trade Journal",
+    protected: true,
+    role: "user",
+  },
 
   SETTINGS: {
     path: "settings",
     title: "Settings",
-    authenticated: true,
+    protected: true,
+    role: "user",
   },
   SUBSCRIPTION: {
     path: "subscribe",
     title: "Subscription Plan",
-    authenticated: true,
+    protected: true,
+    role: "user",
   },
 };
 
