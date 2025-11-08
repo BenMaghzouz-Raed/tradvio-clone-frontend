@@ -1,20 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { loginSchema, type LoginFormValues } from "@/validation/auth-validation";
+import {
+  loginSchema,
+  type LoginFormValues,
+} from "@/validation/auth-validation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ROUTES } from "@/services/LinksService";
 import { useAuth } from "@/hooks/use-auth";
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Icons } from "@/components/icons";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Spinner } from "@/components/ui/spinner";
 
 export default function Form() {
-  const { login, loading } = useAuth();
-  const navigate = useNavigate();
+  const { login } = useAuth();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
@@ -30,28 +33,9 @@ export default function Form() {
     try {
       setError("");
       setIsLoading(true);
-      await login(values.username, values.password);;
-      navigate(`/${ROUTES.DASHBOARD.path}`);
+      await login(values.username, values.password);
     } catch (err: any) {
-      console.log("Login error:", err);
-      console.log("Response data:", err.response?.data);
-
-      // Handle Error objects thrown by http interceptor
-      if (err instanceof Error && err.message) {
-        setError(err.message);
-      }
-      // Handle axios error responses
-      else if (err.response?.data?.error?.detail) {
-        setError(err.response.data.error.detail);
-      } else if (err.response?.data?.message) {
-        setError(err.response.data.message);
-      } else if (err.response?.status === 401) {
-        setError("Incorrect username or password");
-      } else if (err.response?.status === 429) {
-        setError("Too many login attempts. Please try again later.");
-      } else {
-        setError("An error occurred. Please try again.");
-      }
+      setError(err.message);
     } finally {
       setIsLoading(false);
     }
@@ -108,11 +92,8 @@ export default function Form() {
               </p>
             )}
           </div>
-          <Button type="submit" className="w-full" disabled={loading}>
-            {loading && (
-              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-            )}
-            Login
+          <Button type="submit" className="w-full" disabled={isLoading}>
+            {isLoading && <Spinner />} Login
           </Button>
         </form>
         <Button

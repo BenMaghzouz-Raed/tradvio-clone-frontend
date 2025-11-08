@@ -53,18 +53,11 @@ export default function Form() {
       });
       navigate(`/${ROUTES.LOGIN.path}`);
     } catch (err: any) {
-      toastNotification({
-        message: err.message,
-        type: "error",
-      });
-      console.log(err);
-      if (err.response?.status === 409) {
-        setError("An account with this email or username already exists.");
-      } else if (err.response?.status === 400) {
-        setError("Please check your information and try again.");
-      } else {
-        setError("An error occurred. Please try again.");
-      }
+      // toastNotification({
+      //   message: err.message,
+      //   type: "error",
+      // });
+      setError(err.message);
     } finally {
       setLaoding(false);
     }
@@ -158,9 +151,7 @@ export default function Form() {
             )}
           </div>
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading && (
-              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-            )}
+            {loading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
             Create an account
           </Button>
           <Button
