@@ -1,11 +1,11 @@
 export type ToastType = "success" | "error" | "info" | "warning";
 
-export interface Toast {
+export interface ToastProps {
   id: string;
   message: string;
   type: ToastType;
   duration?: number;
 }
-export type ToastParams = Omit<Toast, "id">;
+export type ToastParams = Omit<ToastProps, "id">;
 
-export type ToastFn = (toast: Omit<Toast, "id">) => void;
+export type ToastFn = (toast: Omit<ToastProps, "id">) => void;
