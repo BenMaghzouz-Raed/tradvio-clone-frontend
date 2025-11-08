@@ -1,9 +1,9 @@
-import Options from "@/components/icons/options";
 import Tag from "@/components/tag";
 import { Checkbox } from "@/components/ui/checkbox";
 import { formatAmount, formatDate } from "@/lib/utils";
 import { ITrade, TradeOutcome } from "@/types/trade";
 import { ColumnDef } from "@tanstack/react-table";
+import { EllipsisVertical, EllipsisVerticalIcon } from "lucide-react";
 
 export const columns: ColumnDef<ITrade>[] = [
   {
@@ -105,8 +105,8 @@ export const columns: ColumnDef<ITrade>[] = [
   },
   {
     id: "options",
-    header: () => <Options stroke="#000000" />,
-    cell: () => <Options stroke="#000000" />,
+    header: () => <EllipsisVerticalIcon />,
+    cell: () => <EllipsisVertical />,
     enableSorting: false,
     enableHiding: false,
   },

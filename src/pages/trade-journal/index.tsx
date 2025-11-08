@@ -2,12 +2,12 @@ import { useState } from "react";
 import PaginationComponent from "@/components/pagination";
 import tradesData from "@/seeds/trades.ts";
 import StatsCard from "@/components/stats-card.tsx";
-import Filter from "@/components/icons/filter.tsx";
 import DataTable from "@/components/data-table.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import PageSizeSelector from "@/components/page-size-selector.tsx";
 import { columns } from "./components/columns";
 import { useAuth } from "@/hooks/use-auth";
+import { SlidersVertical } from "lucide-react";
 
 function TradeJournal() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -31,7 +31,7 @@ function TradeJournal() {
       <div className="flex justify-end mb-4 gap-2">
         <Button variant="outline" className=" hover:bg-gray-100 cursor-pointer">
           Filter
-          <Filter className="w-5 h-5" />
+          <SlidersVertical className="w-5 h-5" />
         </Button>
 
         <Button className="bg-black text-white cursor-pointer hover:bg-gray-800">

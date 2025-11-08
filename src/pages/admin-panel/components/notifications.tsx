@@ -1,9 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
-import Info from "@/components/icons/exclamation";
-import Check from "@/components/icons/check";
-import BudgetWarning from "@/components/icons/budget-warning";
+import { CircleAlert, CircleCheck, TriangleAlert } from "lucide-react";
 
 const notifications = [
   {
@@ -79,11 +76,11 @@ export default function Notifications() {
                     className={`w-8 h-8 rounded-full flex items-center justify-center ${notif.color}`}
                   >
                     {isCompleted ? (
-                      <Check className="w-8 h-8" />
+                      <CircleCheck className="w-4 h-4" />
                     ) : isBudgetAlert ? (
-                      <BudgetWarning className="w-8 h-8" />
+                      <TriangleAlert className="w-4 h-4" />
                     ) : isNew ? (
-                      <Info className="w-8 h-8 text-blue-600" />
+                      <CircleAlert className="w-4 h-4 text-blue-600" />
                     ) : (
                       "•"
                     )}

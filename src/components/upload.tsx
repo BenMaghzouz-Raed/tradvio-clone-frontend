@@ -1,9 +1,9 @@
 import { Input } from "./ui/input";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
-import PlusCircle from "./icons/plus-circl";
 import { useRef } from "react";
 import { cn } from "@/lib/utils";
+import { CirclePlus } from "lucide-react";
 
 interface UploadProps {
   name: string;
@@ -26,7 +26,7 @@ export default function Upload({ name, label, className }: UploadProps) {
         className="cursor-pointer"
         onClick={() => inputRef.current.click()}
       >
-        <PlusCircle fill="#0A0A0A" />
+        <CirclePlus />
         <span className="sm:text-md text-sm">{label}</span>
       </Button>
     </Card>

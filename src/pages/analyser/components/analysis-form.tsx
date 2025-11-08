@@ -1,5 +1,3 @@
-import Scalp from "@/components/icons/scalp";
-import Swing from "@/components/icons/swing";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -13,6 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Upload from "@/components/upload";
+import { BrainCog, Grid } from "lucide-react";
 import { useState } from "react";
 
 export default function AnalysisForm() {
@@ -33,7 +32,7 @@ export default function AnalysisForm() {
           variant={tradingType === "swing" ? "ghost" : "outline"}
           onClick={() => setTradingType("swing")}
         >
-          <Swing /> Swing Trading
+          <Grid /> Swing Trading
         </Button>
         <Button
           className="flex-grow"
@@ -41,7 +40,7 @@ export default function AnalysisForm() {
           variant={tradingType === "swing" ? "outline" : "ghost"}
           onClick={() => setTradingType("scalp")}
         >
-          <Scalp /> Scalp Trading
+          <BrainCog /> Scalp Trading
         </Button>
       </div>
       <span className="text-gray sm:text-sm text-xs">Risk Parameters</span>

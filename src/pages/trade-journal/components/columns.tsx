@@ -3,7 +3,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
 import { formatAmount, formatDate } from "../../../lib/utils";
 import Tag from "@/components/tag";
-import Options from "@/components/icons/options";
+import { EllipsisVertical } from "lucide-react";
 
 export const columns: ColumnDef<ITrade>[] = [
   {
@@ -103,8 +103,8 @@ export const columns: ColumnDef<ITrade>[] = [
   },
   {
     id: "options",
-    header: () => <Options stroke="#000000" />,
-    cell: () => <Options stroke="#000000" />,
+    header: () => <EllipsisVertical />,
+    cell: () => <EllipsisVertical />,
     enableSorting: false,
     enableHiding: false,
   },

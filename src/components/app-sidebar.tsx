@@ -10,46 +10,48 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { CircleQuestionMark } from "lucide-react";
 import { ROUTES } from "@/services/LinksService";
-import Dashboard from "./icons/dashboard";
-import Analyser from "./icons/analyser";
-import Journal from "./icons/journal";
-import History from "./icons/history";
-import Subscription from "./icons/susbscription";
 import { Link, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useRoute } from "@/hooks/use-route";
-import Help from "./icons/help";
-import Settings from "./icons/settings";
 import { Avatar } from "./ui/avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
-import Options from "./icons/options";
 import { Button } from "./ui/button";
 import { logout } from "@/services/domain/AuthService";
 import { useAuth } from "@/hooks/use-auth";
 import InitialsAvatar from "./initials-avatar";
+import {
+  ChartBar,
+  EllipsisVertical,
+  FileArchive,
+  FileClock,
+  LayoutDashboard,
+  Settings,
+  Users,
+} from "lucide-react";
 
 const SIDEBAR_MENU_ITEMS = [
   {
     title: ROUTES.DASHBOARD.title,
     url: ROUTES.DASHBOARD.path,
-    icon: Dashboard,
+    icon: LayoutDashboard,
   },
   {
     title: ROUTES.ANALYSER.title,
     url: ROUTES.ANALYSER.path,
-    icon: Analyser,
+    icon: ChartBar,
   },
   {
     title: ROUTES.JOURNAL.title,
     url: ROUTES.JOURNAL.path,
-    icon: Journal,
+    icon: FileArchive,
   },
-  { title: ROUTES.HISTORY.title, url: ROUTES.HISTORY.path, icon: History },
+  { title: ROUTES.HISTORY.title, url: ROUTES.HISTORY.path, icon: FileClock },
   {
     title: ROUTES.SUBSCRIPTION.title,
     url: ROUTES.SUBSCRIPTION.path,
-    icon: Subscription,
+    icon: Users,
   },
 ];
 
@@ -80,7 +82,7 @@ export function AppSidebar() {
                     )}
                   >
                     <Link to={item.url}>
-                      <item.icon />
+                      <item.icon color="white" />
                       <span className="text-white">{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
@@ -101,7 +103,7 @@ export function AppSidebar() {
                   )}
                 >
                   <Link to={ROUTES.ADMIN.path}>
-                    <Help />
+                    <CircleQuestionMark color="white" />
                     <span className="text-white">{ROUTES.ADMIN.title}</span>
                   </Link>
                 </SidebarMenuButton>
@@ -116,7 +118,7 @@ export function AppSidebar() {
                   )}
                 >
                   <Link to={ROUTES.SETTINGS.path}>
-                    <Settings />
+                    <Settings color="white" />
                     <span className="text-white">{ROUTES.SETTINGS.title}</span>
                   </Link>
                 </SidebarMenuButton>
@@ -131,7 +133,7 @@ export function AppSidebar() {
                   )}
                 >
                   <Link to={ROUTES.SETTINGS.path}>
-                    <Help />
+                    <CircleQuestionMark color="white" />
                     <span className="text-white">{ROUTES.SETTINGS.title}</span>
                   </Link>
                 </SidebarMenuButton>
@@ -159,7 +161,10 @@ export function AppSidebar() {
           </div>
           <Popover>
             <PopoverTrigger>
-              <Options className="cursor-pointer" />
+              <EllipsisVertical
+                className="cursor-pointer w-4 h-4"
+                color="white"
+              />
             </PopoverTrigger>
             <PopoverContent className="p-1">
               <div>

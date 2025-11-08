@@ -1,5 +1,5 @@
-import Warning from "@/components/icons/warning";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { TriangleAlert } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function SubscriptionAlert({ daysLeft }: { daysLeft: number }) {
@@ -7,7 +7,8 @@ export default function SubscriptionAlert({ daysLeft }: { daysLeft: number }) {
     <Alert className="bg-[#7F7F7F] text-white flex justify-center items-center max-w-3xl mx-auto px-6 py-4 rounded-md shadow-sm text-center">
       <div className="flex flex-wrap justify-center items-center gap-2">
         <AlertTitle className="font-medium flex items-center gap-2">
-          <Warning /> Heads Up!
+          <TriangleAlert className="w-8 h-8" stroke="#7F7F7F" fill="white" />{" "}
+          Heads Up!
         </AlertTitle>
         <AlertDescription className="text-sm flex flex-wrap justify-center items-center gap-2 text-white">
           Your trial ends in

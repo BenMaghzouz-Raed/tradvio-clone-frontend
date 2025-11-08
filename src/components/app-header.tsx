@@ -1,10 +1,10 @@
 import { Button } from "./ui/button";
-import PlusCircle from "./icons/plus-circl";
 import { Link } from "react-router-dom";
 import { ROUTES } from "@/services/LinksService";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { SidebarTrigger } from "./ui/sidebar";
 import { cn } from "@/lib/utils";
+import { CirclePlus } from "lucide-react";
 
 export function AppHeader({ title = "title" }: { title?: string }) {
   const isMobile = useIsMobile();
@@ -22,7 +22,7 @@ export function AppHeader({ title = "title" }: { title?: string }) {
       </div>
       <Link to={ROUTES.ANALYSER.path}>
         <Button variant="default" className="cursor-pointer">
-          <PlusCircle /> {!isMobile && "Upload Chart for AI Analysis"}
+          <CirclePlus /> {!isMobile && "Upload Chart for AI Analysis"}
         </Button>
       </Link>
     </div>

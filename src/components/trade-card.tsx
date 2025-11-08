@@ -3,8 +3,8 @@ import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { Signal } from "./signal";
 import Tag from "./tag";
-import Download from "./icons/download";
 import { ITrade } from "@/types/trade";
+import { Download } from "lucide-react";
 
 export default function TrandeCard({ trade }: { trade: ITrade }) {
   return (
@@ -15,7 +15,7 @@ export default function TrandeCard({ trade }: { trade: ITrade }) {
             Ascending Triangle - Daily
           </h2>
           <h3 className="text-gray font-[400 text-sm]">
-            {formatDate(trade.date)}
+            {formatDate(trade.date!)}
           </h3>
         </div>
         <Button className="cursor-pointer" variant="outline">
@@ -26,16 +26,16 @@ export default function TrandeCard({ trade }: { trade: ITrade }) {
       <div className="flex justify-between">
         <div className="flex flex-col gap-2">
           <div className="flex gap-2">
-            {trade.tags.map((tag) => (
+            {trade.tags?.map((tag) => (
               <Tag label={tag} variant="neutral" key={tag} />
             ))}
           </div>
           <div className="flex gap-2 items-center">
             <Signal
-              label={trade.signal}
+              label={trade.signal!}
               variant={trade.signal === "BUY" ? "success" : "neutral"}
             />
-            <h2>{formatAmount(trade.value)}</h2>
+            <h2>{formatAmount(trade.value!)}</h2>
           </div>
         </div>
         <Button className="flex gap-2 cursor-pointer" variant="outline">
