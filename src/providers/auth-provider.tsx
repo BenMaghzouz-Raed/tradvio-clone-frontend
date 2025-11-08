@@ -73,6 +73,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         getOrThrow<string>("ACCESS_TOKEN_TAG") || "access_token",
         response.data.access_token
       );
+      await fetchUser();
       navigate(`/${ROUTES.DASHBOARD.path}`);
     } catch (err: any) {
       toastNotification({
@@ -89,6 +90,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem(
       getOrThrow<string>("ACCESS_TOKEN_TAG") || "access_token"
     );
+    setCurrentUser(null);
     navigate(`/${ROUTES.LOGIN.path}`);
     return;
   }
