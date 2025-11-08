@@ -3,7 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { resetPasswordSchema, ResetPasswordFormValues } from "@/lib/validation";
+import {
+  resetPasswordSchema,
+  ResetPasswordFormValues,
+} from "@/validation/auth-validation";
 
 export default function Form() {
   const form = useForm<ResetPasswordFormValues>({

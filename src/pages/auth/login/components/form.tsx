@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { loginSchema, type LoginFormValues } from "@/lib/validation";
+import {
+  loginSchema,
+  type LoginFormValues,
+} from "@/validation/auth-validation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";

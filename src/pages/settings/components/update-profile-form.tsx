@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ProfileFormValues, profileSchema } from "@/lib/validation";
+import { ProfileFormValues, profileSchema } from "@/validation/auth-validation";
 import { UserType } from "@/types/user-types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";

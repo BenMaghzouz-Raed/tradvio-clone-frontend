@@ -8,7 +8,7 @@ import FormField from "@/components/form/form-field";
 import {
   UpdatePasswordFormValues,
   updatePasswordSchema,
-} from "@/lib/validation";
+} from "@/validation/auth-validation";
 import { useState } from "react";
 import { changePassword } from "@/services/domain/AuthService";
 import { useNavigate } from "react-router-dom";

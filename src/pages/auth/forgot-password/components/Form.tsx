@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   ForgotPasswordFormValues,
   forgotPasswordSchema,
-} from "@/lib/validation";
+} from "@/validation/auth-validation";
 
 export default function Form() {
   const form = useForm<ForgotPasswordFormValues>({

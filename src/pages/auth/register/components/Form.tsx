@@ -3,7 +3,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-import { registerSchema, type RegisterFormValues } from "@/lib/validation";
+import {
+  registerSchema,
+  type RegisterFormValues,
+} from "@/validation/auth-validation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
