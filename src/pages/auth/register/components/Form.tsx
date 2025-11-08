@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   registerSchema,
   type RegisterFormValues,
@@ -14,9 +12,13 @@ import { register } from "@/services/domain/AuthService";
 import { ROUTES } from "@/services/LinksService";
 import { Link, useNavigate } from "react-router-dom";
 import { toastNotification } from "@/lib/toast";
+import { Label } from "@/components/ui/label";
+import { Icons } from "@/components/icons";
 
 export default function Form() {
   const [loading, setLaoding] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const navigate = useNavigate();
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
@@ -58,22 +60,22 @@ export default function Form() {
   };
 
   return (
-    <Card className="w-[400px] bg-neutral-900 text-white border-none">
-      <CardHeader>
-        <CardTitle className="text-center text-2xl">Register</CardTitle>
-      </CardHeader>
-
-      <CardContent>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          {/* FIRST & LAST NAME */}
-          <div className="flex space-x-2">
-            <div className="w-1/2 space-y-1">
-              <label className="text-sm text-neutral-300 block">
-                First Name
-              </label>
+    <div className="mx-auto grid w-[350px] gap-6">
+      <div className="grid gap-2 text-center">
+        <h1 className="text-3xl font-bold">Sign Up</h1>
+        <p className="text-balance text-muted-foreground">
+          Enter your information to create an account
+        </p>
+      </div>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <div className="grid gap-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="grid gap-2">
+              <Label htmlFor="first-name">First name</Label>
               <Input
-                placeholder="John"
-                className="bg-neutral-800 border-neutral-700 text-white"
+                id="first-name"
+                placeholder="Max"
+                required
                 {...form.register("firstName")}
               />
               {form.formState.errors.firstName && (
@@ -82,14 +84,12 @@ export default function Form() {
                 </p>
               )}
             </div>
-
-            <div className="w-1/2 space-y-1">
-              <label className="text-sm text-neutral-300 block">
-                Last Name
-              </label>
+            <div className="grid gap-2">
+              <Label htmlFor="last-name">Last name</Label>
               <Input
-                placeholder="Doe"
-                className="bg-neutral-800 border-neutral-700 text-white"
+                id="last-name"
+                placeholder="Robinson"
+                required
                 {...form.register("lastName")}
               />
               {form.formState.errors.lastName && (
@@ -99,30 +99,12 @@ export default function Form() {
               )}
             </div>
           </div>
-
-          {/* EMAIL */}
-          <div className="space-y-1">
-            <label className="text-sm text-neutral-300 block">
-              Email Address
-            </label>
+          <div className="grid gap-2">
+            <Label htmlFor="username">Username</Label>
             <Input
-              placeholder="you@example.com"
-              className="bg-neutral-800 border-neutral-700 text-white"
-              {...form.register("email")}
-            />
-            {form.formState.errors.email && (
-              <p className="text-sm text-red-400 mt-1">
-                {form.formState.errors.email.message}
-              </p>
-            )}
-          </div>
-
-          {/* Username */}
-          <div className="space-y-1">
-            <label className="text-sm text-neutral-300 block">Username</label>
-            <Input
+              id="username"
               placeholder="username"
-              className="bg-neutral-800 border-neutral-700 text-white"
+              required
               {...form.register("username")}
             />
             {form.formState.errors.username && (
@@ -131,61 +113,61 @@ export default function Form() {
               </p>
             )}
           </div>
-
-          {/* PASSWORD */}
-          <div className="space-y-1">
-            <label className="text-sm text-neutral-300 block">Password</label>
+          <div className="grid gap-2">
+            <Label htmlFor="email">Email</Label>
             <Input
+              id="email"
+              type="email"
+              placeholder="m@example.com"
+              required
+              {...form.register("email")}
+            />
+            {form.formState.errors.email && (
+              <p className="text-sm text-red-400 mt-1">
+                {form.formState.errors.email.message}
+              </p>
+            )}
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="password">Password</Label>
+            <Input
+              id="password"
               type="password"
-              placeholder="********"
-              className="bg-neutral-800 border-neutral-700 text-white"
               {...form.register("password")}
             />
-            <span className="text-[12px] font-[400] text-[#999999]">
-              At least 8 characters, with numbers and symbols.
-            </span>
             {form.formState.errors.password && (
               <p className="text-sm text-red-400 mt-1">
                 {form.formState.errors.password.message}
               </p>
             )}
           </div>
-
-          {/* REMEMBER CHECKBOX */}
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="remember"
-              className="border-neutral-700 data-[state=checked]:bg-[#8B5CF6] data-[state=checked]:border-[#8B5CF6]"
-            />
-            <label
-              htmlFor="remember"
-              className="text-sm text-neutral-400 leading-none cursor-pointer"
-            >
-              Remember this device
-            </label>
-          </div>
-
-          {/* SUBMIT BUTTON */}
-          <Button
-            disabled={loading}
-            type="submit"
-            variant="default"
-            className="w-full cursor-pointer"
-          >
-            Register
+          <Button type="submit" className="w-full" disabled={loading}>
+            {loading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+            Create an account
           </Button>
-
-          {/* SEPARATOR */}
-          <div className="flex items-center gap-2">
-            <div className="flex-1 h-px bg-neutral-700"></div>
-            <span className="text-sm text-neutral-500">or</span>
-            <div className="flex-1 h-px bg-neutral-700"></div>
-          </div>
-        </form>
-        <div className="mt-2 text-sm text-neutral-400 cursor-pointer text-center hover:underline">
-          <Link to={`/${ROUTES.LOGIN.path}`}>Already have an account</Link>
+          <Button
+            variant="outline"
+            className="w-full"
+            disabled={isLoading}
+            onClick={() => {
+              setIsLoading(true);
+            }}
+          >
+            {isLoading ? (
+              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <Icons.google className="mr-2 h-4 w-4" />
+            )}{" "}
+            Sign up with Google
+          </Button>
         </div>
-      </CardContent>
-    </Card>
+      </form>
+      <div className="text-center text-sm">
+        Already have an account?{" "}
+        <Link to={`/${ROUTES.LOGIN.path}`} className="underline">
+          Sign in
+        </Link>
+      </div>
+    </div>
   );
 }

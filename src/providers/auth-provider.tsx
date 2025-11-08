@@ -17,7 +17,7 @@ import { getOrThrow } from "@/config";
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [currentUser, setCurrentUser] = useState<UserType | null>(null);
-  const [loading, setLoading] = useState(true);
+
   const navigate = useNavigate();
   const route = useRoute();
 
@@ -67,7 +67,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   async function login(username: string, password: string) {
     try {
-      setLoading(true);
       const response = await loginCall({ username, password });
       localStorage.setItem(
         getOrThrow<string>("ACCESS_TOKEN_TAG") || "access_token",
@@ -80,8 +79,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         message: err.message,
         type: "error",
       });
-    } finally {
-      setLoading(false);
     }
   }
 
@@ -100,12 +97,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     login,
     logout,
     isAuthenticated: !!currentUser,
-    loading,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {!loading && children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

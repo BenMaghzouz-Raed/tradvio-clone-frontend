@@ -1,4 +1,3 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
@@ -7,6 +6,9 @@ import {
   ForgotPasswordFormValues,
   forgotPasswordSchema,
 } from "@/validation/auth-validation";
+import { Label } from "@/components/ui/label";
+import { Link } from "react-router-dom";
+import { ROUTES } from "@/services/LinksService";
 
 export default function Form() {
   const form = useForm<ForgotPasswordFormValues>({
@@ -20,44 +22,39 @@ export default function Form() {
     console.log("Forgot password submitted:", values);
   };
   return (
-    <Card className="w-[400px] bg-neutral-900 text-white border-none">
-      <CardHeader>
-        <CardTitle className="text-center text-2xl">Forgot Password</CardTitle>
-      </CardHeader>
-
-      <CardContent>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          {/* EMAIL */}
-          <div className="space-y-1">
-            <label className="text-sm text-neutral-300 block">
-              Email Address
-            </label>
-            <Input
-              placeholder="you@example.com"
-              className="bg-neutral-800 border-neutral-700 text-white"
-              {...form.register("email")}
-            />
-            {form.formState.errors.email && (
-              <p className="text-sm text-red-400 mt-1">
-                {form.formState.errors.email.message}
-              </p>
-            )}
-          </div>
-
-          {/* SUBMIT BUTTON */}
-          <Button
-            type="submit"
-            variant="default"
-            className="w-full cursor-pointer"
-          >
-            Send Reset Link
-          </Button>
-
-          <p className="text-sm text-center text-neutral-400 mt-2">
-            We’ll send a reset link to your email if it exists in our system.
-          </p>
-        </form>
-      </CardContent>
-    </Card>
+    <div className="mx-auto grid w-[350px] gap-6">
+      <div className="grid gap-2 text-center">
+        <h1 className="text-3xl font-bold">Forgot Password</h1>
+        <p className="text-balance text-muted-foreground">
+          Enter your email to reset your password
+        </p>
+      </div>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
+        <div className="grid gap-2">
+          <Label htmlFor="email">Email</Label>
+          <Input
+            id="email"
+            type="email"
+            placeholder="m@example.com"
+            required
+            {...form.register("email")}
+          />
+          {form.formState.errors.email && (
+            <p className="text-sm text-red-400 mt-1">
+              {form.formState.errors.email.message}
+            </p>
+          )}
+        </div>
+        <Button type="submit" className="w-full">
+          Send Reset Link
+        </Button>
+      </form>
+      <div className="text-center text-sm">
+        Remember your password?{" "}
+        <Link to={`/${ROUTES.LOGIN.path}`} className="underline">
+          Login
+        </Link>
+      </div>
+    </div>
   );
 }

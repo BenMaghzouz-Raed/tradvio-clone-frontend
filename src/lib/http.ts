@@ -31,7 +31,7 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response: AxiosResponse) => {
     // Return only the data property
-    if (response.data.error) {
+    if (response.data.status === "error") {
       throw new Error(response.data.error.detail);
     } else {
       return response.data;

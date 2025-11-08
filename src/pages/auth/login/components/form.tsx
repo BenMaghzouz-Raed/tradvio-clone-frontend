@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   loginSchema,
   type LoginFormValues,
@@ -8,13 +7,19 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Link } from "react-router-dom";
 import { ROUTES } from "@/services/LinksService";
 import { useAuth } from "@/hooks/use-auth";
+import { useState } from "react";
+import { Label } from "@/components/ui/label";
+import { Icons } from "@/components/icons";
+import { Spinner } from "@/components/ui/spinner";
+import { toastNotification } from "@/lib/toast";
 
 export default function Form() {
-  const { login, loading } = useAuth();
+  const { login } = useAuth();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -24,23 +29,35 @@ export default function Form() {
   });
 
   const onSubmit = async (values: LoginFormValues) => {
-    login(values.username, values.password);
+    try {
+      setIsLoading(true);
+      await login(values.username, values.password);
+    } catch (err: any) {
+      toastNotification({
+        type: "error",
+        message: err.message,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <Card className="w-[400px] bg-neutral-900 text-white border-none">
-      <CardHeader>
-        <CardTitle className="text-center text-2xl">Log In</CardTitle>
-      </CardHeader>
-
-      <CardContent>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          {/* EMAIL */}
-          <div className="space-y-1">
-            <label className="text-sm text-neutral-300 block">Username</label>
+    <div className="mx-auto grid w-[350px] gap-6">
+      <div className="grid gap-2 text-center">
+        <h1 className="text-3xl font-bold">Login</h1>
+        <p className="text-balance text-muted-foreground">
+          Enter your email below to login to your account
+        </p>
+      </div>
+      <div className="grid gap-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
+          <div className="grid gap-2">
+            <Label htmlFor="username">Username or Email</Label>
             <Input
+              id="username"
               placeholder="username"
-              className="bg-neutral-800 border-neutral-700 text-white"
+              required
               {...form.register("username")}
             />
             {form.formState.errors.username && (
@@ -49,14 +66,20 @@ export default function Form() {
               </p>
             )}
           </div>
-
-          {/* PASSWORD */}
-          <div className="space-y-1">
-            <label className="text-sm text-neutral-300 block">Password</label>
+          <div className="grid gap-2">
+            <div className="flex items-center">
+              <Label htmlFor="password">Password</Label>
+              <Link
+                to={`/${ROUTES.FORGOT_PASSWORD.path}`}
+                className="ml-auto inline-block text-sm underline"
+              >
+                Forgot your password?
+              </Link>
+            </div>
             <Input
+              id="password"
               type="password"
-              placeholder="********"
-              className="bg-neutral-800 border-neutral-700 text-white"
+              required
               {...form.register("password")}
             />
             {form.formState.errors.password && (
@@ -65,42 +88,32 @@ export default function Form() {
               </p>
             )}
           </div>
-
-          {/* REMEMBER DEVICE */}
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="remember"
-              className="border-neutral-700 data-[state=checked]:bg-[#8B5CF6] data-[state=checked]:border-[#8B5CF6]"
-            />
-            <label
-              htmlFor="remember"
-              className="text-sm text-neutral-400 leading-none cursor-pointer"
-            >
-              Remember this device
-            </label>
-          </div>
-
-          {/* BUTTON */}
-          <Button
-            disabled={loading}
-            type="submit"
-            variant="default"
-            className="w-full cursor-pointer"
-          >
-            Log In
+          <Button type="submit" className="w-full" disabled={isLoading}>
+            {isLoading && <Spinner />} Login
           </Button>
-
-          {/* SEPARATOR */}
-          <div className="flex items-center gap-2">
-            <div className="flex-1 h-px bg-neutral-700"></div>
-            <span className="text-sm text-neutral-500">or</span>
-            <div className="flex-1 h-px bg-neutral-700"></div>
-          </div>
         </form>
-        <div className="mt-2 text-sm text-neutral-400 cursor-pointer text-center hover:underline">
-          <Link to={`/${ROUTES.REGISTER.path}`}>Create and Account</Link>
-        </div>
-      </CardContent>
-    </Card>
+        <Button
+          variant="outline"
+          className="w-full"
+          disabled={isLoading}
+          onClick={() => {
+            setIsLoading(true);
+          }}
+        >
+          {isLoading ? (
+            <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+          ) : (
+            <Icons.google className="mr-2 h-4 w-4" />
+          )}{" "}
+          Login with Google
+        </Button>
+      </div>
+      <div className="text-center text-sm">
+        Don't have an account?{" "}
+        <Link to={`/${ROUTES.REGISTER.path}`} className="underline">
+          Sign up
+        </Link>
+      </div>
+    </div>
   );
 }

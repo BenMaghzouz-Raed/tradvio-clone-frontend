@@ -4,8 +4,15 @@ const passwordRule = z
   .min(8, "Password must be at least 8 characters long");
 
 export const loginSchema = z.object({
-  username: z.string(),
-  password: z.string(),
+  username: z.string().min(3, "Username or email must be at least 3 characters").refine(
+    (value) => {
+      // Allow either email format or username format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(value) || value.length >= 3;
+    },
+    "Please enter a valid username or email address"
+  ),
+  password: passwordRule,
 });
 
 export const registerSchema = z.object({
