@@ -1,3 +1,4 @@
+import { getOrThrow } from "@/config";
 import http from "@/lib/http";
 import { RegisterUserType } from "@/types/auth-types";
 
@@ -32,7 +33,7 @@ export const refresh = async () => {
     { withCredentials: true }
   );
   localStorage.setItem(
-    import.meta.env.VITE_ACCESS_TOKEN_TAG || "access_token",
+    getOrThrow<string>("ACCESS_TOKEN_TAG") || "access_token",
     response.data["access_token"]
   );
 };

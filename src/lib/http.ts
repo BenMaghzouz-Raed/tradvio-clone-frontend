@@ -1,15 +1,18 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
-
-const BACKEND_BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL;
+import { getOrThrow } from "@/config";
+import axios, {
+  AxiosInstance,
+  InternalAxiosRequestConfig,
+  AxiosResponse,
+} from "axios";
 
 // Create an Axios instance
 const api: AxiosInstance = axios.create({
-  baseURL: BACKEND_BASE_URL,
+  baseURL: getOrThrow<string>("BACKEND_BASE_URL"),
 });
 
 // Add a request interceptor (middleware)
 api.interceptors.request.use(
-  (config: AxiosRequestConfig) => {
+  (config: InternalAxiosRequestConfig) => {
     const token = localStorage.getItem("access_token");
 
     if (token && config.headers) {

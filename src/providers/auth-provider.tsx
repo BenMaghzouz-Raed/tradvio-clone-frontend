@@ -13,6 +13,7 @@ import { ROUTES } from "@/services/LinksService";
 import { toastNotification } from "@/lib/toast";
 import { useRoute } from "@/hooks/use-route";
 import { AuthContext, AuthContextType } from "@/contexts/auth-context";
+import { getOrThrow } from "@/config";
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [currentUser, setCurrentUser] = useState<UserType | null>(null);
@@ -69,7 +70,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(true);
       const response = await loginCall({ username, password });
       localStorage.setItem(
-        import.meta.env.VITE_ACCESS_TOKEN_TAG || "access_token",
+        getOrThrow<string>("ACCESS_TOKEN_TAG") || "access_token",
         response.data.access_token
       );
       navigate(`/${ROUTES.DASHBOARD.path}`);
@@ -86,7 +87,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   async function logout() {
     await logoutCall();
     localStorage.removeItem(
-      import.meta.env.VITE_ACCESS_TOKEN_TAG || "access_token"
+      getOrThrow<string>("ACCESS_TOKEN_TAG") || "access_token"
     );
     navigate(`/${ROUTES.LOGIN.path}`);
     return;
