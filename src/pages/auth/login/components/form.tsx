@@ -13,13 +13,12 @@ import { useAuth } from "@/hooks/use-auth";
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Icons } from "@/components/icons";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Spinner } from "@/components/ui/spinner";
+import { toastNotification } from "@/lib/toast";
 
 export default function Form() {
   const { login } = useAuth();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>("");
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -31,11 +30,13 @@ export default function Form() {
 
   const onSubmit = async (values: LoginFormValues) => {
     try {
-      setError("");
       setIsLoading(true);
       await login(values.username, values.password);
     } catch (err: any) {
-      setError(err.message);
+      toastNotification({
+        type: "error",
+        message: err.message,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -49,11 +50,6 @@ export default function Form() {
           Enter your email below to login to your account
         </p>
       </div>
-      {error && (
-        <Alert variant="destructive">
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-      )}
       <div className="grid gap-4">
         <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
           <div className="grid gap-2">

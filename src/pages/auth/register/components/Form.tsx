@@ -14,12 +14,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { toastNotification } from "@/lib/toast";
 import { Label } from "@/components/ui/label";
 import { Icons } from "@/components/icons";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export default function Form() {
   const [loading, setLaoding] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>("");
 
   const navigate = useNavigate();
   const form = useForm<RegisterFormValues>({
@@ -37,7 +35,6 @@ export default function Form() {
   });
 
   const onSubmit = async (values: RegisterFormValues) => {
-    setError("");
     setLaoding(true);
     try {
       await register({
@@ -53,11 +50,10 @@ export default function Form() {
       });
       navigate(`/${ROUTES.LOGIN.path}`);
     } catch (err: any) {
-      // toastNotification({
-      //   message: err.message,
-      //   type: "error",
-      // });
-      setError(err.message);
+      toastNotification({
+        message: err.message,
+        type: "error",
+      });
     } finally {
       setLaoding(false);
     }
@@ -71,11 +67,6 @@ export default function Form() {
           Enter your information to create an account
         </p>
       </div>
-      {error && (
-        <Alert variant="destructive">
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-      )}
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="grid gap-4">
           <div className="grid grid-cols-2 gap-4">
