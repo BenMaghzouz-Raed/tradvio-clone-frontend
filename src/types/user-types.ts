@@ -8,7 +8,7 @@ export type UserType = {
   last_name: string;
   avatar_url: string;
   timezone: string;
-  role: string;
+  role: UserRoleType;
   status: string;
   email_verified: string;
   created_at: Date;

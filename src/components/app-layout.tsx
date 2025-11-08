@@ -6,7 +6,6 @@ import { useRoute } from "@/hooks/use-route";
 
 export function AppLayout() {
   const route = useRoute();
-
   return (
     <SidebarProvider>
       <AppSidebar />

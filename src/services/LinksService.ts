@@ -10,75 +10,75 @@ export const ROUTES: {
   JOURNAL: RouteType;
   SETTINGS: RouteType;
   SUBSCRIPTION: RouteType;
-  FORGOTPASSWORD: RouteType;
-  RESETPASSWORD: RouteType;
+  FORGOT_PASSWORD: RouteType;
+  RESET_PASSWORD: RouteType;
 } = {
   LOGIN: {
     path: "login",
     title: undefined,
     protected: false,
-    role: undefined,
+    roles: [],
   },
   REGISTER: {
     path: "register",
     title: undefined,
     protected: false,
-    role: undefined,
+    roles: [],
+  },
+  FORGOT_PASSWORD: {
+    path: "forgot-password",
+    title: "Forgot Password",
+    protected: false,
+    roles: [],
+  },
+  RESET_PASSWORD: {
+    path: "reset-password",
+    title: "Reset Password",
+    protected: false,
+    roles: [],
   },
   DASHBOARD: {
     path: "",
     title: "Dashboard",
     protected: true,
-    role: "user",
+    roles: ["user", "admin"],
   },
   ANALYSER: {
     path: "analyser",
     title: "Trade Analyzer",
     protected: true,
-    role: "user",
+    roles: ["user", "admin"],
   },
   HISTORY: {
     path: "history",
     title: "Analysis History",
     protected: true,
-    role: "user",
+    roles: ["user", "admin"],
   },
   JOURNAL: {
     path: "journal",
     title: "Trade Journal",
     protected: true,
-    role: "user",
+    roles: ["user", "admin"],
   },
 
   SETTINGS: {
     path: "settings",
     title: "Settings",
     protected: true,
-    role: "user",
+    roles: ["user", "admin"],
   },
   SUBSCRIPTION: {
     path: "subscribe",
     title: "Subscription Plan",
     protected: true,
-    role: "user",
+    roles: ["user", "admin"],
   },
   ADMIN: {
     path: "admin",
     title: "Admin Panel",
     protected: true,
-    role: "admin",
-  },
-  FORGOTPASSWORD: {
-    path: "forgot-password",
-    title: "Forgot Password",
-    protected: false,
-    role: undefined,
-  },
-  RESETPASSWORD: {
-    path: "reset-password",
-    title: "Reset Password",
-    protected: false,
-    role: undefined,
+    roles: ["admin"],
   },
 };
 

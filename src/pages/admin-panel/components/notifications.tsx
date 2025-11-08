@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CircleAlert, CircleCheck, TriangleAlert } from "lucide-react";
+import { CircleAlert, CircleCheck, CircleX, TriangleAlert } from "lucide-react";
 
 const notifications = [
   {
@@ -80,9 +80,9 @@ export default function Notifications() {
                     ) : isBudgetAlert ? (
                       <TriangleAlert className="w-4 h-4" />
                     ) : isNew ? (
-                      <CircleAlert className="w-4 h-4 text-blue-600" />
+                      <CircleAlert className="w-4 h-4" />
                     ) : (
-                      "•"
+                      <CircleX className="w-4 h-4" />
                     )}
                   </span>
                   <div>

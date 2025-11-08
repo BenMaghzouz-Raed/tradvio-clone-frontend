@@ -6,15 +6,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-import { login } from "@/services/domain/AuthService";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ROUTES } from "@/services/LinksService";
-import { useState } from "react";
-import { toastNotification } from "@/lib/toast";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function Form() {
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  const { login, loading } = useAuth();
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -24,18 +21,7 @@ export default function Form() {
   });
 
   const onSubmit = async (values: LoginFormValues) => {
-    try {
-      setLoading(true);
-      await login(values);
-      navigate(`/${ROUTES.DASHBOARD.path}`);
-    } catch (err: any) {
-      toastNotification({
-        message: err.message,
-        type: "error",
-      });
-    } finally {
-      setLoading(false);
-    }
+    login(values.username, values.password);
   };
 
   return (

@@ -10,16 +10,14 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { CircleQuestionMark } from "lucide-react";
+import { CircleQuestionMark, ShieldUser } from "lucide-react";
 import { ROUTES } from "@/services/LinksService";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useRoute } from "@/hooks/use-route";
 import { Avatar } from "./ui/avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Button } from "./ui/button";
-import { logout } from "@/services/domain/AuthService";
-import { useAuth } from "@/hooks/use-auth";
 import InitialsAvatar from "./initials-avatar";
 import {
   ChartBar,
@@ -30,36 +28,48 @@ import {
   Settings,
   Users,
 } from "lucide-react";
+import { v4 as uuidv4 } from "uuid";
+import { useAuth } from "@/hooks/use-auth";
 
 const SIDEBAR_MENU_ITEMS = [
   {
-    title: ROUTES.DASHBOARD.title,
-    url: ROUTES.DASHBOARD.path,
+    route: ROUTES.DASHBOARD,
     icon: LayoutDashboard,
   },
   {
-    title: ROUTES.ANALYSER.title,
-    url: ROUTES.ANALYSER.path,
+    route: ROUTES.ANALYSER,
     icon: ChartBar,
   },
   {
-    title: ROUTES.JOURNAL.title,
-    url: ROUTES.JOURNAL.path,
+    route: ROUTES.JOURNAL,
     icon: FileArchive,
   },
-  { title: ROUTES.HISTORY.title, url: ROUTES.HISTORY.path, icon: FileClock },
+  { route: ROUTES.HISTORY, icon: FileClock },
   {
-    title: ROUTES.SUBSCRIPTION.title,
-    url: ROUTES.SUBSCRIPTION.path,
+    route: ROUTES.SUBSCRIPTION,
     icon: Users,
+  },
+];
+
+const SIDEBAR_SECODARY_MENU_ITEMS = [
+  {
+    route: ROUTES.ADMIN,
+    icon: ShieldUser,
+  },
+  {
+    route: ROUTES.SETTINGS,
+    icon: Settings,
+  },
+  {
+    route: ROUTES.SETTINGS,
+    icon: Settings,
   },
 ];
 
 export function AppSidebar() {
   // TODO: change the help link
   const route = useRoute();
-  const { currentUser } = useAuth();
-  const navigate = useNavigate();
+  const { currentUser, logout } = useAuth();
 
   return (
     <Sidebar>
@@ -72,72 +82,50 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
-              {SIDEBAR_MENU_ITEMS.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton
-                    asChild
-                    className={cn(
-                      "hover:bg-card-foreground active:bg-card-foreground",
-                      route?.path === item.url && "bg-card-foreground"
-                    )}
-                  >
-                    <Link to={item.url}>
-                      <item.icon color="white" />
-                      <span className="text-white">{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+              {SIDEBAR_MENU_ITEMS.map(
+                (item) =>
+                  item.route.roles.includes(currentUser?.role!) && (
+                    <SidebarMenuItem key={uuidv4()}>
+                      <SidebarMenuButton
+                        asChild
+                        className={cn(
+                          "hover:bg-card-foreground active:bg-card-foreground",
+                          route?.path === item.route.path &&
+                            "bg-card-foreground"
+                        )}
+                      >
+                        <Link to={item.route.path}>
+                          <item.icon color="white" />
+                          <span className="text-white">{item.route.title}</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  )
+              )}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
-              <SidebarMenuItem key={"admin"}>
-                <SidebarMenuButton
-                  asChild
-                  className={cn(
-                    "hover:bg-card-foreground active:bg-card-foreground",
-                    route?.path === "help" && "bg-card-foreground"
-                  )}
-                >
-                  <Link to={ROUTES.ADMIN.path}>
-                    <CircleQuestionMark color="white" />
-                    <span className="text-white">{ROUTES.ADMIN.title}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-
-              <SidebarMenuItem key={"settings"}>
-                <SidebarMenuButton
-                  asChild
-                  className={cn(
-                    "hover:bg-card-foreground active:bg-card-foreground",
-                    route?.path === "settings" && "bg-card-foreground"
-                  )}
-                >
-                  <Link to={ROUTES.SETTINGS.path}>
-                    <Settings color="white" />
-                    <span className="text-white">{ROUTES.SETTINGS.title}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-
-              <SidebarMenuItem key={"help"}>
-                <SidebarMenuButton
-                  asChild
-                  className={cn(
-                    "hover:bg-card-foreground active:bg-card-foreground",
-                    route?.path === "help" && "bg-card-foreground"
-                  )}
-                >
-                  <Link to={ROUTES.SETTINGS.path}>
-                    <CircleQuestionMark color="white" />
-                    <span className="text-white">{ROUTES.SETTINGS.title}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+              {SIDEBAR_SECODARY_MENU_ITEMS.map((item) =>
+                item.route.roles.includes(currentUser?.role!) ? (
+                  <SidebarMenuItem key={uuidv4()}>
+                    <SidebarMenuButton
+                      asChild
+                      className={cn(
+                        "hover:bg-card-foreground active:bg-card-foreground",
+                        route?.path === "help" && "bg-card-foreground"
+                      )}
+                    >
+                      <Link to={item.route.path}>
+                        <CircleQuestionMark color="white" />
+                        <span className="text-white">{item.route.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ) : null
+              )}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -171,9 +159,7 @@ export function AppSidebar() {
                 <Button
                   className="w-full cursor-pointer"
                   variant="ghost"
-                  onClick={() =>
-                    logout().then(() => navigate(`/${ROUTES.LOGIN.path}`))
-                  }
+                  onClick={() => logout()}
                 >
                   Logout
                 </Button>

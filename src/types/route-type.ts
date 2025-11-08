@@ -4,5 +4,5 @@ export interface RouteType {
   path: string;
   title: string | undefined;
   protected: boolean;
-  role: UserRoleType | undefined;
+  roles: UserRoleType[];
 }

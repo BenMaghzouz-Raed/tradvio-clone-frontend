@@ -31,13 +31,12 @@ export default function AdminPanel() {
 
   return (
     <main className="space-y-6">
-      {/* Stats Section */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+      <div className="flex flex-wrap justify-around gap-4 mb-4">
         <StatsCard label="Total Users" value="10" />
         <StatsCard label="New Users" value="3" />
         <StatsCard label="Subscribed Users" value="4" />
         <StatsCard label="Total Trade Analysis" value="60%" />
-      </section>
+      </div>
 
       <Tabs defaultValue="overview">
         <TabsList>

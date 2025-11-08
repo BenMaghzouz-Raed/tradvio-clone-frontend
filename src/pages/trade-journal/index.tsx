@@ -6,7 +6,6 @@ import DataTable from "@/components/data-table.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import PageSizeSelector from "@/components/page-size-selector.tsx";
 import { columns } from "./components/columns";
-import { useAuth } from "@/hooks/use-auth";
 import { SlidersVertical } from "lucide-react";
 
 function TradeJournal() {
@@ -17,11 +16,9 @@ function TradeJournal() {
   const currentRows = tradesData.slice(startIndex, startIndex + rowsPerPage);
   const [itemsPerPage, setItemsPerPage] = useState<number>(10);
 
-  useAuth();
-
   return (
     <div>
-      <div className="grid grid-cols-4 gap-4 mb-6">
+      <div className="flex flex-wrap justify-around gap-4 mb-4">
         <StatsCard label="Total P&L" value="$178.11" />
         <StatsCard label="Win Rate" value="50%" />
         <StatsCard label="Avg. Win" value="$200.00" />

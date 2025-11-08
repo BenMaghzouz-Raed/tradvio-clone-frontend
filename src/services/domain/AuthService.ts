@@ -18,15 +18,11 @@ export const confirmEmail = ({
 };
 
 export const login = async (data: { username: string; password: string }) => {
-  const response = await http.post("/auth/token", data, {
+  return http.post("/auth/token", data, {
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
     },
   });
-  localStorage.setItem(
-    import.meta.env.VITE_ACCESS_TOKEN_TAG || "access_token",
-    response.data.access_token
-  );
 };
 
 export const refresh = async () => {
@@ -43,9 +39,6 @@ export const refresh = async () => {
 
 export const logout = async () => {
   await http.post("/auth/logout");
-  localStorage.removeItem(
-    import.meta.env.VITE_ACCESS_TOKEN_TAG || "access_token"
-  );
 };
 
 export const getCurrentUser = () => {

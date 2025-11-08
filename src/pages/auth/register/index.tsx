@@ -1,9 +1,7 @@
-import { useAuth } from "@/hooks/use-auth";
 import Form from "./components/Form";
 import { AuthLayout } from "@/components/auth-layout";
 
 export default function Register() {
-  useAuth();
   return (
     <AuthLayout
       title="Navigate the Markets with Confidence"

@@ -1,8 +1,8 @@
 import InitialsAvatar from "@/components/initials-avatar";
-import { useAuth } from "@/hooks/use-auth";
+import { Spinner } from "@/components/ui/spinner";
 import UpdateProfileForm from "./components/update-profile-form";
 import UpdatePasswordForm from "./components/update-password-form";
-import { Spinner } from "@/components/ui/spinner";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function Settings() {
   const { currentUser } = useAuth();
