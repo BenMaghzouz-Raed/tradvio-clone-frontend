@@ -13,6 +13,7 @@ import TradeJournal from "./pages/trade-journal";
 import AdminPanel from "./pages/admin-panel";
 import ForgotPassword from "./pages/auth/forgot-password";
 import ResetPassword from "./pages/auth/reset-password";
+import Help from "./pages/help";
 
 export default function Router() {
   return (
@@ -25,6 +26,7 @@ export default function Router() {
         <Route path={ROUTES.SUBSCRIPTION.path} element={<Subscription />} />
         <Route path={ROUTES.SETTINGS.path} element={<Settings />} />
         <Route path={ROUTES.ADMIN.path} element={<AdminPanel />} />
+        <Route path={ROUTES.HELP.path} element={<Help />} />
       </Route>
       <Route path={ROUTES.FORGOT_PASSWORD.path} element={<ForgotPassword />} />
 

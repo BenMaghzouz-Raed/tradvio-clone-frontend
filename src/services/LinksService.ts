@@ -12,6 +12,7 @@ export const ROUTES: {
   SUBSCRIPTION: RouteType;
   FORGOT_PASSWORD: RouteType;
   RESET_PASSWORD: RouteType;
+  HELP: RouteType;
 } = {
   LOGIN: {
     path: "login",
@@ -79,6 +80,12 @@ export const ROUTES: {
     title: "Admin Panel",
     protected: true,
     roles: ["admin"],
+  },
+  HELP: {
+    path: "help",
+    title: "Get Help",
+    protected: true,
+    roles: ["user", "admin"],
   },
 };
 

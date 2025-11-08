@@ -57,8 +57,8 @@ const SIDEBAR_SECODARY_MENU_ITEMS = [
     icon: ShieldUser,
   },
   {
-    route: ROUTES.SETTINGS,
-    icon: Settings,
+    route: ROUTES.HELP,
+    icon: CircleQuestionMark,
   },
   {
     route: ROUTES.SETTINGS,
@@ -115,11 +115,11 @@ export function AppSidebar() {
                       asChild
                       className={cn(
                         "hover:bg-card-foreground active:bg-card-foreground",
-                        route?.path === "help" && "bg-card-foreground"
+                        route?.path === item.route.path && "bg-card-foreground"
                       )}
                     >
                       <Link to={item.route.path}>
-                        <CircleQuestionMark color="white" />
+                        <item.icon color="white" />
                         <span className="text-white">{item.route.title}</span>
                       </Link>
                     </SidebarMenuButton>
