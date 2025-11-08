@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { AppLayout } from "./components/app-layout";
-import NotMatch from "./pages/NotMatch";
+import NotMatch from "./pages/not-found";
 import Dashboard from "./pages/dashboard";
 import Analyser from "./pages/analyser";
 import History from "./pages/history";
