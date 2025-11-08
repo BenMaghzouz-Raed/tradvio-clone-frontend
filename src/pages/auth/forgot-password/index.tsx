@@ -4,8 +4,12 @@ import { AuthLayout } from "@/components/auth-layout";
 export default function ForgotPassword() {
   return (
     <AuthLayout
-      title="Reset your Password Securely"
-      highlights={["Secure Authentication", "Email Recovery", "Account Safety"]}
+      title="Regain Access to Your Account"
+      highlights={[
+        "Secure Password Reset",
+        "Instant Email Notifications",
+        "24/7 Support",
+      ]}
     >
       <Form />
     </AuthLayout>

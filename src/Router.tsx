@@ -27,6 +27,7 @@ export default function Router() {
         <Route path={ROUTES.ADMIN.path} element={<AdminPanel />} />
       </Route>
       <Route path={ROUTES.FORGOT_PASSWORD.path} element={<ForgotPassword />} />
+
       <Route path={ROUTES.RESET_PASSWORD.path} element={<ResetPassword />} />
       <Route path={ROUTES.LOGIN.path} element={<LogIn />} />
       <Route path={ROUTES.REGISTER.path} element={<Register />} />
