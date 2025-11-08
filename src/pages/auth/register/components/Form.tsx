@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,6 +10,7 @@ import { useState } from "react";
 import { register } from "@/services/domain/AuthService";
 import { ROUTES } from "@/services/LinksService";
 import { Link, useNavigate } from "react-router-dom";
+import { toastNotification } from "@/lib/toast";
 
 export default function Form() {
   const [loading, setLaoding] = useState(false);
@@ -37,10 +39,16 @@ export default function Form() {
         first_name: values.firstName,
         last_name: values.lastName,
       });
+      toastNotification({
+        message: "Account created succefully",
+        type: "success",
+      });
       navigate(`/${ROUTES.LOGIN.path}`);
-    } catch (err) {
-      // TODO: change to toast
-      console.log(err);
+    } catch (err: any) {
+      toastNotification({
+        message: err.message,
+        type: "error",
+      });
     } finally {
       setLaoding(false);
     }

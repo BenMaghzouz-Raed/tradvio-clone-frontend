@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
@@ -12,6 +13,7 @@ import { useState } from "react";
 import { changePassword } from "@/services/domain/AuthService";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@/services/LinksService";
+import { toastNotification } from "@/lib/toast";
 
 export default function UpdatePasswordForm() {
   const [loading, setLoading] = useState(false);
@@ -33,11 +35,16 @@ export default function UpdatePasswordForm() {
         current_password: data.currentPassword,
         new_password: data.newPassword,
       });
-      // TODO: add success toast
+      toastNotification({
+        type: "success",
+        message: "Password changed succesfully",
+      });
       navigate(`/${ROUTES.LOGIN.path}`);
-    } catch (err) {
-      // TODO: change to toast
-      console.log(err);
+    } catch (err: any) {
+      toastNotification({
+        type: "error",
+        message: err.message,
+      });
     } finally {
       setLoading(false);
     }

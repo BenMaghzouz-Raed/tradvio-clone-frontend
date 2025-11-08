@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { loginSchema, type LoginFormValues } from "@/lib/validation";
 import { useForm } from "react-hook-form";
@@ -9,6 +10,7 @@ import { login } from "@/services/domain/AuthService";
 import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "@/services/LinksService";
 import { useState } from "react";
+import { toastNotification } from "@/lib/toast";
 
 export default function Form() {
   const navigate = useNavigate();
@@ -26,9 +28,11 @@ export default function Form() {
       setLoading(true);
       await login(values);
       navigate(`/${ROUTES.DASHBOARD.path}`);
-    } catch (err) {
-      // TODO: change to toast an error
-      console.log(err);
+    } catch (err: any) {
+      toastNotification({
+        message: err.message,
+        type: "error",
+      });
     } finally {
       setLoading(false);
     }
