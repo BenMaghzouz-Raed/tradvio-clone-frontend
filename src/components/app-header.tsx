@@ -22,7 +22,8 @@ export function AppHeader({ title = "title" }: { title?: string }) {
       </div>
       <Link to={ROUTES.ANALYSER.path}>
         <Button variant="default" className="cursor-pointer">
-          <CirclePlus /> {!isMobile && "Upload Chart for AI Analysis"}
+          <CirclePlus />
+          <h3 className="hidden md:block">Upload Chart for AI Analysis</h3>
         </Button>
       </Link>
     </div>
