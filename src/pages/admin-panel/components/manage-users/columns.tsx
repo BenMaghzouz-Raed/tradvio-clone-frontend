@@ -1,11 +1,11 @@
 import Tag from "@/components/tag";
 import { Checkbox } from "@/components/ui/checkbox";
 import { formatDate } from "@/lib/utils";
-import { UserStatus, UserType } from "@/types/user-types";
+import { UserStatus, IUser } from "@/types/user-types";
 import { ColumnDef } from "@tanstack/react-table";
 import { EllipsisVertical, EllipsisVerticalIcon } from "lucide-react";
 
-export const columns: ColumnDef<UserType>[] = [
+export const columns: ColumnDef<IUser>[] = [
   {
     id: "select",
     header: ({ table }) => (

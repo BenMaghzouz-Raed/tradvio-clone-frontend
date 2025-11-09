@@ -1,8 +1,8 @@
-export type UserRoleType = "admin" | "user";
+export type UserRole = "admin" | "user";
 
 export type UserStatus = "active" | "suspended" | "deleted";
 
-export type UserType = {
+export interface IUser {
   user_id: string;
   email: string;
   username: string;
@@ -10,10 +10,10 @@ export type UserType = {
   last_name: string;
   avatar_url: string;
   timezone: string;
-  role: UserRoleType;
+  role: UserRole;
   status: UserStatus;
   email_verified: boolean;
   created_at: Date;
   updated_at: Date;
   last_login: Date;
-};
+}

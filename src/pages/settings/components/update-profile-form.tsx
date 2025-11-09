@@ -11,14 +11,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ProfileFormValues, profileSchema } from "@/validation/auth-validation";
-import { UserType } from "@/types/user-types";
+import { IUser } from "@/types/user-types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 export default function UpdateProfileForm({
   currentUser,
 }: {
-  currentUser: UserType;
+  currentUser: IUser;
 }) {
   const profileForm = useForm({
     resolver: zodResolver(profileSchema),

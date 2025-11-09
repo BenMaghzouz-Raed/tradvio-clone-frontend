@@ -1,8 +1,8 @@
-import { UserType } from "@/types/user-types";
+import { IUser } from "@/types/user-types";
 import { createContext } from "react";
 
 export type AuthContextType = {
-  currentUser: UserType | null;
+  currentUser: IUser | null;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
   isAuthenticated: boolean;

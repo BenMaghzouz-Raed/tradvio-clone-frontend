@@ -1,6 +1,6 @@
-import { UserType } from "@/types/user-types";
+import { IUser } from "@/types/user-types";
 
-export const users: UserType[] = [
+export const users: IUser[] = [
   {
     user_id: "1",
     email: "medamineabbes2@gmail.com",

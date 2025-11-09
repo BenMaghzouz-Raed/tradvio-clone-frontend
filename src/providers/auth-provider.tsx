@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { UserType } from "@/types/user-types";
+import { IUser } from "@/types/user-types";
 import { useState, useEffect, ReactNode } from "react";
 import {
   getCurrentUser,
@@ -16,12 +16,12 @@ import { AuthContext, AuthContextType } from "@/contexts/auth-context";
 import { getOrThrow } from "@/config";
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [currentUser, setCurrentUser] = useState<UserType | null>(null);
+  const [currentUser, setCurrentUser] = useState<IUser | null>(null);
 
   const navigate = useNavigate();
   const route = useRoute();
 
-  const protectRoute = (user?: UserType) => {
+  const protectRoute = (user?: IUser) => {
     if (!route?.protected && user) {
       navigate(`/${ROUTES.DASHBOARD.path}`);
     } else if (
