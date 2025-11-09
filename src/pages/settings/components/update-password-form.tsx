@@ -3,8 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Form } from "@/components/ui/form";
-import FormField from "@/components/form/form-field";
+import { Form, FormField } from "@/components/ui/form";
 import {
   UpdatePasswordFormValues,
   updatePasswordSchema,

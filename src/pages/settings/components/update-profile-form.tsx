@@ -1,6 +1,5 @@
-import FormField from "@/components/form/form-field";
 import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form";
+import { Form, FormField } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
   Select,
