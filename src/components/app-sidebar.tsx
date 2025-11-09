@@ -16,12 +16,10 @@ import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useRoute } from "@/hooks/use-route";
 import { Avatar } from "./ui/avatar";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Button } from "./ui/button";
 import InitialsAvatar from "./initials-avatar";
 import {
   ChartBar,
-  EllipsisVertical,
   FileArchive,
   FileClock,
   LayoutDashboard,
@@ -131,7 +129,6 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter className="mb-8">
-        {/* maybe this should be a link to profile  */}
         <div className="flex items-center justify-between px-2">
           <div className="flex gap-2">
             <Avatar>
@@ -147,26 +144,14 @@ export function AppSidebar() {
               </h4>
             </div>
           </div>
-          <Popover>
-            <PopoverTrigger>
-              <EllipsisVertical
-                className="cursor-pointer w-4 h-4"
-                color="white"
-              />
-            </PopoverTrigger>
-            <PopoverContent className="p-1">
-              <div>
-                <Button
-                  className="w-full cursor-pointer"
-                  variant="ghost"
-                  onClick={() => logout()}
-                >
-                  Logout
-                </Button>
-              </div>
-            </PopoverContent>
-          </Popover>
         </div>
+        <Button
+          variant="outline"
+          className="cursor-pointer bg-gray-600 hover:bg-gray-700 border-gray-700"
+          onClick={() => logout()}
+        >
+          Logout
+        </Button>
       </SidebarFooter>
     </Sidebar>
   );
