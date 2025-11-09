@@ -71,10 +71,10 @@ export const columns: ColumnDef<ILog>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "entity",
+    accessorKey: "entity_type",
     header: "Entity",
     cell: ({ row }) => {
-      return <p>{row.getValue("entity")}</p>;
+      return <p>{row.getValue("entity_type")}</p>;
     },
     enableSorting: false,
     enableHiding: false,
