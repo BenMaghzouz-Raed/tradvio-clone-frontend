@@ -39,13 +39,30 @@ export default function AdminPanel() {
       </div>
 
       <Tabs defaultValue="overview">
-        <TabsList>
-          {tabs.map((tab) => (
-            <TabsTrigger value={tab.key}>{tab.title}</TabsTrigger>
-          ))}
-        </TabsList>
+        <div className="relative">
+          <TabsList
+            className="
+              flex w-full overflow-x-auto scrollbar-hide
+              whitespace-nowrap justify-start
+              border-b border-border rounded-md
+            "
+          >
+            {tabs.map((tab) => (
+              <TabsTrigger
+                key={tab.key}
+                value={tab.key}
+                className="flex-shrink-0 px-4"
+              >
+                {tab.title}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </div>
+
         {tabs.map((tab) => (
-          <TabsContent value={tab.key}>{tab.component}</TabsContent>
+          <TabsContent key={tab.key} value={tab.key}>
+            {tab.component}
+          </TabsContent>
         ))}
       </Tabs>
     </main>

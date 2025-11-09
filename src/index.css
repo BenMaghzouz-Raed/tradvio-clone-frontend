@@ -183,3 +183,12 @@
 .animate-slide-up {
   animation: slideUp 0.3s ease-out;
 }
+
+/* Add this to your global.css or Tailwind base layer */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
