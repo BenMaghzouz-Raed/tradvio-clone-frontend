@@ -1,6 +1,6 @@
 import { Button } from "./ui/button";
 import { Link } from "react-router-dom";
-import { ROUTES } from "@/services/LinksService";
+import { ROUTES } from "@/services/http/LinksService";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { SidebarTrigger } from "./ui/sidebar";
 import { cn } from "@/lib/utils";

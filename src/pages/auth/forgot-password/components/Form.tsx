@@ -8,7 +8,7 @@ import {
 } from "@/validation/auth-validation";
 import { Label } from "@/components/ui/label";
 import { Link } from "react-router-dom";
-import { ROUTES } from "@/services/LinksService";
+import { ROUTES } from "@/services/http/LinksService";
 
 export default function Form() {
   const form = useForm<ForgotPasswordFormValues>({

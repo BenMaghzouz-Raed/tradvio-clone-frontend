@@ -12,7 +12,7 @@ import {
 import { useState } from "react";
 import { changePassword } from "@/services/domain/AuthService";
 import { useNavigate } from "react-router-dom";
-import { ROUTES } from "@/services/LinksService";
+import { ROUTES } from "@/services/http/LinksService";
 import { toastNotification } from "@/lib/toast";
 
 export default function UpdatePasswordForm() {

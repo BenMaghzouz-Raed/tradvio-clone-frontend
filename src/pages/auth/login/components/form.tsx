@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
-import { ROUTES } from "@/services/LinksService";
+import { ROUTES } from "@/services/http/LinksService";
 import { useAuth } from "@/hooks/use-auth";
 import { useState } from "react";
 import { Label } from "@/components/ui/label";

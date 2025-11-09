@@ -4,7 +4,7 @@ import NotMatch from "./pages/not-found";
 import Dashboard from "./pages/dashboard";
 import Analyser from "./pages/analyser";
 import History from "./pages/history";
-import { ROUTES } from "./services/LinksService";
+import { ROUTES } from "./services/http/LinksService";
 import Register from "./pages/auth/register";
 import Subscription from "./pages/subscription";
 import LogIn from "./pages/auth/login";

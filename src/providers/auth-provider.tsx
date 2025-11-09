@@ -9,7 +9,7 @@ import {
   refresh,
 } from "@/services/domain/AuthService";
 import { useNavigate } from "react-router-dom";
-import { ROUTES } from "@/services/LinksService";
+import { ROUTES } from "@/services/http/LinksService";
 import { toastNotification } from "@/lib/toast";
 import { useRoute } from "@/hooks/use-route";
 import { AuthContext, AuthContextType } from "@/contexts/auth-context";

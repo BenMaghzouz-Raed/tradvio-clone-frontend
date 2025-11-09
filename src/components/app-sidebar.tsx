@@ -11,7 +11,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { CircleQuestionMark, ShieldUser } from "lucide-react";
-import { ROUTES } from "@/services/LinksService";
+import { ROUTES } from "@/services/http/LinksService";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useRoute } from "@/hooks/use-route";

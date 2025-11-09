@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { register } from "@/services/domain/AuthService";
-import { ROUTES } from "@/services/LinksService";
+import { ROUTES } from "@/services/http/LinksService";
 import { Link, useNavigate } from "react-router-dom";
 import { toastNotification } from "@/lib/toast";
 import { Label } from "@/components/ui/label";
