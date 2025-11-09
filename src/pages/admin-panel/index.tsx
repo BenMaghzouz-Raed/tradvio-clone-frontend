@@ -2,13 +2,15 @@ import StatsCard from "@/components/stats-card";
 import Notifications from "./components/notifications";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import ManageUsers from "./components/manage-users";
+import { users } from "@/seeds/users";
 
 export default function AdminPanel() {
   const tabs = [
     { title: "Overview", component: <Notifications />, key: "overview" },
     {
       title: "Manage Users",
-      component: <Card>ManageUser card</Card>,
+      component: <ManageUsers data={users} />,
       key: "manageUsers",
     },
     {
