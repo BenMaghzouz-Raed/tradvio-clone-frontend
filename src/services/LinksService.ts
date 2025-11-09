@@ -73,7 +73,7 @@ export const ROUTES: {
     path: "subscribe",
     title: "Subscription Plan",
     protected: true,
-    roles: ["user", "admin"],
+    roles: ["user"],
   },
   ADMIN: {
     path: "admin",

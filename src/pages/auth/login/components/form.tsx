@@ -14,7 +14,6 @@ import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Icons } from "@/components/icons";
 import { Spinner } from "@/components/ui/spinner";
-import { toastNotification } from "@/lib/toast";
 
 export default function Form() {
   const { login } = useAuth();
@@ -32,11 +31,6 @@ export default function Form() {
     try {
       setIsLoading(true);
       await login(values.username, values.password);
-    } catch (err: any) {
-      toastNotification({
-        type: "error",
-        message: err.message,
-      });
     } finally {
       setIsLoading(false);
     }

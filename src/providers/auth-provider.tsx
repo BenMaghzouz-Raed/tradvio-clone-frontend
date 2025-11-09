@@ -62,7 +62,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // TODO: add a timer to fetch user every minute or so
   useEffect(() => {
-    fetchUser().then(() => setLoading(false));
+    fetchUser();
   }, []);
 
   async function login(username: string, password: string) {
