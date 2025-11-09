@@ -22,3 +22,8 @@ export function formatDate(date: Date) {
 export function formatAmount(amount: number) {
   return `$${amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
 }
+
+export function truncate(value: string, threshold: number) {
+  const length = value.length;
+  return `${length > threshold ? value.slice(0, threshold) + "..." : value}`;
+}
