@@ -1,3 +1,9 @@
+import HowItWorks from "./components/how-it-works";
+
 export default function Help() {
-  return <div>this is help page</div>;
+  return (
+    <div>
+      <HowItWorks />
+    </div>
+  );
 }
