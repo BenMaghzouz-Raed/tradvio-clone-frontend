@@ -13,26 +13,52 @@ import { ProfileFormValues, profileSchema } from "@/validation/auth-validation";
 import { IUser } from "@/types/user-types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useAuth } from "@/hooks/use-auth";
+import { useState } from "react";
+import { updateCurrentUser } from "@/services/domain/AuthService";
+import { toastNotification } from "@/lib/toast";
 
 export default function UpdateProfileForm({
   currentUser,
 }: {
   currentUser: IUser;
 }) {
+  const { refresh } = useAuth();
+  const [loading, setLaoding] = useState(false);
+
   const profileForm = useForm({
     resolver: zodResolver(profileSchema),
     defaultValues: {
       firstName: currentUser?.first_name,
       lastName: currentUser?.last_name,
-      gender: "Men",
-      country: "Tunisia",
-      language: "English",
       timeZone: currentUser?.timezone,
+      username: currentUser?.username,
     },
   });
 
-  const handleProfileSubmit = (data: ProfileFormValues) => {
-    console.log("Profile updated:", data);
+  const handleProfileSubmit = async (data: ProfileFormValues) => {
+    try {
+      setLaoding(true);
+      await updateCurrentUser({
+        first_name: data.firstName,
+        last_name: data.lastName,
+        username: data.username,
+        timezone: data.timeZone!,
+      });
+      toastNotification({
+        type: "success",
+        message: "Profile updated successfully",
+      });
+      refresh();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      toastNotification({
+        type: "error",
+        message: err.message,
+      });
+    } finally {
+      setLaoding(false);
+    }
   };
 
   return (
@@ -45,16 +71,22 @@ export default function UpdateProfileForm({
           <FormField
             control={profileForm.control}
             name="firstName"
-            render={({ field }) => (
+            render={({ field, fieldState }) => (
               <div>
                 <label className="text-sm font-medium text-gray-700 mb-3 block">
                   First Name
                 </label>
                 <Input
+                  required
                   placeholder="Your first name"
                   {...field}
-                  className="w-full border-gray-300 focus:border-purple-500  bg-[#F9F9F9]"
+                  className="w-full border-gray-300  bg-[#F9F9F9]"
                 />
+                {fieldState.error && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {fieldState.error.message}
+                  </p>
+                )}
               </div>
             )}
           />
@@ -62,16 +94,22 @@ export default function UpdateProfileForm({
           <FormField
             control={profileForm.control}
             name="lastName"
-            render={({ field }) => (
+            render={({ field, fieldState }) => (
               <div>
                 <label className="text-sm font-medium text-gray-700 mb-3 block">
                   Last Name
                 </label>
                 <Input
+                  required
                   placeholder="Your last name"
                   {...field}
-                  className="w-full border-gray-300 focus:border-purple-500  bg-[#F9F9F9]"
+                  className="w-full border-gray-300  bg-[#F9F9F9]"
                 />
+                {fieldState.error && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {fieldState.error.message}
+                  </p>
+                )}
               </div>
             )}
           />
@@ -80,68 +118,22 @@ export default function UpdateProfileForm({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <FormField
             control={profileForm.control}
-            name="gender"
-            render={({ field }) => (
+            name="username"
+            render={({ field, fieldState }) => (
               <div>
                 <label className="text-sm font-medium text-gray-700 mb-3 block">
-                  Gender
-                </label>
-                <Select {...field} onValueChange={(e) => field.onChange(e)}>
-                  <SelectTrigger className="w-full ">
-                    <SelectValue placeholder="Select a fruit" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectItem value="Men">Men</SelectItem>
-                      <SelectItem value="Women">Women</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </div>
-            )}
-          />
-
-          <FormField
-            control={profileForm.control}
-            name="country"
-            render={({ field }) => (
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-3 block">
-                  Country
-                </label>
-                <Select {...field} onValueChange={(e) => field.onChange(e)}>
-                  <SelectTrigger className="w-full ">
-                    <SelectValue placeholder="Select a fruit" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectItem value="Tunisia">Tunisia</SelectItem>
-                      <SelectItem value="USA">USA</SelectItem>
-                      <SelectItem value="UK">UK</SelectItem>
-                      <SelectItem value="France">France</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </div>
-            )}
-          />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <FormField
-            control={profileForm.control}
-            name="language"
-            render={({ field }) => (
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-3 block">
-                  Language
+                  Username
                 </label>
                 <Input
-                  disabled
-                  placeholder="Choose a language"
+                  required
                   {...field}
-                  className="w-full border-gray-300 focus:border-purple-500  bg-[#F9F9F9]"
+                  className="w-full border-gray-300  bg-[#F9F9F9]"
                 />
+                {fieldState.error && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {fieldState.error.message}
+                  </p>
+                )}
               </div>
             )}
           />
@@ -149,12 +141,16 @@ export default function UpdateProfileForm({
           <FormField
             control={profileForm.control}
             name="timeZone"
-            render={({ field }) => (
+            render={({ field, fieldState }) => (
               <div>
                 <label className="text-sm font-medium text-gray-700 mb-3 block">
                   Time Zone
                 </label>
-                <Select {...field} onValueChange={(e) => field.onChange(e)}>
+                <Select
+                  required
+                  {...field}
+                  onValueChange={(e) => field.onChange(e)}
+                >
                   <SelectTrigger className="w-full ">
                     <SelectValue placeholder="Select a Time zone" />
                   </SelectTrigger>
@@ -169,6 +165,11 @@ export default function UpdateProfileForm({
                     </SelectGroup>
                   </SelectContent>
                 </Select>
+                {fieldState.error && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {fieldState.error.message}
+                  </p>
+                )}
               </div>
             )}
           />
@@ -177,8 +178,9 @@ export default function UpdateProfileForm({
         {/* Submit Button */}
         <div className="flex justify-end pt-6">
           <Button
+            loading={loading}
             type="submit"
-            className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-2 cursor-pointer"
+            className="bg-primary text-white px-8 py-2 cursor-pointer"
           >
             Edit
           </Button>

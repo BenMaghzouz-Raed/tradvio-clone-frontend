@@ -57,10 +57,10 @@ export const updateCurrentUser = (data: {
   first_name: string;
   last_name: string;
   username: string;
-  avatar_url: string;
+  avatar_url?: string;
   timezone: string;
 }) => {
-  return http.post("/auth/change-me", data);
+  return http.patch("/auth/change_me", data);
 };
 
 export const forgotPassword = (data: { email: string }) => {

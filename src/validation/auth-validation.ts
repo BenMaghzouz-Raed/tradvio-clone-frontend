@@ -4,14 +4,14 @@ const passwordRule = z
   .min(8, "Password must be at least 8 characters long");
 
 export const loginSchema = z.object({
-  username: z.string().min(3, "Username or email must be at least 3 characters").refine(
-    (value) => {
+  username: z
+    .string()
+    .min(3, "Username or email must be at least 3 characters")
+    .refine((value) => {
       // Allow either email format or username format
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return emailRegex.test(value) || value.length >= 3;
-    },
-    "Please enter a valid username or email address"
-  ),
+    }, "Please enter a valid username or email address"),
   password: passwordRule,
 });
 
@@ -43,9 +43,7 @@ export const resetPasswordSchema = z
 export const profileSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
-  gender: z.enum(["Men", "Women"]),
-  country: z.string().min(1, "Country is required"),
-  language: z.string().optional(),
+  username: z.string().min(8, "Username must be at least 8 charaters"),
   timeZone: z.string().optional(),
 });
 
