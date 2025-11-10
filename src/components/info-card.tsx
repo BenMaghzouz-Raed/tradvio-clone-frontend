@@ -11,11 +11,14 @@ export default function InfoCard({
   data: { label: string; value: React.ReactNode }[];
 }) {
   return (
-    <Card className="p-4">
+    <Card className="p-4 w-full md:w-fit">
       <h4 className="font-medium text-sm text-[#0A0A0A]">{title}</h4>
       <div className="flex flex-col gap-4">
         {data.map((item) => (
-          <div className="flex justify-between items-center" key={item.label}>
+          <div
+            className="flex items-start justify-between gap-4"
+            key={item.label}
+          >
             <h5 className="font-[400] text-[14px] text-[#B4B4B4]">
               {item.label}
             </h5>
@@ -38,7 +41,7 @@ export function InfoCardLoader({
   className?: string;
 }) {
   return (
-    <Card className={cn("p-4 w-32 md:w-40 lg:w-80 h-fit", className)}>
+    <Card className={cn("p-4 w-full md:w-fit", className)}>
       {title ? (
         <h4 className="font-medium text-sm text-[#0A0A0A]">{title}</h4>
       ) : (

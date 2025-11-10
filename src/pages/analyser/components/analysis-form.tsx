@@ -24,6 +24,7 @@ import {
 } from "@/validation/analysis-validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { BrainCog, Grid, RefreshCw } from "lucide-react";
+import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
@@ -89,6 +90,15 @@ export default function AnalysisForm({
     }
   };
 
+  const tradingType = useMemo(
+    () => analyseChartForm.getValues().trading_type,
+    [analyseChartForm.watch("trading_type")]
+  );
+  const timeframe = useMemo(
+    () => analyseChartForm.getValues().timeframe,
+    [analyseChartForm.watch("timeframe")]
+  );
+
   return (
     <Card className={cn("w-fit p-4 gap-2", className)}>
       <Form {...analyseChartForm}>
@@ -115,11 +125,7 @@ export default function AnalysisForm({
             )}
           />
           <span className="text-gray sm:text-sm text-xs">
-            Trading Type (
-            {analyseChartForm.getValues().trading_type === "SCALP"
-              ? "Scalp"
-              : "Swing"}
-            )
+            Trading Type ({tradingType === "SCALP" ? "Scalp" : "Swing"})
           </span>
           <FormField
             control={analyseChartForm.control}
@@ -175,7 +181,12 @@ export default function AnalysisForm({
                   name="account_balance"
                   render={({ field, fieldState }) => (
                     <>
-                      <Input placeholder="200" type="number" {...field} />
+                      <Input
+                        placeholder="200"
+                        type="number"
+                        {...field}
+                        onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                      />
                       {fieldState.error && (
                         <p className="text-red-500 text-xs mt-1">
                           {fieldState.error.message}
@@ -196,12 +207,14 @@ export default function AnalysisForm({
                     <>
                       <Input
                         {...field}
+                        onChange={(e) => field.onChange(e.target.valueAsNumber)}
                         prefix="$"
                         placeholder="1.0"
                         type="number"
                         max={1.0}
                         min={0.0}
                         required
+                        step="any"
                       />
                       {fieldState.error && (
                         <p className="text-red-500 text-xs mt-1">
@@ -225,6 +238,7 @@ export default function AnalysisForm({
                     <>
                       <Input
                         {...field}
+                        onChange={(e) => field.onChange(e.target.valueAsNumber)}
                         prefix="$"
                         placeholder="200"
                         type="number"
@@ -249,6 +263,7 @@ export default function AnalysisForm({
                     <>
                       <Input
                         {...field}
+                        onChange={(e) => field.onChange(e.target.valueAsNumber)}
                         prefix="$"
                         placeholder="200"
                         type="number"
@@ -271,6 +286,7 @@ export default function AnalysisForm({
             render={({ fieldState }) => (
               <>
                 <Select
+                  value={timeframe}
                   onValueChange={(e) =>
                     analyseChartForm.setValue("timeframe", e)
                   }
@@ -281,13 +297,13 @@ export default function AnalysisForm({
                   <SelectContent>
                     <SelectGroup>
                       <SelectLabel>Time Frame</SelectLabel>
-                      {TRADE_TYPE_TIME_FRAMES_MAP[
-                        analyseChartForm.getValues().trading_type
-                      ].map((timeFrame) => (
-                        <SelectItem value={timeFrame.value}>
-                          {timeFrame.label}
-                        </SelectItem>
-                      ))}
+                      {TRADE_TYPE_TIME_FRAMES_MAP[tradingType].map(
+                        (timeFrame) => (
+                          <SelectItem value={timeFrame.value}>
+                            {timeFrame.label}
+                          </SelectItem>
+                        )
+                      )}
                     </SelectGroup>
                   </SelectContent>
                 </Select>
@@ -318,14 +334,25 @@ export default function AnalysisForm({
                 </Button>
               </Link>
             )}
-            <Button
-              type="submit"
-              className="flex-grow bg-purple-500"
-              loading={loading}
-              disabled={loading}
-            >
-              Analyze Chart
-            </Button>
+            {!reAnalyse ? (
+              <Button
+                type="submit"
+                className="flex-grow bg-purple-500"
+                loading={loading}
+                disabled={loading}
+              >
+                Analyze Chart
+              </Button>
+            ) : (
+              <Button
+                className="flex-grow bg-purple-500"
+                onClick={() =>
+                  console.log("implement addition to trade journal")
+                }
+              >
+                Add to Trade Journal
+              </Button>
+            )}
           </div>
         </form>
       </Form>

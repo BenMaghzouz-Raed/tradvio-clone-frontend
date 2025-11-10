@@ -17,7 +17,7 @@ export default function Analyser() {
       )}
     >
       {loading && (
-        <div className="grid grid-cols-2 gap-4 max-w-2/3">
+        <div className="flex flex-wrap gap-4">
           <InfoCardLoader />
           <InfoCardLoader />
           <InfoCardLoader />
@@ -26,7 +26,7 @@ export default function Analyser() {
       )}
       {!loading && analysisResult !== null && (
         <>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <InfoCard
               title="Chart Data"
               data={[
@@ -53,9 +53,48 @@ export default function Analyser() {
                 {
                   label: "swing low",
                   value: formatAmount(
-                    analysisResult.extraction.metadata.current_price
-                      .approx_swing_low
+                    analysisResult.extraction.chart_data.approx_swing_low
                   ),
+                },
+              ]}
+            />
+            <InfoCard
+              title="Risk Management"
+              data={[
+                {
+                  label: "Risk Amount",
+                  value: formatAmount(
+                    analysisResult.ai_analysis.risk_management.risk_amount_usd
+                  ),
+                },
+                {
+                  label: "Entry Price",
+                  value: formatAmount(
+                    analysisResult.ai_analysis.risk_management.entry_price
+                  ),
+                },
+                {
+                  label: "Stop Loss",
+                  value: formatAmount(
+                    analysisResult.ai_analysis.risk_management.stop_loss
+                  ),
+                },
+                {
+                  label: "Take Profit",
+                  value: formatAmount(
+                    analysisResult.ai_analysis.risk_management.take_profit
+                  ),
+                },
+                {
+                  label: "Reward Risk Ratio",
+                  value:
+                    analysisResult.ai_analysis.risk_management
+                      .reward_risk_ratio,
+                },
+                {
+                  label: "Position Size",
+                  value:
+                    analysisResult.ai_analysis.risk_management.position_size,
                 },
               ]}
             />
@@ -116,46 +155,6 @@ export default function Analyser() {
                   value:
                     analysisResult.ai_analysis.trade_suggestion
                       .tape_profit_recommendation,
-                },
-              ]}
-            />
-            <InfoCard
-              title="Risk Management"
-              data={[
-                {
-                  label: "Risk Amount",
-                  value: formatAmount(
-                    analysisResult.ai_analysis.risk_management.risk_amount_usd
-                  ),
-                },
-                {
-                  label: "Entry Price",
-                  value: formatAmount(
-                    analysisResult.ai_analysis.risk_management.entry_price
-                  ),
-                },
-                {
-                  label: "Stop Loss",
-                  value: formatAmount(
-                    analysisResult.ai_analysis.risk_management.stop_loss
-                  ),
-                },
-                {
-                  label: "Take Profit",
-                  value: formatAmount(
-                    analysisResult.ai_analysis.risk_management.take_profit
-                  ),
-                },
-                {
-                  label: "Reward Risk Ratio",
-                  value:
-                    analysisResult.ai_analysis.risk_management
-                      .reward_risk_ratio,
-                },
-                {
-                  label: "Position Size",
-                  value:
-                    analysisResult.ai_analysis.risk_management.position_size,
                 },
               ]}
             />
