@@ -18,7 +18,7 @@ export default function UpdatePasswordForm() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const securityForm = useForm({
+  const updatePasswordForm = useForm({
     resolver: zodResolver(updatePasswordSchema),
     defaultValues: {
       currentPassword: "",
@@ -53,13 +53,13 @@ export default function UpdatePasswordForm() {
     <div className="w-full sm:w-1/2">
       <h2 className="text-lg font-semibold mb-6">Security Settings</h2>
 
-      <Form {...securityForm}>
+      <Form {...updatePasswordForm}>
         <form
-          onSubmit={securityForm.handleSubmit(handleSecuritySubmit)}
+          onSubmit={updatePasswordForm.handleSubmit(handleSecuritySubmit)}
           className="space-y-4"
         >
           <FormField
-            control={securityForm.control}
+            control={updatePasswordForm.control}
             name="currentPassword"
             render={({ field, fieldState }) => (
               <div>
@@ -84,7 +84,7 @@ export default function UpdatePasswordForm() {
           />
 
           <FormField
-            control={securityForm.control}
+            control={updatePasswordForm.control}
             name="newPassword"
             render={({ field, fieldState }) => (
               <div>
@@ -110,7 +110,7 @@ export default function UpdatePasswordForm() {
           />
 
           <FormField
-            control={securityForm.control}
+            control={updatePasswordForm.control}
             name="confirmPassword"
             render={({ field, fieldState }) => (
               <div>

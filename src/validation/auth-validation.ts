@@ -1,4 +1,5 @@
 import * as z from "zod";
+
 const passwordRule = z
   .string()
   .min(8, "Password must be at least 8 characters long");
@@ -32,7 +33,7 @@ export const registerSchema = z.object({
 
 export const resetPasswordSchema = z
   .object({
-    newPassword: registerSchema.shape.password,
+    newPassword: passwordRule,
     confirmPassword: z.string(),
   })
   .refine((data) => data.newPassword === data.confirmPassword, {

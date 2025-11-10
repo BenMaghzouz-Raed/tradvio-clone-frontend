@@ -1,4 +1,4 @@
-export type TradeType = "swing" | "scalp";
+export type TradeType = "SWING" | "SCALP";
 export type TradeOutcome = "Win" | "Loss" | "Not Taken";
 export interface ITrade {
   id?: string;
