@@ -6,12 +6,14 @@ import { cn } from "@/lib/utils";
 export default function InfoCard({
   title,
   data,
+  className = "",
 }: {
   title: string;
   data: { label: string; value: React.ReactNode }[];
+  className?: string;
 }) {
   return (
-    <Card className="p-4 w-full md:w-fit">
+    <Card className={cn("p-4", className)}>
       <h4 className="font-medium text-sm text-[#0A0A0A]">{title}</h4>
       <div className="flex flex-col gap-4">
         {data.map((item) => (
@@ -41,7 +43,7 @@ export function InfoCardLoader({
   className?: string;
 }) {
   return (
-    <Card className={cn("p-4 w-full md:w-fit", className)}>
+    <Card className={cn("p-4", className)}>
       {title ? (
         <h4 className="font-medium text-sm text-[#0A0A0A]">{title}</h4>
       ) : (
@@ -51,8 +53,8 @@ export function InfoCardLoader({
       <div className="flex flex-col gap-4">
         {Array.from({ length: rows }).map(() => (
           <div className="flex justify-between items-center">
-            <Skeleton className="h-4 w-16 md:w-20 lg:w-32 bg-loading-background" />
-            <Skeleton className="h-4 w-10 md:w-16 lg:w-24 bg-loading-background" />
+            <Skeleton className="h-4 w-1/5 bg-loading-background" />
+            <Skeleton className="h-4 w-2/3 bg-loading-background" />
           </div>
         ))}
       </div>

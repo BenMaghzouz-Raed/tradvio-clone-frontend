@@ -17,7 +17,6 @@ import { toastNotification } from "@/lib/toast";
 import { cn } from "@/lib/utils";
 import { analyseGraph } from "@/services/domain/AnalysisService";
 import { ROUTES } from "@/services/http/LinksService";
-import { TradeType } from "@/types/trade";
 import {
   AnalyseChartFormValues,
   analyseChartSchema,
@@ -29,7 +28,7 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
 const TRADE_TYPE_TIME_FRAMES_MAP: Record<
-  TradeType,
+  "SWING" | "SCALP",
   { label: string; value: string }[]
 > = {
   SWING: [
@@ -324,7 +323,7 @@ export default function AnalysisForm({
                 loading={loading}
                 disabled={loading}
               >
-                <RefreshCw />
+                {!loading && <RefreshCw />}
                 Re-Analyze
               </Button>
             ) : (
@@ -349,6 +348,8 @@ export default function AnalysisForm({
                 onClick={() =>
                   console.log("implement addition to trade journal")
                 }
+                loading={loading}
+                disabled={loading}
               >
                 Add to Trade Journal
               </Button>
