@@ -1,6 +1,7 @@
 export type TradeType = "Short" | "Long";
 export type TradeOutcome = "Win" | "Loss" | "Not Taken";
 export type TradeSource = "AI" | "MANUAL";
+
 export interface ITrade {
   trade_id?: string;
   user_id?: string;
@@ -35,4 +36,20 @@ export interface ITradeFilter {
   source?: string;
   date_from?: Date;
   date_to?: Date;
+}
+
+export interface IRecordTrade {
+  entry_price: number;
+  entry_time: Date;
+  exit_price: number;
+  exit_time: Date;
+  outcome: "WIN" | "LOSS";
+  profit_loss: number;
+  profit_percent: number;
+  quantity: number;
+  source: "MANUAL";
+  symbol: string; //"EURUSD",
+  trade_date: Date;
+  trade_type: "LONG" | "SHORT";
+  trading_notes: string;
 }

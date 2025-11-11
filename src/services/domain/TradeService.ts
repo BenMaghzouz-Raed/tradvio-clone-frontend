@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import http from "@/lib/http";
-import { ITrade } from "@/types/trade";
+import { IRecordTrade } from "@/types/trade";
 
-export const createTrade = (values: ITrade) => {
+export const createTrade = (values: IRecordTrade) => {
   return http.post("/trade-journal/trades", values);
 };
 

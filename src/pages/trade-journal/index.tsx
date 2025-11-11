@@ -10,6 +10,7 @@ import { getTrades } from "@/services/domain/TradeService";
 import { toastNotification } from "@/lib/toast";
 import Filter from "./components/filter";
 import { ITradeFilter } from "@/types/trade";
+import TradeModal from "./components/trade-modal";
 
 // TODO: add correct pagination to backend (must contain total pages or total)
 // TODO: define symbol values
@@ -17,7 +18,7 @@ const total = 20;
 
 function TradeJournal() {
   const [currentPage, setCurrentPage] = useState(1);
-
+  const [recordModalOpen, setRecordModalOpen] = useState(false);
   const [itemsPerPage, setItemsPerPage] = useState<number>(10);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState<ITradeFilter>({ symbol: "All" });
@@ -61,9 +62,31 @@ function TradeJournal() {
       <div className="flex justify-end mb-4 gap-2">
         <Filter setFilters={setFilters} filters={filters} />
 
-        <Button className="bg-black text-white cursor-pointer hover:bg-gray-800">
-          Record New Trade
-        </Button>
+        <TradeModal
+          open={recordModalOpen}
+          setOpen={setRecordModalOpen}
+          onSuccess={() => {
+            toastNotification({
+              type: "success",
+              message: "Trade succesfully recorded",
+            });
+            setRecordModalOpen(false);
+          }}
+          onError={(err) => {
+            toastNotification({
+              type: "error",
+              message: err.message,
+            });
+            setRecordModalOpen(false);
+          }}
+        >
+          <Button
+            className="bg-black text-white cursor-pointer hover:bg-gray-800"
+            onClick={() => setRecordModalOpen(true)}
+          >
+            Record New Trade
+          </Button>
+        </TradeModal>
       </div>
 
       <DataTable columns={columns} data={trades} loading={loading} />
