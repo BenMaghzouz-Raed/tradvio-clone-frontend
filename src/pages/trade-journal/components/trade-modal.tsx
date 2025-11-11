@@ -28,7 +28,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import { ChevronDownIcon } from "lucide-react";
-import { ReactNode, useEffect, useMemo, useState } from "react";
+import { ReactNode, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
 export default function TradeModal({
@@ -92,9 +92,6 @@ export default function TradeModal({
     [form.watch("trade_date")]
   );
 
-  useEffect(() => {
-    console.log(form.formState.errors);
-  }, [form.formState.errors]);
   return (
     <Dialog open={open} onOpenChange={() => setOpen(!open)}>
       <DialogTrigger asChild>{children}</DialogTrigger>
