@@ -29,3 +29,10 @@ export interface ITrade {
   created_at?: Date;
   updated_at?: Date;
 }
+
+export interface ITradeFilter {
+  symbol?: string;
+  source?: string;
+  date_from?: Date;
+  date_to?: Date;
+}

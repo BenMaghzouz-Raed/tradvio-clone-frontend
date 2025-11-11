@@ -6,11 +6,13 @@ import DataTable from "@/components/data-table.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import PageSizeSelector from "@/components/page-size-selector.tsx";
 import { columns } from "./components/columns";
-import { SlidersVertical } from "lucide-react";
 import { getTrades } from "@/services/domain/TradeService";
 import { toastNotification } from "@/lib/toast";
+import Filter from "./components/filter";
+import { ITradeFilter } from "@/types/trade";
 
 // TODO: add correct pagination to backend (must contain total pages or total)
+// TODO: define symbol values
 const total = 20;
 
 function TradeJournal() {
@@ -18,13 +20,19 @@ function TradeJournal() {
 
   const [itemsPerPage, setItemsPerPage] = useState<number>(10);
   const [loading, setLoading] = useState(true);
-  const [filters, setFilters] = useState({});
+  const [filters, setFilters] = useState<ITradeFilter>({ symbol: "All" });
   const [trades, setTrades] = useState([]);
 
-  const fetchData = async (conditions: any) => {
+  const fetchData = async (conditions: ITradeFilter) => {
     try {
+      // clean up filters
+      const cleanConditions = Object.fromEntries(
+        Object.entries(conditions).filter(
+          (entry) => !!entry[1] && entry[1] !== "All"
+        )
+      );
       setLoading(true);
-      const res: any = await getTrades(conditions);
+      const res: any = await getTrades(cleanConditions);
       setTrades(res.items);
     } catch (err: any) {
       toastNotification({
@@ -51,10 +59,7 @@ function TradeJournal() {
       </div>
 
       <div className="flex justify-end mb-4 gap-2">
-        <Button variant="outline" className=" hover:bg-gray-100 cursor-pointer">
-          Filter
-          <SlidersVertical className="w-5 h-5" />
-        </Button>
+        <Filter setFilters={setFilters} filters={filters} />
 
         <Button className="bg-black text-white cursor-pointer hover:bg-gray-800">
           Record New Trade
