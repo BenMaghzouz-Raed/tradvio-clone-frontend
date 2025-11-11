@@ -11,26 +11,30 @@ export default function Analyser() {
   const [loading, setLoading] = useState(false);
 
   return (
-    <div className={"flex justify-between  gap-5 w-full"}>
+    <div
+      className={
+        "flex lg:flex-nowrap flex-wrap-reverse justify-between  gap-5 w-full"
+      }
+    >
       <div className="flex flex-col w-full">
         {loading && (
           <div className="gap-4">
             <div className="grid grid-cols-2 gap-4">
               <InfoCardLoader
-                className="lg:col-span-1 sm:col-span-2 w-full"
+                className="col-span-2 lg:col-span-1"
                 title="Chart Data"
               />
 
               <InfoCardLoader
-                className="lg:col-span-1 sm:col-span-2"
+                className="col-span-2 lg:col-span-1"
                 title="Technical Analysis"
               />
               <InfoCardLoader
-                className="lg:col-span-1 sm:col-span-2"
+                className="col-span-2 lg:col-span-1"
                 title="Risk Management"
               />
               <InfoCardLoader
-                className="lg:col-span-1 sm:col-span-2"
+                className="col-span-2 lg:col-span-1"
                 title="Analysis Result"
               />
               <InfoCardLoader className="col-span-2" title="Trade Suggestion" />
@@ -43,7 +47,7 @@ export default function Analyser() {
           <>
             <div className="grid grid-cols-2 gap-4">
               <InfoCard
-                className="lg:col-span-1 sm:col-span-2 w-full"
+                className="col-span-2 lg:col-span-1 w-full"
                 title="Chart Data"
                 data={[
                   {
@@ -76,7 +80,7 @@ export default function Analyser() {
               />
 
               <InfoCard
-                className="lg:col-span-1 sm:col-span-2"
+                className="col-span-2 lg:col-span-1"
                 title="Technical Analysis"
                 data={[
                   {
@@ -114,7 +118,7 @@ export default function Analyser() {
                 ]}
               />
               <InfoCard
-                className="lg:col-span-1 sm:col-span-2"
+                className="col-span-2 lg:col-span-1"
                 title="Risk Management"
                 data={[
                   {
@@ -158,7 +162,7 @@ export default function Analyser() {
                 ]}
               />
               <InfoCard
-                className="lg:col-span-1 sm:col-span-2"
+                className="col-span-2 lg:col-span-1"
                 title="Analysis Result"
                 data={[
                   {
@@ -233,7 +237,7 @@ export default function Analyser() {
         )}
       </div>
       <AnalysisForm
-        className="sticky h-fit"
+        className="md:sticky h-fit block"
         setAnalysisResult={setAnalysisResult}
         setLoading={setLoading}
         loading={loading}
