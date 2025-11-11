@@ -1,21 +1,46 @@
-import { useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useEffect, useMemo, useState } from "react";
 import PaginationComponent from "@/components/pagination";
-import tradesData from "@/seeds/trades.ts";
 import StatsCard from "@/components/stats-card.tsx";
 import DataTable from "@/components/data-table.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import PageSizeSelector from "@/components/page-size-selector.tsx";
 import { columns } from "./components/columns";
 import { SlidersVertical } from "lucide-react";
+import { getTrades } from "@/services/domain/TradeService";
+import { toastNotification } from "@/lib/toast";
+
+// TODO: add correct pagination to backend (must contain total pages or total)
+const total = 20;
 
 function TradeJournal() {
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 10;
-  const totalPages = Math.ceil(tradesData.length / rowsPerPage);
-  const startIndex = (currentPage - 1) * rowsPerPage;
-  const currentRows = tradesData.slice(startIndex, startIndex + rowsPerPage);
-  const [itemsPerPage, setItemsPerPage] = useState<number>(10);
 
+  const [itemsPerPage, setItemsPerPage] = useState<number>(10);
+  const [loading, setLoading] = useState(true);
+  const [filters, setFilters] = useState({});
+  const [trades, setTrades] = useState([]);
+
+  const fetchData = async (conditions: any) => {
+    try {
+      setLoading(true);
+      const res: any = await getTrades(conditions);
+      setTrades(res.items);
+    } catch (err: any) {
+      toastNotification({
+        type: "error",
+        message: err.message,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData(filters);
+  }, [filters]);
+
+  const totalPages = useMemo(() => Math.ceil(trades.length / total), [trades]);
   return (
     <div>
       <div className="flex flex-wrap justify-around gap-4 mb-4">
@@ -36,7 +61,7 @@ function TradeJournal() {
         </Button>
       </div>
 
-      <DataTable columns={columns} data={currentRows} />
+      <DataTable columns={columns} data={trades} loading={loading} />
 
       <div className="flex items-center justify-between pt-2">
         <span className="text-muted-foreground text-sm w-fit">

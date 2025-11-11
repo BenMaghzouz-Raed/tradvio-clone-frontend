@@ -29,31 +29,26 @@ export const columns: ColumnDef<ITrade>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "title",
-    header: "Title",
+    accessorKey: "source",
+    header: "Source",
     cell: ({ row }) => {
-      return (
-        <>
-          <div className="font-semibold text-sm">{row.getValue("title")}</div>
-          <div className="text-xs text-gray-400">
-            {formatDate(row.original.date!)}
-          </div>
-        </>
-      );
+      return <Tag label={row.getValue("source")} variant="success" />;
     },
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: "pnl",
+    accessorKey: "profit_loss",
     header: "P&L",
     cell: ({ row }) => {
-      const pnl = row.getValue("pnl") as number;
-      return (
+      const pnl = row.getValue("profit_loss") as number;
+      return pnl ? (
         <Tag
           label={pnl > 0 ? `+${formatAmount(pnl)}` : `${formatAmount(pnl)}`}
           variant={pnl > 0 ? "success" : pnl < 0 ? "error" : "neutral"}
         />
+      ) : (
+        "NC"
       );
     },
     enableSorting: false,
@@ -64,7 +59,7 @@ export const columns: ColumnDef<ITrade>[] = [
     header: "Outcome",
     cell: ({ row }) => {
       const outcome = row.getValue("outcome") as TradeOutcome;
-      return (
+      return outcome ? (
         <Tag
           label={outcome}
           variant={
@@ -75,29 +70,73 @@ export const columns: ColumnDef<ITrade>[] = [
               : "warning"
           }
         />
+      ) : (
+        "NC"
       );
     },
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: "type",
+    accessorKey: "profit_percent",
+    header: "Profit Percent",
+    cell: ({ row }) => {
+      return row.getValue("profit_percent") ?? "NC";
+    },
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    accessorKey: "trade_type",
     header: "Trade Type",
-    cell: ({ row }) => <Tag label={row.getValue("type")} variant="neutral" />,
+    cell: ({ row }) =>
+      row.getValue("trade_type") ? (
+        <Tag label={row.getValue("trade_type")} variant="neutral" />
+      ) : (
+        "NC"
+      ),
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: "entry",
+    accessorKey: "symbol",
+    header: "Symbol",
+    cell: ({ row }) =>
+      row.getValue("symbol") ? (
+        <Tag label={row.getValue("symbol")} variant="neutral" />
+      ) : (
+        "NC"
+      ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    accessorKey: "entry_price",
     header: "Entry Price",
-    cell: ({ row }) => formatAmount(row.getValue("entry")),
+    cell: ({ row }) =>
+      row.getValue("entry_price")
+        ? formatAmount(row.getValue("entry_price"))
+        : "NC",
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: "exit",
+    accessorKey: "exit_price",
     header: "Exit Price",
-    cell: ({ row }) => formatAmount(row.getValue("exit")),
+    cell: ({ row }) =>
+      row.getValue("exit_price")
+        ? formatAmount(row.getValue("exit_price"))
+        : "NC",
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    accessorKey: "trade_date",
+    header: "Trade Date",
+    cell: ({ row }) =>
+      row.getValue("trade_date")
+        ? formatDate(new Date(row.getValue("trade_date")))
+        : "NC",
     enableSorting: false,
     enableHiding: false,
   },
