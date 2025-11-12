@@ -1,11 +1,3 @@
-export interface BillingHistory {
-  date: string;
-  description: string;
-  amount: string;
-  status: string;
-  action: string;
-}
-
 export interface BillingPlan {
   id: string;
   name: string;
@@ -14,30 +6,6 @@ export interface BillingPlan {
   features: { label: string; available: boolean }[];
   buttonText: string;
 }
-
-export const billingData: BillingHistory[] = [
-  {
-    date: "Dec 15, 2024",
-    description: "Professional Plan - Monthly",
-    amount: "$29.00",
-    status: "Paid",
-    action: "",
-  },
-  {
-    date: "Nov 15, 2024",
-    description: "Professional Plan - Monthly",
-    amount: "$29.00",
-    status: "Paid",
-    action: "",
-  },
-  {
-    date: "Oct 15, 2024",
-    description: "Professional Plan - Monthly",
-    amount: "$29.00",
-    status: "Paid",
-    action: "",
-  },
-];
 
 export const billingPlans: BillingPlan[] = [
   {
