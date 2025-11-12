@@ -19,7 +19,7 @@ export const confirmEmail = ({
 };
 
 export const login = async (data: { username: string; password: string }) => {
-  return http.post("/auth/token", data, {
+  return http.post("/auth/Login", data, {
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
     },

@@ -1,61 +1,38 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button } from "@/components/ui/button";
-import { toastNotification } from "@/lib/toast";
-import { createPaymentSession } from "@/services/domain/SubscriptionService";
-import { useState, useEffect } from "react";
-
-const ProductDisplay = () => (
-  <section>
-    <div className="product">
-      <img
-        src="https://i.imgur.com/EHyR2nP.png"
-        alt="The cover of Stubborn Attachments"
-      />
-      <div className="description">
-        <h3>Stubborn Attachments</h3>
-        <h5>$20.00</h5>
-      </div>
-    </div>
-    <Button
-      onClick={async () => {
-        try {
-          const res: any = await createPaymentSession({ subscription_id: "3" });
-          window.open(res.url);
-        } catch (err: any) {
-          toastNotification({
-            type: "error",
-            message: err.message,
-          });
-        }
-      }}
-    >
-      Checkout
-    </Button>
-  </section>
-);
-
-const Message = ({ message }: { message: string }) => (
-  <section>
-    <p>{message}</p>
-  </section>
-);
+import { useState } from "react";
+import { Card } from "@/components/ui/card";
+import SubscribeDetails from "./components/SubscriptionDetails";
+import BillingPlanCard from "./components/BillingPlanCard";
+import Settings from "./components/Settings";
+import Usage from "./components/Usage";
+import { billingPlans } from "@/seeds/subscribeTrades";
 
 export default function Subscription() {
-  const [message, setMessage] = useState("");
+  const [selectedPlan, setSelectedPlan] = useState<string>("professional");
 
-  useEffect(() => {
-    const query = new URLSearchParams(window.location.search);
-
-    if (query.get("success")) {
-      setMessage("Order placed! You will receive an email confirmation.");
-    }
-
-    if (query.get("canceled")) {
-      setMessage(
-        "Order canceled -- continue to shop around and checkout when you're ready."
-      );
-    }
-  }, []);
-
-  return message ? <Message message={message} /> : <ProductDisplay />;
+  return (
+    <div className="space-y-4">
+      <Card className="text-sm bg-[#FAFAF9] p-4 space-y-6">
+        <h1 className="text-2xl font-semibold mb-2">Current Plan</h1>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <SubscribeDetails />
+          <Usage />
+          <Settings />
+        </div>
+        <div>
+          <h2 className="text-xl font-semibold mb-3">Available Plans</h2>
+          <div className="grid md:grid-cols-3 gap-4">
+            {billingPlans.map((plan) => (
+              <BillingPlanCard
+                key={plan.id}
+                plan={plan}
+                {...plan}
+                isSelected={selectedPlan === plan.id}
+                onSelect={() => setSelectedPlan(plan.id)}
+              />
+            ))}
+          </div>
+        </div>
+      </Card>
+    </div>
+  );
 }
