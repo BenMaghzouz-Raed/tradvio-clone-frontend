@@ -1,19 +1,21 @@
 export interface BillingPlan {
   id: string;
   name: string;
-  price: string;
+  price: number;
   description: string;
   features: { label: string; available: boolean }[];
   buttonText: string;
+  billing_interval: "month" | "year";
 }
 
 export const billingPlans: BillingPlan[] = [
   {
     id: "basic",
     name: "Basic — $9/month",
-    price: "$9/month",
+    price: 9,
     description: "Perfect for individuals getting started.",
     buttonText: "Get Started",
+    billing_interval: "month",
     features: [
       { label: "Up to 5 Analytics per hour", available: true },
       { label: "10GB storage", available: true },
@@ -26,9 +28,10 @@ export const billingPlans: BillingPlan[] = [
   {
     id: "professional",
     name: "Professional — $29/month",
-    price: "$29/month",
+    price: 29,
     description: "Best for growing teams and businesses.",
     buttonText: "Upgrade Now",
+    billing_interval: "year",
     features: [
       { label: "Unlimited Analysis", available: true },
       { label: "100GB storage", available: true },
@@ -41,9 +44,10 @@ export const billingPlans: BillingPlan[] = [
   {
     id: "enterprise",
     name: "Enterprise — $99/month",
-    price: "$99/month",
+    price: 99,
     description: "For large organizations with advanced needs.",
     buttonText: "Contact Sales",
+    billing_interval: "month",
     features: [
       { label: "Unlimited Analysis", available: true },
       { label: "Unlimited storage", available: true },
