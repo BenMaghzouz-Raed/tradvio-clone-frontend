@@ -1,4 +1,4 @@
-export type TradeType = "Short" | "Long";
+export type TradeType = "SWING" | "SCALP" | "BOTH";
 export type TradeOutcome = "Win" | "Loss" | "Not Taken";
 export type TradeSource = "AI" | "MANUAL";
 

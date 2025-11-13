@@ -62,22 +62,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // TODO: add a timer to fetch user every minute or so
   useEffect(() => {
-    //fetchUser().then(() => setLoading(false));
-    setCurrentUser({
-      avatar_url: "",
-      first_name: "nacef",
-      last_name: "rhayem",
-      role: "admin",
-      username: "nacefrhayem",
-      email: "nacefrhayem@gmail.com",
-      timezone: "UTC",
-      user_id: "user_id",
-      email_verified: true,
-      created_at: new Date(),
-      last_login: new Date(),
-      status: "active",
-      updated_at: new Date(),
-    });
+    fetchUser();
   }, []);
 
   async function login(username: string, password: string) {
