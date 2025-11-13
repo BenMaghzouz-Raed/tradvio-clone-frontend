@@ -1,21 +1,55 @@
-import { useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useEffect, useMemo, useState } from "react";
 import PaginationComponent from "@/components/pagination";
-import tradesData from "@/seeds/trades.ts";
 import StatsCard from "@/components/stats-card.tsx";
 import DataTable from "@/components/data-table.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import PageSizeSelector from "@/components/page-size-selector.tsx";
 import { columns } from "./components/columns";
-import { SlidersVertical } from "lucide-react";
+import { getTrades } from "@/services/domain/TradeService";
+import { toastNotification } from "@/lib/toast";
+import Filter from "./components/filter";
+import { ITradeFilter } from "@/types/trade";
+import TradeModal from "./components/trade-modal";
+
+// TODO: add correct pagination to backend (must contain total pages or total)
+// TODO: define symbol values
+const total = 20;
 
 function TradeJournal() {
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 10;
-  const totalPages = Math.ceil(tradesData.length / rowsPerPage);
-  const startIndex = (currentPage - 1) * rowsPerPage;
-  const currentRows = tradesData.slice(startIndex, startIndex + rowsPerPage);
+  const [recordModalOpen, setRecordModalOpen] = useState(false);
   const [itemsPerPage, setItemsPerPage] = useState<number>(10);
+  const [loading, setLoading] = useState(true);
+  const [filters, setFilters] = useState<ITradeFilter>({ symbol: "All" });
+  const [trades, setTrades] = useState([]);
 
+  const fetchData = async (conditions: ITradeFilter) => {
+    try {
+      // clean up filters
+      const cleanConditions = Object.fromEntries(
+        Object.entries(conditions).filter(
+          (entry) => !!entry[1] && entry[1] !== "All"
+        )
+      );
+      setLoading(true);
+      const res: any = await getTrades(cleanConditions);
+      setTrades(res.items);
+    } catch (err: any) {
+      toastNotification({
+        type: "error",
+        message: err.message,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData(filters);
+  }, [filters]);
+
+  const totalPages = useMemo(() => Math.ceil(trades.length / total), [trades]);
   return (
     <div>
       <div className="flex flex-wrap justify-around gap-4 mb-4">
@@ -26,17 +60,36 @@ function TradeJournal() {
       </div>
 
       <div className="flex justify-end mb-4 gap-2">
-        <Button variant="outline" className=" hover:bg-gray-100 cursor-pointer">
-          Filter
-          <SlidersVertical className="w-5 h-5" />
-        </Button>
+        <Filter setFilters={setFilters} filters={filters} />
 
-        <Button className="bg-black text-white cursor-pointer hover:bg-gray-800">
-          Record New Trade
-        </Button>
+        <TradeModal
+          open={recordModalOpen}
+          setOpen={setRecordModalOpen}
+          onSuccess={() => {
+            toastNotification({
+              type: "success",
+              message: "Trade succesfully recorded",
+            });
+            setRecordModalOpen(false);
+          }}
+          onError={(err) => {
+            toastNotification({
+              type: "error",
+              message: err.message,
+            });
+            setRecordModalOpen(false);
+          }}
+        >
+          <Button
+            className="bg-black text-white cursor-pointer hover:bg-gray-800"
+            onClick={() => setRecordModalOpen(true)}
+          >
+            Record New Trade
+          </Button>
+        </TradeModal>
       </div>
 
-      <DataTable columns={columns} data={currentRows} />
+      <DataTable columns={columns} data={trades} loading={loading} />
 
       <div className="flex items-center justify-between pt-2">
         <span className="text-muted-foreground text-sm w-fit">

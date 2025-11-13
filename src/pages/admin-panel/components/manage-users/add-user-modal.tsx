@@ -1,5 +1,3 @@
-"use client";
-
 import DataTable from "@/components/data-table";
 import { columns } from "./columns";
 import { IUser } from "@/types/user-types";
@@ -11,6 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import AddUserForm from "./add-user-form";
 
@@ -32,8 +31,11 @@ export default function ManageUsers({ data }: { data: IUser[] }) {
           </DialogTrigger>
 
           <DialogContent className="max-w-lg">
-            <DialogHeader>
+            <DialogHeader className="space-y-1">
               <DialogTitle>Add a New User</DialogTitle>
+              <DialogDescription className="text-sm text-gray-500 block">
+                Enter information to add a user
+              </DialogDescription>
             </DialogHeader>
 
             <div className="py-4">

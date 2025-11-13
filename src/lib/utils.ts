@@ -27,3 +27,15 @@ export function truncate(value: string, threshold: number) {
   const length = value.length;
   return `${length > threshold ? value.slice(0, threshold) + "..." : value}`;
 }
+
+export const saveJsonToSessionStorage = (name: string, value: object) => {
+  sessionStorage.setItem(name, JSON.stringify(value));
+};
+
+export const loadJsonFromSessionStorage = (name: string) => {
+  const asString = sessionStorage.getItem(name);
+  if (!asString) {
+    throw Error(`no item named ${name} found`);
+  }
+  return JSON.parse(asString);
+};

@@ -15,7 +15,7 @@ export default function TrandeCard({ trade }: { trade: ITrade }) {
             Ascending Triangle - Daily
           </h2>
           <h3 className="text-gray font-[400 text-sm]">
-            {formatDate(trade.date!)}
+            {formatDate(trade.trade_date!)}
           </h3>
         </div>
         <Button className="cursor-pointer" variant="outline">

@@ -1,14 +1,37 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import StatsCard from "@/components/stats-card";
 import TopBanner from "./components/top-banner";
 import SubscriptionAlert from "./components/subscription-alert";
-import trades from "@/seeds/trades";
 import DataTable from "@/components/data-table";
 import { columns } from "./components/table-columns";
+import { getTrades } from "@/services/domain/TradeService";
+import { toastNotification } from "@/lib/toast";
 
 export default function Dashboard() {
   const [daysLeft] = useState(7);
+  const [loading, setLoading] = useState(true);
+  const [trades, setTrades] = useState([]);
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const res: any = await getTrades({});
+      setTrades(res.items);
+    } catch (err: any) {
+      toastNotification({
+        type: "error",
+        message: err.message,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <div className="space-y-4">
@@ -27,12 +50,12 @@ export default function Dashboard() {
         <h2 className="bg-[#F5F5F5] rounded-2xl  text-[#0A0A0A] p-2">
           Recent Trades
         </h2>
-        <Button className="bg-[#7F7F7F] text-white hover:bg-gray-900">
+        <Button className="bg-[#7F7F7F] text-white hover:bg-gray-900 cursor-pointer">
           Record New Trade
         </Button>
       </div>
 
-      <DataTable columns={columns} data={trades} />
+      <DataTable columns={columns} data={trades} loading={loading} />
     </div>
   );
 }

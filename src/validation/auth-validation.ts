@@ -1,4 +1,5 @@
 import * as z from "zod";
+
 const passwordRule = z
   .string()
   .min(8, "Password must be at least 8 characters long");
@@ -32,7 +33,7 @@ export const registerSchema = z.object({
 
 export const resetPasswordSchema = z
   .object({
-    newPassword: registerSchema.shape.password,
+    newPassword: passwordRule,
     confirmPassword: z.string(),
   })
   .refine((data) => data.newPassword === data.confirmPassword, {
@@ -62,9 +63,26 @@ export const forgotPasswordSchema = z.object({
   email: z.email(),
 });
 
+export const addUserSchema = z.object({
+  firstName: z.string().min(1, "First name is required"),
+  lastName: z.string().min(1, "Last name is required"),
+  username: z.string().min(8, "Username must be at least 8 characters"),
+  email: z.string().email("Enter a valid email"),
+  password: passwordRule,
+  timezone: z
+    .string()
+    .regex(/^UTC([+-](0?[0-9]|1[0-2]))?$/i, "Enter a valid timezone"),
+
+  role: z
+    .enum(["admin", "user"])
+    .refine((val) => ["admin", "user"].includes(val), {
+      message: "Role must be either admin or user",
+    }),
+});
 export type ResetPasswordFormValues = z.infer<typeof resetPasswordSchema>;
 export type LoginFormValues = z.infer<typeof loginSchema>;
 export type RegisterFormValues = z.infer<typeof registerSchema>;
 export type ProfileFormValues = z.infer<typeof profileSchema>;
 export type UpdatePasswordFormValues = z.infer<typeof updatePasswordSchema>;
 export type ForgotPasswordFormValues = z.infer<typeof forgotPasswordSchema>;
+export type AddUserFormValues = z.infer<typeof addUserSchema>;
