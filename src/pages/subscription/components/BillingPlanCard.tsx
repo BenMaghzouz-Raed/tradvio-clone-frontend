@@ -1,10 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Check, X } from "lucide-react";
-import { BillingPlan } from "@/seeds/subscribeTrades";
+import { SubscriptionPlan } from "@/types/subscription-plans";
 
 interface BillingPlanCardProps {
-  plan: BillingPlan;
+  plan: SubscriptionPlan;
   isSelected?: boolean;
   onSelect?: () => void;
 }
@@ -20,10 +20,9 @@ export default function BillingPlanCard({
   return (
     <Card
       id={plan.id}
-      className={`cursor-pointer transition-all ${
+      className={`transition-all ${
         isSelected ? "border-[#1C1917] shadow-md" : ""
       }`}
-      onClick={onSelect}
     >
       <CardHeader className="pb-2 text-center">
         <CardTitle className="text-xl font-semibold">{title}</CardTitle>
@@ -60,12 +59,13 @@ export default function BillingPlanCard({
 
         <Button
           className={`cursor-pointer w-full mt-3 transition-all ${
-            isSelected
+            !isSelected
               ? "bg-[#44403C] hover:bg-[#292524] shadow-md text-[#FAFAF9]"
               : "bg-[#F5F5F4] hover:bg-[#E7E5E4] text-[#44403C]"
           }`}
+          onClick={onSelect}
         >
-          {plan.buttonText}
+          Subscribe Now
         </Button>
       </CardContent>
     </Card>
