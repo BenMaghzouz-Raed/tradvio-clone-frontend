@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toastNotification } from "@/lib/toast";
 import { Icons } from "@/components/icons";
+import { createUser } from "@/services/domain/AdminUsersService";
 import {
   Select,
   SelectContent,
@@ -38,16 +39,13 @@ export default function AddUserForm({ onSuccess }: { onSuccess?: () => void }) {
   const onSubmit = async (values: AddUserFormValues) => {
     setLoading(true);
     try {
-      console.log("Form submitted with:", values);
-
+      await createUser(values);
       toastNotification({
-        message: "Form submitted successfully (no backend call yet).",
+        message: "User created successfully.",
         type: "success",
       });
-
       form.reset();
       if (onSuccess) onSuccess();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       toastNotification({
         message: err.message || "Something went wrong.",
