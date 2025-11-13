@@ -13,6 +13,7 @@ export const ROUTES: {
   FORGOT_PASSWORD: RouteType;
   RESET_PASSWORD: RouteType;
   HELP: RouteType;
+  VERIFY_EMAIL: RouteType;
 } = {
   LOGIN: {
     path: "login",
@@ -86,6 +87,12 @@ export const ROUTES: {
     title: "Get Help",
     protected: true,
     roles: ["user", "admin"],
+  },
+  VERIFY_EMAIL: {
+    path: "verify-email",
+    title: "Verify Email",
+    protected: false,
+    roles: [],
   },
 };
 

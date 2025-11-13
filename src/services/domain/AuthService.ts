@@ -14,7 +14,8 @@ export const confirmEmail = ({
   token: string;
 }) => {
   return http.get(
-    `/auth/verify-email/confirm?selector=${selector}&token=${token}`
+    `/auth/verify-email?selector=${selector}&token=${token}`,
+    { withCredentials: true }
   );
 };
 

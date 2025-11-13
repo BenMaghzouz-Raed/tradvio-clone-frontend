@@ -14,6 +14,7 @@ import AdminPanel from "./pages/admin-panel";
 import ForgotPassword from "./pages/auth/forgot-password";
 import ResetPassword from "./pages/auth/reset-password";
 import Help from "./pages/help";
+import VerifyEmail from "./pages/auth/verify-email";
 
 export default function Router() {
   return (
@@ -31,6 +32,7 @@ export default function Router() {
       <Route path={ROUTES.FORGOT_PASSWORD.path} element={<ForgotPassword />} />
 
       <Route path={ROUTES.RESET_PASSWORD.path} element={<ResetPassword />} />
+      <Route path={ROUTES.VERIFY_EMAIL.path} element={<VerifyEmail />} />
       <Route path={ROUTES.LOGIN.path} element={<LogIn />} />
       <Route path={ROUTES.REGISTER.path} element={<Register />} />
       <Route path="*" element={<NotMatch />} />
