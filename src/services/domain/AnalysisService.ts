@@ -1,11 +1,8 @@
 import httpClient from "@/lib/http";
 
 export const analyseGraph = (formData: FormData) => {
-  return httpClient.post("/chart/analyze-gemini", formData, {
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-  });
+  // Let the browser set proper multipart/form-data with boundary
+  return httpClient.post("/chart/analyze-gemini", formData);
 };
 
 export const getAnalyses = (params: {
