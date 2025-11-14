@@ -4,7 +4,6 @@ import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ManageUsers from "./components/manage-users";
 import AuditLogs from "./components/audit-logs";
-import { logs } from "@/seeds/logs";
 
 export default function AdminPanel() {
   const tabs = [
@@ -16,7 +15,7 @@ export default function AdminPanel() {
     },
     {
       title: "Audit Logs",
-      component: <AuditLogs data={logs} />,
+      component: <AuditLogs />,
       key: "auditLogs",
     },
     {
