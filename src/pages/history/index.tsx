@@ -1,11 +1,10 @@
 /* eslint-disable prefer-const */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import StatsCard from "@/components/stats-card";
 import { SlidersVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PaginationComponent from "@/components/pagination";
-import trades from "@/seeds/trades";
 import { Card } from "@/components/ui/card";
 import AnalysisCard from "@/components/analysis-card";
 import { getAnalyses, getAnalysis } from "@/services/domain/AnalysisService";
@@ -145,14 +144,11 @@ export function exportObjectToCSV(data: any, fileName = "export.csv") {
   link.download = fileName;
   link.click();
 }
+import { BarChart3, CheckCircle2, Clock3, XCircle } from "lucide-react";
 
 export default function History() {
   const [analyses, setAnalises] = useState<AnalysisType[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const totalTrades = trades.length;
-  const wonTrades = trades.filter((t) => t.outcome === "Win").length;
-  const lostTrades = trades.filter((t) => t.outcome === "Loss").length;
-  const winRate = totalTrades ? Math.round((wonTrades / totalTrades) * 100) : 0;
   const [loading, setLoading] = useState(true);
 
   const fetchData = async (params: {
@@ -164,7 +160,7 @@ export default function History() {
     try {
       setLoading(true);
       const res: any = await getAnalyses(params);
-      setAnalises(res.items);
+      setAnalises(res.items || []);
     } catch (err: any) {
       toastNotification({
         type: "error",
@@ -202,13 +198,27 @@ export default function History() {
     fetchData({});
   }, []);
 
+  const stats = useMemo(() => {
+    const total = analyses.length;
+    const completed = analyses.filter((a) => a.status === "COMPLETED").length;
+    const failed = analyses.filter((a) => a.status === "FAILED").length;
+    const pending = analyses.filter((a) => a.status === "PENDING").length;
+    const avgConfidence = total
+      ? (
+          analyses.reduce((acc, a) => acc + (Number(a.confidence_score || 0) || 0), 0) /
+          total
+        ).toFixed(1)
+      : "0.0";
+    return { total, completed, failed, pending, avgConfidence };
+  }, [analyses]);
+
   return (
     <div className="space-y-6 p-6">
       <div className="flex flex-wrap justify-around gap-4">
-        <StatsCard label="Total Trades" value={String(totalTrades)} />
-        <StatsCard label="Won Trades" value={String(wonTrades)} />
-        <StatsCard label="Lost Trades" value={String(lostTrades)} />
-        <StatsCard label="Win Rate" value={`${winRate}%`} />
+        <StatsCard label="Total Analyses" value={String(stats.total)} icon={<BarChart3 className="h-5 w-5" />} />
+        <StatsCard label="Completed" value={String(stats.completed)} icon={<CheckCircle2 className="h-5 w-5" />} variant="success" />
+        <StatsCard label="Failed" value={String(stats.failed)} icon={<XCircle className="h-5 w-5" />} variant="error" />
+        <StatsCard label="Pending" value={String(stats.pending)} icon={<Clock3 className="h-5 w-5" />} variant="warning" />
       </div>
 
       <div className="flex justify-end mb-4 gap-2">
