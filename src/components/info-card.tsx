@@ -24,7 +24,9 @@ export default function InfoCard({
             <h5 className="font-[400] text-[14px] text-[#B4B4B4]">
               {item.label}
             </h5>
-            <h5 className="font-normal text-[14px] text-gray">{item.value}</h5>
+            <h5 className="font-normal text-[14px] text-gray text-right">
+              {item.value}
+            </h5>
           </div>
         ))}
       </div>

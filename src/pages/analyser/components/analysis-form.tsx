@@ -23,7 +23,7 @@ import {
 } from "@/validation/analysis-validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { BrainCog, Grid, RefreshCw } from "lucide-react";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
@@ -50,12 +50,18 @@ export default function AnalysisForm({
   setLoading,
   loading,
   reAnalyse,
+  showUpload = true,
+  imageFile,
+  previewUrl,
 }: {
   className?: string;
   setAnalysisResult: (result: any) => void;
   setLoading: (state: boolean) => void;
   loading: boolean;
   reAnalyse: boolean;
+  showUpload?: boolean;
+  imageFile?: File | null;
+  previewUrl?: string | null;
 }) {
   const analyseChartForm = useForm({
     resolver: zodResolver(analyseChartSchema),
@@ -72,9 +78,12 @@ export default function AnalysisForm({
 
   const onSubmit = async (data: AnalyseChartFormValues) => {
     const formData = new FormData();
-    Object.entries(data).forEach((entry) =>
-      formData.append(entry[0], entry[1] as Blob)
-    );
+    Object.entries(data).forEach((entry) => {
+      if (entry[0] === "image") return; // handle below
+      formData.append(entry[0], entry[1] as Blob);
+    });
+    const img = imageFile ?? (data.image as unknown as File | undefined);
+    if (img) formData.append("image", img);
     try {
       setLoading(true);
       const result = await analyseGraph(formData);
@@ -98,31 +107,55 @@ export default function AnalysisForm({
     [analyseChartForm.watch("timeframe")]
   );
 
+  // reflect external image into RHF for validation
+  useEffect(() => {
+    if (imageFile) {
+      analyseChartForm.setValue("image", imageFile as any, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
+    }
+  }, [imageFile]);
+
   return (
-    <Card className={cn("w-fit p-4 gap-2", className)}>
+    <Card className={cn("w-fit p-4 gap-2 relative", className)}>
       <Form {...analyseChartForm}>
         <form onSubmit={analyseChartForm.handleSubmit(onSubmit)}>
-          <FormField
-            control={analyseChartForm.control}
-            name="image"
-            render={({ fieldState }) => (
-              <>
-                <Upload
-                  name="image"
-                  label="Upload Chart Image"
-                  className="w-full h-50 mb-8"
-                  onChange={(e) =>
-                    analyseChartForm.setValue("image", e.target.files![0])
-                  }
-                />
-                {fieldState.error && (
-                  <p className="text-red-500 text-xs mt-1">
-                    {fieldState.error.message}
-                  </p>
-                )}
-              </>
-            )}
-          />
+          {showUpload && (
+            <FormField
+              control={analyseChartForm.control}
+              name="image"
+              render={({ fieldState }) => (
+                <>
+                  <Upload
+                    name="image"
+                    label="Upload Chart Image"
+                    className={cn(
+                      "transition-all duration-500 ease-in-out",
+                      loading
+                        ? "absolute right-4 -top-6 w-48 h-28 sm:w-56 sm:h-32 z-20 shadow-md ring-1 ring-black/5 rounded-md"
+                        : "w-full h-50 mb-8"
+                    )}
+                    onChange={(e) =>
+                      analyseChartForm.setValue("image", e.target.files![0])
+                    }
+                  />
+                  {fieldState.error && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {fieldState.error.message}
+                    </p>
+                  )}
+                </>
+              )}
+            />
+          )}
+
+          {/* floating preview when loading */}
+          {loading && !showUpload && previewUrl && (
+            <div className="absolute right-4 -top-6 w-48 h-28 sm:w-56 sm:h-32 z-20 rounded-md overflow-hidden shadow-md ring-1 ring-black/5 transition-transform duration-300 ease-out">
+              <img src={previewUrl} alt="chart preview" className="w-full h-full object-cover" />
+            </div>
+          )}
           <span className="text-gray sm:text-sm text-xs">
             Trading Type ({tradingType === "SCALP" ? "Scalp" : "Swing"})
           </span>
@@ -318,8 +351,9 @@ export default function AnalysisForm({
           <div className="flex gap-2 mt-4">
             {reAnalyse ? (
               <Button
+                type="button"
                 variant="outline"
-                onClick={() => analyseChartForm.handleSubmit(onSubmit)}
+                onClick={analyseChartForm.handleSubmit(onSubmit)}
                 loading={loading}
                 disabled={loading}
               >

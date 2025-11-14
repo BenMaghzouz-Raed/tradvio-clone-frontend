@@ -1,11 +1,17 @@
 import Tag from "@/components/tag";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/utils";
 import { UserStatus, IUser } from "@/types/user-types";
 import { ColumnDef } from "@tanstack/react-table";
-import { EllipsisVertical, EllipsisVerticalIcon } from "lucide-react";
+import { Edit3, Trash2 } from "lucide-react";
 
-export const columns: ColumnDef<IUser>[] = [
+export type ColumnActions = {
+  onEdit: (user: IUser) => void;
+  onDelete: (user: IUser) => void;
+};
+
+export const getColumns = (actions: ColumnActions): ColumnDef<IUser>[] => [
   {
     id: "select",
     header: ({ table }) => (
@@ -47,7 +53,7 @@ export const columns: ColumnDef<IUser>[] = [
     accessorKey: "subscriptionPlan",
     header: "Subbscription Plan",
     cell: ({ row }) => {
-      return row.getValue("subscriptionPlan");
+      return row.getValue("subscriptionPlan") as string | undefined;
     },
     enableSorting: false,
     enableHiding: false,
@@ -87,21 +93,48 @@ export const columns: ColumnDef<IUser>[] = [
   {
     accessorKey: "email",
     header: "Email",
-    cell: ({ row }) => row.getValue("email"),
+    cell: ({ row }) => row.getValue("email") as string,
     enableSorting: false,
     enableHiding: false,
   },
   {
     accessorKey: "last_login",
     header: "Last Login",
-    cell: ({ row }) => formatDate(row.getValue("last_login")),
+    cell: ({ row }) => {
+      const v = row.getValue("last_login") as string | Date | null | undefined;
+      return v ? formatDate(new Date(v)) : "-";
+    },
     enableSorting: false,
     enableHiding: false,
   },
   {
-    id: "options",
-    header: () => <EllipsisVerticalIcon size={20} />,
-    cell: () => <EllipsisVertical size={20} />,
+    id: "actions",
+    header: "Actions",
+    cell: ({ row }) => {
+      const user = row.original as IUser;
+      return (
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-8 px-2 cursor-pointer"
+            onClick={() => actions.onEdit(user)}
+            title="Edit"
+          >
+            <Edit3 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="destructive"
+            size="sm"
+            className="h-8 px-2 cursor-pointer"
+            onClick={() => actions.onDelete(user)}
+            title="Delete"
+          >
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        </div>
+      );
+    },
     enableSorting: false,
     enableHiding: false,
   },

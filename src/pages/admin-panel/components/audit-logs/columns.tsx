@@ -53,7 +53,8 @@ export const columns: ColumnDef<ILog>[] = [
     accessorKey: "values",
     header: "Description",
     cell: ({ row }) => {
-      const value = JSON.stringify(row.getValue<JSON>("values"));
+      const raw = row.getValue<any>("values");
+      const value = typeof raw === "string" ? raw : JSON.stringify(raw ?? {});
       return value.length > 30 ? (
         <Tooltip>
           <TooltipTrigger asChild>
@@ -64,7 +65,7 @@ export const columns: ColumnDef<ILog>[] = [
           </TooltipContent>
         </Tooltip>
       ) : (
-        <>value</>
+        <>{value}</>
       );
     },
     enableSorting: false,
@@ -89,7 +90,10 @@ export const columns: ColumnDef<ILog>[] = [
   {
     accessorKey: "created_at",
     header: "created at",
-    cell: ({ row }) => formatDate(row.getValue("created_at")),
+    cell: ({ row }) => {
+      const v = row.getValue("created_at") as string | Date | null | undefined;
+      return v ? formatDate(new Date(v)) : "-";
+    },
     enableSorting: false,
     enableHiding: false,
   },

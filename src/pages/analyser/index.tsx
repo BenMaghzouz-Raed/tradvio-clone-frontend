@@ -1,14 +1,57 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import AnalysisForm from "./components/analysis-form";
-import InfoCard, { InfoCardLoader } from "@/components/info-card";
+import InfoCard from "@/components/info-card";
 import { formatAmount } from "@/lib/utils";
 import { Signal } from "@/components/signal";
 import AiInsights from "./components/ai-insights";
+import AnalysisLoading from "./components/analysis-loading";
+import Upload from "@/components/upload";
 
 export default function Analyser() {
   const [analysisResult, setAnalysisResult] = useState<any>(null);
   const [loading, setLoading] = useState(false);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  // Lightweight client-side compression to reduce upload and inference time
+  async function compressImage(file: File, maxSide = 1600, quality = 0.75): Promise<File> {
+    const dataUrl: string = await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+
+    const img = await new Promise<HTMLImageElement>((resolve, reject) => {
+      const i = new Image();
+      i.onload = () => resolve(i);
+      i.onerror = reject;
+      i.src = dataUrl;
+    });
+
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d")!;
+    let { width, height } = img;
+    const maxCurrent = Math.max(width, height);
+    if (maxCurrent > maxSide) {
+      const scale = maxSide / maxCurrent;
+      width = Math.round(width * scale);
+      height = Math.round(height * scale);
+    }
+    canvas.width = width;
+    canvas.height = height;
+    ctx.drawImage(img, 0, 0, width, height);
+
+    const blob: Blob = await new Promise((resolve) =>
+      canvas.toBlob((b) => resolve(b as Blob), "image/jpeg", quality)
+    );
+
+    return new File([blob], file.name.replace(/\.[^.]+$/, ".jpg"), {
+      type: "image/jpeg",
+      lastModified: Date.now(),
+    });
+  }
 
   return (
     <div
@@ -19,28 +62,33 @@ export default function Analyser() {
       <div className="flex flex-col w-full">
         {loading && (
           <div className="gap-4">
-            <div className="grid grid-cols-2 gap-4">
-              <InfoCardLoader
-                className="col-span-2 lg:col-span-1"
-                title="Chart Data"
-              />
-
-              <InfoCardLoader
-                className="col-span-2 lg:col-span-1"
-                title="Technical Analysis"
-              />
-              <InfoCardLoader
-                className="col-span-2 lg:col-span-1"
-                title="Risk Management"
-              />
-              <InfoCardLoader
-                className="col-span-2 lg:col-span-1"
-                title="Analysis Result"
-              />
-              <InfoCardLoader className="col-span-2" title="Trade Suggestion" />
-            </div>
-            {/* TODO: add ai insights here */}
-            <InfoCardLoader className="col-span-2 mt-4" title="Ai Insights" />
+            <AnalysisLoading />
+          </div>
+        )}
+        {!loading && analysisResult === null && (
+          <div className="flex items-start justify-center w-full">
+            <Upload
+              name="image"
+              label="Upload Chart for AI Analysis"
+              className="w-full max-w-[720px] h-72 mt-2"
+              onChange={async (e) => {
+                const file = e.target.files?.[0] || null;
+                if (!file) {
+                  setImageFile(null);
+                  setPreviewUrl(null);
+                  return;
+                }
+                try {
+                  const compressed = await compressImage(file);
+                  setImageFile(compressed);
+                  setPreviewUrl(URL.createObjectURL(compressed));
+                } catch {
+                  // fallback to original if compression fails
+                  setImageFile(file);
+                  setPreviewUrl(URL.createObjectURL(file));
+                }
+              }}
+            />
           </div>
         )}
         {!loading && analysisResult !== null && (
@@ -232,6 +280,7 @@ export default function Analyser() {
             <AiInsights
               aiAnalysis={analysisResult.ai_analysis}
               final_recommendation={analysisResult.final_recommendation}
+              per_strategy={analysisResult.per_strategy}
             />
           </>
         )}
@@ -242,6 +291,9 @@ export default function Analyser() {
         setLoading={setLoading}
         loading={loading}
         reAnalyse={analysisResult !== null}
+        showUpload={false}
+        imageFile={imageFile}
+        previewUrl={previewUrl}
       />
     </div>
   );

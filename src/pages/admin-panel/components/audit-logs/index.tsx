@@ -1,16 +1,34 @@
 import DataTable from "@/components/data-table";
 import { ILog } from "@/types/log-type";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { columns } from "./columns";
 import { Button } from "@/components/ui/button";
 import { Download, SlidersVertical } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { listAuditLogs } from "@/services/domain/AdminAuditLogsService";
 
 const periods = ["Week", "Month", "Year"];
 
-export default function AuditLogs({ data }: { data: ILog[] }) {
+export default function AuditLogs() {
   const [period, setPeriod] = useState("Week");
+  const [rows, setRows] = useState<ILog[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    const load = async () => {
+      setLoading(true);
+      try {
+        const data = await listAuditLogs();
+        setRows(data);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoading(false);
+      }
+    };
+    void load();
+  }, []);
 
   return (
     <div>
@@ -18,6 +36,7 @@ export default function AuditLogs({ data }: { data: ILog[] }) {
         <Card className="flex-row gap-0 p-1 rounded-sm">
           {periods.map((item) => (
             <Button
+              key={item}
               disabled={period === item}
               variant={period === item ? "outline" : "ghost"}
               onClick={() => setPeriod(item)}
@@ -36,7 +55,7 @@ export default function AuditLogs({ data }: { data: ILog[] }) {
           </Button>
         </div>
       </div>
-      <DataTable data={data} columns={columns} />
+      <DataTable data={rows} columns={columns} loading={loading} />
     </div>
   );
 }

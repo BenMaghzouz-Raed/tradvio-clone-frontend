@@ -3,21 +3,19 @@ import Notifications from "./components/notifications";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ManageUsers from "./components/manage-users";
-import { users } from "@/seeds/users";
 import AuditLogs from "./components/audit-logs";
-import { logs } from "@/seeds/logs";
 
 export default function AdminPanel() {
   const tabs = [
     { title: "Overview", component: <Notifications />, key: "overview" },
     {
       title: "Manage Users",
-      component: <ManageUsers data={users} />,
+      component: <ManageUsers />,
       key: "manageUsers",
     },
     {
       title: "Audit Logs",
-      component: <AuditLogs data={logs} />,
+      component: <AuditLogs />,
       key: "auditLogs",
     },
     {
