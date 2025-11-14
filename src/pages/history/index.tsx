@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import StatsCard from "@/components/stats-card";
@@ -7,10 +8,47 @@ import PaginationComponent from "@/components/pagination";
 import trades from "@/seeds/trades";
 import { Card } from "@/components/ui/card";
 import AnalysisCard from "@/components/analysis-card";
-import { getAnalyses } from "@/services/domain/AnalysisService";
+import { getAnalyses, getAnalysis } from "@/services/domain/AnalysisService";
 import { toastNotification } from "@/lib/toast";
 import { Spinner } from "@/components/ui/spinner";
 import { AnalysisType } from "@/types/analysis-type";
+
+export function flattenObject(obj: any, parentKey = ""): Record<string, any> {
+  let result: Record<string, any> = {};
+
+  for (const key of Object.keys(obj)) {
+    const value = obj[key];
+    const fullKey = parentKey ? `${parentKey}.${key}` : key;
+
+    if (Array.isArray(value)) {
+      result[fullKey] = JSON.stringify(value);
+    } else if (typeof value === "object" && value !== null) {
+      Object.assign(result, flattenObject(value, fullKey));
+    } else {
+      result[fullKey] = value;
+    }
+  }
+
+  return result;
+}
+
+export function exportObjectToCSV(data: any, fileName = "export.csv") {
+  const flat = flattenObject(data);
+
+  const headers = Object.keys(flat).join(",");
+  const row = Object.values(flat)
+    .map((v) => JSON.stringify(v ?? "")) // escape commas/quotes
+    .join(",");
+
+  const csv = `${headers}\n${row}`;
+
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = fileName;
+  link.click();
+}
 
 export default function History() {
   const [analyses, setAnalises] = useState<AnalysisType[]>([]);
@@ -41,6 +79,18 @@ export default function History() {
     }
   };
 
+  const exportCsv = async (analysis_id: string) => {
+    try {
+      const analysis: any = await getAnalysis(analysis_id);
+      exportObjectToCSV(analysis, `${analysis.analysis_id}.csv`);
+    } catch (err: any) {
+      toastNotification({
+        type: "error",
+        message: err.message,
+      });
+    }
+  };
+
   useEffect(() => {
     fetchData({});
   }, []);
@@ -68,7 +118,11 @@ export default function History() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-10 py-4">
               {analyses.map((analysis) => (
-                <AnalysisCard key={analysis.analysis_id} analysis={analysis} />
+                <AnalysisCard
+                  key={analysis.analysis_id}
+                  analysis={analysis}
+                  exportCsv={() => exportCsv(analysis.analysis_id)}
+                />
               ))}
             </div>
           )}

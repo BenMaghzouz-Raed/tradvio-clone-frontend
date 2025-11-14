@@ -15,3 +15,7 @@ export const getAnalyses = (params: {
     params,
   });
 };
+
+export const getAnalysis = (id: string) => {
+  return httpClient.get(`/chart/analyses/${id}`);
+};

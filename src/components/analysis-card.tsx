@@ -1,16 +1,20 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { cn, formatDate } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { Signal } from "./signal";
 import { Download } from "lucide-react";
 import { AnalysisType } from "@/types/analysis-type";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
 export default function AnalysisCard({
   analysis,
   className,
+  exportCsv,
 }: {
   analysis: AnalysisType;
   className?: string;
+  exportCsv: () => void;
 }) {
   return (
     <Card className={cn("p-3 flex flex-col gap-2", className)}>
@@ -47,9 +51,25 @@ export default function AnalysisCard({
             </div>
           )}
         </div>
-        <Button className="flex gap-2 cursor-pointer" variant="outline">
-          <Download /> Export CSV/PDF
-        </Button>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button className="flex gap-2 cursor-pointer" variant="outline">
+              <Download /> Export CSV/PDF
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-30 p-1">
+            <Button
+              variant="outline"
+              className="cursor-pointer mb-1 w-full"
+              onClick={() => exportCsv()}
+            >
+              CSV
+            </Button>
+            <Button variant="outline" className="cursor-pointer w-full">
+              PDF
+            </Button>
+          </PopoverContent>
+        </Popover>
       </div>
 
       <div className="flex justify-center w-full">
