@@ -5,7 +5,21 @@ import { listAuditLogs } from "@/services/domain/AdminAuditLogsService";
 import { CircleAlert, CircleCheck, CircleX, TriangleAlert } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 
+function getLogStatus(action?: string): "completed" | "failed" | "none" {
+  const a = (action || "").toUpperCase();
+  if (a === "COMPLETED") return "completed";
+  if (a.includes("FAILED") || a.includes("ERROR")) return "failed";
+  return "none";
+}
+
 function actionColor(action: LogAction | string | undefined) {
+  const status = getLogStatus(typeof action === "string" ? action : String(action));
+  if (status === "completed") {
+    return { bubble: "bg-green-100 text-green-600", icon: <CircleCheck className="w-4 h-4" /> };
+  }
+  if (status === "failed") {
+    return { bubble: "bg-red-100 text-red-600", icon: <CircleX className="w-4 h-4" /> };
+  }
   switch (action) {
     case "POST":
       return { bubble: "bg-green-100 text-green-600", icon: <CircleCheck className="w-4 h-4" /> };
@@ -53,7 +67,10 @@ export default function AuditLogs() {
     void load();
   }, []);
 
-  const items = useMemo(() => rows, [rows]);
+  const items = useMemo(
+    () => rows.filter((l) => (l.action || "").toUpperCase() !== "STARTED"),
+    [rows]
+  );
 
   return (
     <Card className="shadow-sm">
@@ -99,7 +116,22 @@ export default function AuditLogs() {
                   </div>
                   <div className="flex items-center gap-2">
                     <time className="text-xs text-neutral-400 whitespace-nowrap">{created}</time>
-                    <div className="w-2 h-2 rounded-full bg-[#3B82F6]" />
+                    {(() => {
+                      const s = getLogStatus(log.action as any);
+                      if (s === "completed")
+                        return (
+                          <span className="px-2 py-0.5 text-xs font-medium rounded-full ring-1 bg-green-50 text-green-700 ring-green-200">
+                            Completed
+                          </span>
+                        );
+                      if (s === "failed")
+                        return (
+                          <span className="px-2 py-0.5 text-xs font-medium rounded-full ring-1 bg-red-50 text-red-700 ring-red-200">
+                            Failed
+                          </span>
+                        );
+                      return <div className="w-2 h-2 rounded-full bg-neutral-300" />;
+                    })()}
                   </div>
                 </li>
               );
