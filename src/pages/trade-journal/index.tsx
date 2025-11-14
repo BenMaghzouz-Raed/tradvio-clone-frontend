@@ -11,10 +11,17 @@ import { toastNotification } from "@/lib/toast";
 import Filter from "./components/filter";
 import { ITradeFilter } from "@/types/trade";
 import TradeModal from "./components/trade-modal";
+import { formatAmount, formatPercent } from "@/lib/utils";
+import { PiggyBank, Target, ThumbsUp, ThumbsDown } from "lucide-react";
 
 // TODO: add correct pagination to backend (must contain total pages or total)
 // TODO: define symbol values
 const total = 20;
+
+function normalize(value: any): string {
+  if (!value) return "";
+  return String(value).toUpperCase();
+}
 
 function TradeJournal() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -22,7 +29,7 @@ function TradeJournal() {
   const [itemsPerPage, setItemsPerPage] = useState<number>(10);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState<ITradeFilter>({ symbol: "All" });
-  const [trades, setTrades] = useState([]);
+  const [trades, setTrades] = useState<any[]>([]);
 
   const fetchData = async (conditions: ITradeFilter) => {
     try {
@@ -34,7 +41,7 @@ function TradeJournal() {
       );
       setLoading(true);
       const res: any = await getTrades(cleanConditions);
-      setTrades(res.items);
+      setTrades(res.items || []);
     } catch (err: any) {
       toastNotification({
         type: "error",
@@ -49,14 +56,32 @@ function TradeJournal() {
     fetchData(filters);
   }, [filters]);
 
+  const stats = useMemo(() => {
+    const pnl = trades.reduce((acc, t) => acc + Number(t.profit_loss || 0), 0);
+    const wins = trades.filter((t) => normalize(t.outcome) === "WIN");
+    const losses = trades.filter((t) => normalize(t.outcome) === "LOSS");
+    const total = trades.length || 0;
+    const winRate = total ? (wins.length / total) * 100 : 0;
+    const avgWin = wins.length
+      ? wins.reduce((acc, t) => acc + Number(t.profit_loss || 0), 0) / wins.length
+      : 0;
+    const avgLossAbs = losses.length
+      ? Math.abs(
+          losses.reduce((acc, t) => acc + Number(t.profit_loss || 0), 0) / losses.length
+        )
+      : 0;
+
+    return { pnl, winRate, avgWin, avgLossAbs };
+  }, [trades]);
+
   const totalPages = useMemo(() => Math.ceil(trades.length / total), [trades]);
   return (
     <div>
       <div className="flex flex-wrap justify-around gap-4 mb-4">
-        <StatsCard label="Total P&L" value="$178.11" />
-        <StatsCard label="Win Rate" value="50%" />
-        <StatsCard label="Avg. Win" value="$200.00" />
-        <StatsCard label="Avg. Loss" value="$21.89" />
+        <StatsCard label="Total P&L" value={formatAmount(stats.pnl)} icon={<PiggyBank className="h-5 w-5" />} />
+        <StatsCard label="Win Rate" value={formatPercent(stats.winRate, 0)} icon={<Target className="h-5 w-5" />} variant="success" />
+        <StatsCard label="Avg. Win" value={formatAmount(stats.avgWin)} icon={<ThumbsUp className="h-5 w-5" />} />
+        <StatsCard label="Avg. Loss" value={formatAmount(stats.avgLossAbs)} icon={<ThumbsDown className="h-5 w-5" />} variant="error" />
       </div>
 
       <div className="flex justify-end mb-4 gap-2">
@@ -71,6 +96,7 @@ function TradeJournal() {
               message: "Trade succesfully recorded",
             });
             setRecordModalOpen(false);
+            fetchData(filters);
           }}
           onError={(err) => {
             toastNotification({
