@@ -12,6 +12,102 @@ import { getAnalyses, getAnalysis } from "@/services/domain/AnalysisService";
 import { toastNotification } from "@/lib/toast";
 import { Spinner } from "@/components/ui/spinner";
 import { AnalysisType } from "@/types/analysis-type";
+import { PDFDocument, StandardFonts } from "pdf-lib";
+
+function wrapText(text: string, maxWidth: number, font: any, fontSize: number) {
+  // Split into words
+  const words = text.split(" ");
+  const lines: string[] = [];
+  let currentLine = "";
+
+  for (let word of words) {
+    const testLine = currentLine ? currentLine + " " + word : word;
+    const testWidth = font.widthOfTextAtSize(testLine, fontSize);
+
+    // Normal case: fits → keep adding
+    if (testWidth <= maxWidth) {
+      currentLine = testLine;
+      continue;
+    }
+
+    // If a single word itself is longer than maxWidth → break it manually
+    if (font.widthOfTextAtSize(word, fontSize) > maxWidth) {
+      // Finish the current line first
+      if (currentLine) {
+        lines.push(currentLine);
+        currentLine = "";
+      }
+
+      // Hard wrap the long word into chunks
+      let sub = "";
+      for (let char of word.split("")) {
+        const testSub = sub + char;
+        if (font.widthOfTextAtSize(testSub, fontSize) > maxWidth) {
+          lines.push(sub);
+          sub = char; // new chunk
+        } else {
+          sub = testSub;
+        }
+      }
+      if (sub) lines.push(sub);
+      continue;
+    }
+
+    // Word is normal but doesn't fit on the line → break line
+    lines.push(currentLine);
+    currentLine = word;
+  }
+
+  if (currentLine) lines.push(currentLine);
+  return lines;
+}
+
+export async function exportObjectToPDF(data: any, fileName = "export.pdf") {
+  const pdfDoc = await PDFDocument.create();
+  let page = pdfDoc.addPage();
+  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+
+  const flat = Object.entries(flattenObject(data));
+
+  const margin = 50;
+  const fontSize = 10;
+  const pageWidth = page.getWidth();
+  const usableWidth = pageWidth - margin * 2;
+  const lineHeight = 14;
+
+  let y = page.getHeight() - margin;
+
+  for (const [key, value] of flat) {
+    const text = `${key}: ${String(value)}`;
+
+    // Wrap the line into multiple lines if needed
+    const wrappedLines = wrapText(text, usableWidth, font, fontSize);
+
+    for (const line of wrappedLines) {
+      if (y < margin + lineHeight) {
+        page = pdfDoc.addPage();
+        y = page.getHeight() - margin;
+      }
+
+      page.drawText(line, {
+        x: margin,
+        y,
+        font,
+        size: fontSize,
+      });
+
+      y -= lineHeight;
+    }
+  }
+
+  const pdfBytes = await pdfDoc.save();
+
+  const blob = new Blob([pdfBytes], { type: "application/pdf" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = fileName;
+  link.click();
+}
 
 export function flattenObject(obj: any, parentKey = ""): Record<string, any> {
   let result: Record<string, any> = {};
@@ -91,6 +187,17 @@ export default function History() {
     }
   };
 
+  const exportPdf = async (analysis_id: string) => {
+    try {
+      const analysis: any = await getAnalysis(analysis_id);
+      exportObjectToPDF(analysis, `${analysis.analysis_id}.pdf`);
+    } catch (err: any) {
+      toastNotification({
+        type: "error",
+        message: err.message,
+      });
+    }
+  };
   useEffect(() => {
     fetchData({});
   }, []);
@@ -122,6 +229,7 @@ export default function History() {
                   key={analysis.analysis_id}
                   analysis={analysis}
                   exportCsv={() => exportCsv(analysis.analysis_id)}
+                  exportPdf={() => exportPdf(analysis.analysis_id)}
                 />
               ))}
             </div>

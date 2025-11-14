@@ -11,10 +11,12 @@ export default function AnalysisCard({
   analysis,
   className,
   exportCsv,
+  exportPdf,
 }: {
   analysis: AnalysisType;
   className?: string;
   exportCsv: () => void;
+  exportPdf: () => void;
 }) {
   return (
     <Card className={cn("p-3 flex flex-col gap-2", className)}>
@@ -65,7 +67,11 @@ export default function AnalysisCard({
             >
               CSV
             </Button>
-            <Button variant="outline" className="cursor-pointer w-full">
+            <Button
+              variant="outline"
+              className="cursor-pointer w-full"
+              onClick={() => exportPdf()}
+            >
               PDF
             </Button>
           </PopoverContent>
