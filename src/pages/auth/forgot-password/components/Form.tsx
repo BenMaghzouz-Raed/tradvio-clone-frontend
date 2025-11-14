@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
@@ -9,6 +10,9 @@ import {
 import { Label } from "@/components/ui/label";
 import { Link } from "react-router-dom";
 import { ROUTES } from "@/services/http/LinksService";
+import { useState } from "react";
+import { forgotPassword } from "@/services/domain/AuthService";
+import { toastNotification } from "@/lib/toast";
 
 export default function Form() {
   const form = useForm<ForgotPasswordFormValues>({
@@ -17,10 +21,26 @@ export default function Form() {
       email: "",
     },
   });
+  const [loading, setLoading] = useState(false);
 
-  const onSubmit = (values: ForgotPasswordFormValues) => {
-    console.log("Forgot password submitted:", values);
+  const onSubmit = async (values: ForgotPasswordFormValues) => {
+    try {
+      setLoading(true);
+      await forgotPassword(values);
+      toastNotification({
+        type: "success",
+        message: "We sent you an email to reset your password",
+      });
+    } catch (err: any) {
+      toastNotification({
+        type: "error",
+        message: err.message,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
+
   return (
     <div className="mx-auto grid w-[350px] gap-6">
       <div className="grid gap-2 text-center">
@@ -45,7 +65,7 @@ export default function Form() {
             </p>
           )}
         </div>
-        <Button type="submit" className="w-full">
+        <Button loading={loading} type="submit" className="w-full">
           Send Reset Link
         </Button>
       </form>
