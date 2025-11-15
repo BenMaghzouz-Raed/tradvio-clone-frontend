@@ -23,12 +23,17 @@ export function formatAmount(amount: number) {
   return `$${amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
 }
 
+export function formatPercent(value: number, fractionDigits = 0) {
+  if (!isFinite(value)) return "0%";
+  return `${value.toFixed(fractionDigits)}%`;
+}
+
 export function truncate(value: string, threshold: number) {
   const length = value.length;
   return `${length > threshold ? value.slice(0, threshold) + "..." : value}`;
 }
 
-export const saveJsonToSessionStorage = (name: string, value: object) => {
+export const saveJsonToSessionStorage = (name: string, value: unknown) => {
   sessionStorage.setItem(name, JSON.stringify(value));
 };
 

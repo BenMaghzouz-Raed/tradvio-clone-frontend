@@ -15,7 +15,8 @@ import {
 import Upload from "@/components/upload";
 import { toastNotification } from "@/lib/toast";
 import { cn } from "@/lib/utils";
-import { analyseGraph } from "@/services/domain/AnalysisService";
+import { saveJsonToSessionStorage, loadJsonFromSessionStorage } from "@/lib/utils";
+import { analyseGraph, getRiskDefaults } from "@/services/domain/AnalysisService";
 import { ROUTES } from "@/services/http/LinksService";
 import {
   AnalyseChartFormValues,
@@ -23,7 +24,7 @@ import {
 } from "@/validation/analysis-validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { BrainCog, Grid, RefreshCw } from "lucide-react";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
@@ -53,6 +54,7 @@ export default function AnalysisForm({
   showUpload = true,
   imageFile,
   previewUrl,
+  onAddToJournal,
 }: {
   className?: string;
   setAnalysisResult: (result: any) => void;
@@ -62,6 +64,7 @@ export default function AnalysisForm({
   showUpload?: boolean;
   imageFile?: File | null;
   previewUrl?: string | null;
+  onAddToJournal?: () => void;
 }) {
   const analyseChartForm = useForm({
     resolver: zodResolver(analyseChartSchema),
@@ -76,10 +79,49 @@ export default function AnalysisForm({
     },
   });
 
+  const [riskDefaults, setRiskDefaults] = useState<
+    | null
+    | {
+        SWING?: Partial<{
+          account_balance: number;
+          risk_per_trade_percent: number;
+          stop_loss_points: number;
+          take_profit_points: number;
+        }>;
+        SCALP?: Partial<{
+          account_balance: number;
+          risk_per_trade_percent: number;
+          stop_loss_points: number;
+          take_profit_points: number;
+        }>;
+      }
+  >(null);
+
+  const applyDefaults = (tt: "SWING" | "SCALP") => {
+    const rd: any = (riskDefaults as any)?.[tt];
+    if (!rd) return;
+    const num = (v: any) => (typeof v === "number" && isFinite(v) ? v : undefined);
+
+    const patch: Partial<AnalyseChartFormValues> = {};
+    const ab = num(rd.account_balance);
+    if (ab !== undefined) patch.account_balance = ab as any;
+    const rp = num(rd.risk_per_trade_percent);
+    if (rp !== undefined) patch.risk_per_trade_percent = rp as any;
+    const sl = num(rd.stop_loss_points);
+    if (sl !== undefined) patch.stop_loss_points = sl as any;
+    const tp = num(rd.take_profit_points);
+    if (tp !== undefined) patch.take_profit_points = tp as any;
+
+    if (Object.keys(patch).length > 0) {
+      analyseChartForm.reset({ ...analyseChartForm.getValues(), ...patch });
+    }
+  };
+
   const onSubmit = async (data: AnalyseChartFormValues) => {
     const formData = new FormData();
     Object.entries(data).forEach((entry) => {
       if (entry[0] === "image") return; // handle below
+      if (entry[0] === "symbol" && !entry[1]) return; // skip empty symbol
       formData.append(entry[0], entry[1] as Blob);
     });
     const img = imageFile ?? (data.image as unknown as File | undefined);
@@ -107,6 +149,28 @@ export default function AnalysisForm({
     [analyseChartForm.watch("timeframe")]
   );
 
+  // Fetch risk defaults on mount and apply to initial trading type
+  useEffect(() => {
+    (async () => {
+      try {
+        const rd = await getRiskDefaults();
+        setRiskDefaults(rd as any);
+        const tt = analyseChartForm.getValues().trading_type as "SWING" | "SCALP";
+        applyDefaults(tt);
+      } catch (e) {
+        // ignore network errors; built-in defaults remain
+      }
+    })();
+  }, []);
+
+  // Apply defaults when trading type changes
+  useEffect(() => {
+    if (riskDefaults) {
+      applyDefaults(tradingType as "SWING" | "SCALP");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tradingType, riskDefaults]);
+
   // reflect external image into RHF for validation
   useEffect(() => {
     if (imageFile) {
@@ -116,6 +180,29 @@ export default function AnalysisForm({
       });
     }
   }, [imageFile]);
+
+  // Restore persisted symbol on mount
+  useEffect(() => {
+    try {
+      const savedSymbol = loadJsonFromSessionStorage("analysis_symbol");
+      if (savedSymbol) {
+        // @ts-ignore
+        analyseChartForm.setValue("symbol", savedSymbol, { shouldDirty: false });
+      }
+    } catch {}
+  }, []);
+
+  // Persist symbol to session when it changes
+  useEffect(() => {
+    const sub = analyseChartForm.watch((values, info) => {
+      if (info.name === "symbol") {
+        try {
+          saveJsonToSessionStorage("analysis_symbol", values.symbol ?? "");
+        } catch {}
+      }
+    });
+    return () => sub.unsubscribe();
+  }, [analyseChartForm]);
 
   return (
     <Card className={cn("w-fit p-4 gap-2 relative", className)}>
@@ -131,10 +218,8 @@ export default function AnalysisForm({
                     name="image"
                     label="Upload Chart Image"
                     className={cn(
-                      "transition-all duration-500 ease-in-out",
-                      loading
-                        ? "absolute right-4 -top-6 w-48 h-28 sm:w-56 sm:h-32 z-20 shadow-md ring-1 ring-black/5 rounded-md"
-                        : "w-full h-50 mb-8"
+                      "w-full h-50 mb-4",
+                      loading && "hidden"
                     )}
                     onChange={(e) =>
                       analyseChartForm.setValue("image", e.target.files![0])
@@ -150,12 +235,36 @@ export default function AnalysisForm({
             />
           )}
 
-          {/* floating preview when loading */}
-          {loading && !showUpload && previewUrl && (
-            <div className="absolute right-4 -top-6 w-48 h-28 sm:w-56 sm:h-32 z-20 rounded-md overflow-hidden shadow-md ring-1 ring-black/5 transition-transform duration-300 ease-out">
-              <img src={previewUrl} alt="chart preview" className="w-full h-full object-cover" />
+          {/* preview area (shown while loading or when a preview is available) */}
+          {(loading || (!!previewUrl && !showUpload)) && (
+            <div className="mb-4">
+              <div className="w-full rounded-md overflow-hidden border bg-accent/40">
+                {previewUrl ? (
+                  <img
+                    src={previewUrl}
+                    alt="chart preview"
+                    className="w-full h-40 object-contain bg-white"
+                  />
+                ) : (
+                  <div className="h-40" />
+                )}
+              </div>
             </div>
           )}
+          <span className="text-gray sm:text-sm text-xs">Symbol / Pattern</span>
+          <FormField
+            control={analyseChartForm.control}
+            name="symbol"
+            render={({ field, fieldState }) => (
+              <>
+                <Input placeholder="e.g., AAPL, TSLA, Double Bottom" {...field} />
+                {fieldState.error && (
+                  <p className="text-red-500 text-xs mt-1">{fieldState.error.message}</p>
+                )}
+              </>
+            )}
+          />
+
           <span className="text-gray sm:text-sm text-xs">
             Trading Type ({tradingType === "SCALP" ? "Scalp" : "Swing"})
           </span>
@@ -378,10 +487,9 @@ export default function AnalysisForm({
               </Button>
             ) : (
               <Button
+                type="button"
                 className="flex-grow bg-purple-500"
-                onClick={() =>
-                  console.log("implement addition to trade journal")
-                }
+                onClick={() => onAddToJournal && onAddToJournal()}
                 loading={loading}
                 disabled={loading}
               >
