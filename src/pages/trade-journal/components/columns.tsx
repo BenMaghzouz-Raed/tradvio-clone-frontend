@@ -59,13 +59,14 @@ export const columns: ColumnDef<ITrade>[] = [
     header: "Outcome",
     cell: ({ row }) => {
       const outcome = row.getValue("outcome") as TradeOutcome;
+      const label = outcome === "WIN" ? "Win" : outcome === "LOSS" ? "Loss" : "Not Taken";
       return outcome ? (
         <Tag
-          label={outcome}
+          label={label}
           variant={
-            outcome === "Win"
+            outcome === "WIN"
               ? "success"
-              : outcome === "Loss"
+              : outcome === "LOSS"
               ? "error"
               : "warning"
           }

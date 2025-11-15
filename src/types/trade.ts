@@ -1,5 +1,5 @@
 export type TradeType = "SWING" | "SCALP" | "BOTH";
-export type TradeOutcome = "Win" | "Loss" | "Not Taken";
+export type TradeOutcome = "WIN" | "LOSS" | "NOT_TAKEN";
 export type TradeSource = "AI" | "MANUAL";
 
 export interface ITrade {
@@ -39,17 +39,17 @@ export interface ITradeFilter {
 }
 
 export interface IRecordTrade {
-  entry_price: number;
-  entry_time: Date;
-  exit_price: number;
-  exit_time: Date;
-  outcome: "WIN" | "LOSS";
-  profit_loss: number;
-  profit_percent: number;
+  entry_price?: number;
+  entry_time?: Date;
+  exit_price?: number;
+  exit_time?: Date;
+  outcome: "WIN" | "LOSS" | "NOT_TAKEN";
+  profit_loss?: number;
+  profit_percent?: number;
   quantity: number;
-  source: "MANUAL";
+  source?: "MANUAL";
   symbol: string; //"EURUSD",
-  trade_date: Date;
-  trade_type: "LONG" | "SHORT";
-  trading_notes: string;
+  trade_date?: Date;
+  trade_type?: "LONG" | "SHORT";
+  trading_notes?: string;
 }

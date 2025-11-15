@@ -14,7 +14,7 @@ import {
 
 export default function GeneralSettings() {
   const [loading, setLoading] = useState(false);
-  const [settings, setSettings] = useState<AISettings>({ selected_model: null, model_chain: [], api_keys: [] });
+  const [settings, setSettings] = useState<AISettings>({ selected_model: null, model_chain: [], api_keys: [], risk_defaults: { SWING: {}, SCALP: {} } });
   const [models, setModels] = useState<string[]>([]);
   const [newKey, setNewKey] = useState("");
 
@@ -138,10 +138,90 @@ export default function GeneralSettings() {
             </ul>
           </div>
 
-          <div className="pt-2">
-            <Button onClick={save} className="cursor-pointer" disabled={loading}>
-              Save Changes
-            </Button>
+          <div className="border-t pt-4 mt-4">
+            <CardTitle className="text-base text-neutral-800 mb-2">Risk Parameters Defaults</CardTitle>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {(["SWING", "SCALP"] as const).map((tt) => (
+                <div key={tt} className="space-y-3">
+                  <div className="font-medium text-neutral-700">{tt === "SWING" ? "Swing Trading" : "Scalp Trading"}</div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="text-sm text-neutral-600">Account Balance ($)</label>
+                      <Input
+                        type="number"
+                        step="any"
+                        value={(settings.risk_defaults?.[tt]?.account_balance as any) ?? ""}
+                        onChange={(e) =>
+                          setSettings((s) => ({
+                            ...s,
+                            risk_defaults: {
+                              ...(s.risk_defaults || {}),
+                              [tt]: { ...(s.risk_defaults?.[tt] || {}), account_balance: e.target.valueAsNumber },
+                            },
+                          }))
+                        }
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm text-neutral-600">Risk Per Trade (%)</label>
+                      <Input
+                        type="number"
+                        step="any"
+                        value={(settings.risk_defaults?.[tt]?.risk_per_trade_percent as any) ?? ""}
+                        onChange={(e) =>
+                          setSettings((s) => ({
+                            ...s,
+                            risk_defaults: {
+                              ...(s.risk_defaults || {}),
+                              [tt]: { ...(s.risk_defaults?.[tt] || {}), risk_per_trade_percent: e.target.valueAsNumber },
+                            },
+                          }))
+                        }
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm text-neutral-600">Stop Loss (Points)</label>
+                      <Input
+                        type="number"
+                        step="any"
+                        value={(settings.risk_defaults?.[tt]?.stop_loss_points as any) ?? ""}
+                        onChange={(e) =>
+                          setSettings((s) => ({
+                            ...s,
+                            risk_defaults: {
+                              ...(s.risk_defaults || {}),
+                              [tt]: { ...(s.risk_defaults?.[tt] || {}), stop_loss_points: e.target.valueAsNumber },
+                            },
+                          }))
+                        }
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm text-neutral-600">Take Profit (Points)</label>
+                      <Input
+                        type="number"
+                        step="any"
+                        value={(settings.risk_defaults?.[tt]?.take_profit_points as any) ?? ""}
+                        onChange={(e) =>
+                          setSettings((s) => ({
+                            ...s,
+                            risk_defaults: {
+                              ...(s.risk_defaults || {}),
+                              [tt]: { ...(s.risk_defaults?.[tt] || {}), take_profit_points: e.target.valueAsNumber },
+                            },
+                          }))
+                        }
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="pt-3">
+              <Button onClick={save} className="cursor-pointer" disabled={loading}>
+                Save Changes
+              </Button>
+            </div>
           </div>
         </CardContent>
       </Card>
