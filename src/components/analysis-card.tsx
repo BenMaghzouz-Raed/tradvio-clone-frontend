@@ -63,29 +63,6 @@ export default function AnalysisCard({
             <span className="text-xs text-muted-foreground">R/R: {Number(analysis.suggested_risk_reward).toFixed(2)}</span>
           )}
         </div>
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button className="flex gap-2 cursor-pointer" variant="outline">
-              <Download /> Export CSV/PDF
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-30 p-1">
-            <Button
-              variant="outline"
-              className="cursor-pointer mb-1 w-full"
-              onClick={() => exportCsv()}
-            >
-              CSV
-            </Button>
-            <Button
-              variant="outline"
-              className="cursor-pointer w-full"
-              onClick={() => exportPdf()}
-            >
-              PDF
-            </Button>
-          </PopoverContent>
-        </Popover>
         <div className="flex items-center gap-3 text-sm">
           <span className="text-muted-foreground">Entry</span>
           <span className="font-medium">

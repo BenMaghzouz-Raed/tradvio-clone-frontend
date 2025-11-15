@@ -2,17 +2,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useMemo, useState } from "react";
 import StatsCard from "@/components/stats-card";
-import { SlidersVertical } from "lucide-react";
+import { SlidersVertical, BarChart3, CheckCircle2, Clock3, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PaginationComponent from "@/components/pagination";
 import { Card } from "@/components/ui/card";
 import AnalysisCard from "@/components/analysis-card";
-import { getAnalyses, getAnalysis } from "@/services/domain/AnalysisService";
 import AnalysisDetailsModal from "@/components/analysis-details-modal";
+import { getAnalyses, getAnalysis } from "@/services/domain/AnalysisService";
 import { toastNotification } from "@/lib/toast";
 import { Spinner } from "@/components/ui/spinner";
 import { AnalysisType } from "@/types/analysis-type";
 import { PDFDocument, StandardFonts } from "pdf-lib";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 function wrapText(text: string, maxWidth: number, font: any, fontSize: number) {
   // Split into words
@@ -145,9 +147,6 @@ export function exportObjectToCSV(data: any, fileName = "export.csv") {
   link.download = fileName;
   link.click();
 }
-import { BarChart3, CheckCircle2, Clock3, XCircle } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function History() {
   const [analyses, setAnalyses] = useState<AnalysisType[]>([]);
@@ -212,6 +211,7 @@ export default function History() {
       });
     }
   };
+
   useEffect(() => {
     fetchData(currentPage);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -333,11 +333,12 @@ export default function History() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-3 sm:px-6 py-4">
               {filtered.map((analysis) => (
-                <AnalysisCard 
-                key={analysis.analysis_id} analysis={analysis} 
-                onView={() => openDetails(analysis.analysis_id)} 
-                exportCsv={() => exportCsv(analysis.analysis_id)}
-                exportPdf={() => exportPdf(analysis.analysis_id)}
+                <AnalysisCard
+                  key={analysis.analysis_id}
+                  analysis={analysis}
+                  onView={() => openDetails(analysis.analysis_id)}
+                  exportCsv={() => exportCsv(analysis.analysis_id)}
+                  exportPdf={() => exportPdf(analysis.analysis_id)}
                 />
               ))}
               {!filtered.length ? (
