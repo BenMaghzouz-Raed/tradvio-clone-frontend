@@ -33,7 +33,7 @@ export function truncate(value: string, threshold: number) {
   return `${length > threshold ? value.slice(0, threshold) + "..." : value}`;
 }
 
-export const saveJsonToSessionStorage = (name: string, value: object) => {
+export const saveJsonToSessionStorage = (name: string, value: unknown) => {
   sessionStorage.setItem(name, JSON.stringify(value));
 };
 
