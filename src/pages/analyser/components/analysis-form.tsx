@@ -80,6 +80,7 @@ export default function AnalysisForm({
     const formData = new FormData();
     Object.entries(data).forEach((entry) => {
       if (entry[0] === "image") return; // handle below
+      if (entry[0] === "symbol" && !entry[1]) return; // skip empty symbol
       formData.append(entry[0], entry[1] as Blob);
     });
     const img = imageFile ?? (data.image as unknown as File | undefined);
@@ -131,10 +132,8 @@ export default function AnalysisForm({
                     name="image"
                     label="Upload Chart Image"
                     className={cn(
-                      "transition-all duration-500 ease-in-out",
-                      loading
-                        ? "absolute right-4 -top-6 w-48 h-28 sm:w-56 sm:h-32 z-20 shadow-md ring-1 ring-black/5 rounded-md"
-                        : "w-full h-50 mb-8"
+                      "w-full h-50 mb-4",
+                      loading && "hidden"
                     )}
                     onChange={(e) =>
                       analyseChartForm.setValue("image", e.target.files![0])
@@ -150,12 +149,36 @@ export default function AnalysisForm({
             />
           )}
 
-          {/* floating preview when loading */}
-          {loading && !showUpload && previewUrl && (
-            <div className="absolute right-4 -top-6 w-48 h-28 sm:w-56 sm:h-32 z-20 rounded-md overflow-hidden shadow-md ring-1 ring-black/5 transition-transform duration-300 ease-out">
-              <img src={previewUrl} alt="chart preview" className="w-full h-full object-cover" />
+          {/* preview area (shown while loading or when a preview is available) */}
+          {(loading || (!!previewUrl && !showUpload)) && (
+            <div className="mb-4">
+              <div className="w-full rounded-md overflow-hidden border bg-accent/40">
+                {previewUrl ? (
+                  <img
+                    src={previewUrl}
+                    alt="chart preview"
+                    className="w-full h-40 object-contain bg-white"
+                  />
+                ) : (
+                  <div className="h-40" />
+                )}
+              </div>
             </div>
           )}
+          <span className="text-gray sm:text-sm text-xs">Symbol / Pattern</span>
+          <FormField
+            control={analyseChartForm.control}
+            name="symbol"
+            render={({ field, fieldState }) => (
+              <>
+                <Input placeholder="e.g., AAPL, TSLA, Double Bottom" {...field} />
+                {fieldState.error && (
+                  <p className="text-red-500 text-xs mt-1">{fieldState.error.message}</p>
+                )}
+              </>
+            )}
+          />
+
           <span className="text-gray sm:text-sm text-xs">
             Trading Type ({tradingType === "SCALP" ? "Scalp" : "Swing"})
           </span>

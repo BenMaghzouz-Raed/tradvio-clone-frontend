@@ -1,18 +1,45 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AnalysisForm from "./components/analysis-form";
 import InfoCard from "@/components/info-card";
-import { formatAmount } from "@/lib/utils";
+import { formatAmount, saveJsonToSessionStorage, loadJsonFromSessionStorage } from "@/lib/utils";
 import { Signal } from "@/components/signal";
 import AiInsights from "./components/ai-insights";
 import AnalysisLoading from "./components/analysis-loading";
 import Upload from "@/components/upload";
+import { Button } from "@/components/ui/button";
 
 export default function Analyser() {
   const [analysisResult, setAnalysisResult] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  // Confirm navigation while analysis is running
+  // Browser/tab close guard
+  useEffect(() => {
+    const handler = (e: BeforeUnloadEvent) => {
+      if (!loading) return;
+      e.preventDefault();
+      e.returnValue = "";
+    };
+    window.addEventListener("beforeunload", handler);
+    return () => window.removeEventListener("beforeunload", handler);
+  }, [loading]);
+  // Back/forward guard in SPA history
+  useEffect(() => {
+    const onPopState = () => {
+      if (loading) {
+        const ok = window.confirm("An analysis is in progress. Leaving will cancel it. Are you sure you want to leave?");
+        if (!ok) {
+          // cancel by pushing back to current state
+          history.go(1);
+        }
+      }
+    };
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, [loading]);
 
   // Lightweight client-side compression to reduce upload and inference time
   async function compressImage(file: File, maxSide = 1600, quality = 0.75): Promise<File> {
@@ -53,6 +80,30 @@ export default function Analyser() {
     });
   }
 
+  // load persisted analysis on mount
+  useEffect(() => {
+    try {
+      const persisted = loadJsonFromSessionStorage("analysis_result");
+      if (persisted) {
+        setAnalysisResult(persisted);
+      }
+    } catch {}
+  }, []);
+
+  const handleSetResult = (res: any) => {
+    setAnalysisResult(res);
+    try {
+      saveJsonToSessionStorage("analysis_result", res);
+    } catch {}
+  };
+
+  const startNew = () => {
+    setAnalysisResult(null);
+    try {
+      saveJsonToSessionStorage("analysis_result", null as any);
+    } catch {}
+  };
+
   return (
     <div
       className={
@@ -60,6 +111,12 @@ export default function Analyser() {
       }
     >
       <div className="flex flex-col w-full">
+        {/* Controls bar */}
+        <div className="flex items-center justify-end mb-2 gap-2">
+          {analysisResult && (
+            <Button variant="outline" onClick={startNew} className="cursor-pointer">New Analysis</Button>
+          )}
+        </div>
         {loading && (
           <div className="gap-4">
             <AnalysisLoading />
@@ -100,29 +157,32 @@ export default function Analyser() {
                 data={[
                   {
                     label: "Source",
-                    value: analysisResult.extraction.metadata.source,
+                    value: analysisResult?.extraction?.metadata?.source || "—",
                   },
                   {
                     label: "Chart Type",
-                    value: analysisResult.extraction.metadata.chart_style,
+                    value: analysisResult?.extraction?.metadata?.chart_style || "—",
                   },
                   {
                     label: "Current Price",
-                    value: formatAmount(
-                      analysisResult.extraction.metadata.current_price
-                    ),
+                    value:
+                      typeof analysisResult?.extraction?.metadata?.current_price === "number"
+                        ? formatAmount(analysisResult.extraction.metadata.current_price)
+                        : "—",
                   },
                   {
                     label: "Swing High",
-                    value: formatAmount(
-                      analysisResult.extraction.chart_data.approx_swing_high
-                    ),
+                    value:
+                      typeof analysisResult?.extraction?.chart_data?.approx_swing_high === "number"
+                        ? formatAmount(analysisResult.extraction.chart_data.approx_swing_high)
+                        : "—",
                   },
                   {
-                    label: "swing low",
-                    value: formatAmount(
-                      analysisResult.extraction.chart_data.approx_swing_low
-                    ),
+                    label: "Swing Low",
+                    value:
+                      typeof analysisResult?.extraction?.chart_data?.approx_swing_low === "number"
+                        ? formatAmount(analysisResult.extraction.chart_data.approx_swing_low)
+                        : "—",
                   },
                 ]}
               />
@@ -138,18 +198,22 @@ export default function Analyser() {
                         .support_level,
                   },
                   {
-                    label: "Resistence Level",
-                    value:
-                      analysisResult.ai_analysis.technical_analysis
-                        .resistence_level,
+                    label: "Resistance Level",
+                    value: analysisResult?.ai_analysis?.technical_analysis?.resistance_level ?? "—",
                   },
                   {
                     label: "Price Range",
-                    value: `${analysisResult.ai_analysis.technical_analysis.price_range[0]} .. ${analysisResult.ai_analysis.technical_analysis.price_range[1]}`,
+                    value:
+                      Array.isArray(analysisResult?.ai_analysis?.technical_analysis?.price_range) && analysisResult.ai_analysis.technical_analysis.price_range.length >= 2
+                        ? `${analysisResult.ai_analysis.technical_analysis.price_range[0]} .. ${analysisResult.ai_analysis.technical_analysis.price_range[1]}`
+                        : "—",
                   },
                   {
                     label: "Key Zone",
-                    value: `${analysisResult.ai_analysis.technical_analysis.key_zone[0]} .. ${analysisResult.ai_analysis.technical_analysis.key_zone[1]}`,
+                    value:
+                      Array.isArray(analysisResult?.ai_analysis?.technical_analysis?.key_zone) && analysisResult.ai_analysis.technical_analysis.key_zone.length >= 2
+                        ? `${analysisResult.ai_analysis.technical_analysis.key_zone[0]} .. ${analysisResult.ai_analysis.technical_analysis.key_zone[1]}`
+                        : "—",
                   },
                   {
                     label: "Pattern Detected",
@@ -189,9 +253,10 @@ export default function Analyser() {
                   },
                   {
                     label: "Take Profit",
-                    value: formatAmount(
-                      analysisResult.ai_analysis.risk_management.take_profit
-                    ),
+                    value:
+                      typeof analysisResult?.ai_analysis?.risk_management?.take_profit === "number"
+                        ? formatAmount(analysisResult.ai_analysis.risk_management.take_profit)
+                        : "—",
                   },
                   {
                     label: "Reward Risk Ratio",
@@ -266,8 +331,7 @@ export default function Analyser() {
                   {
                     label: "Take Profit",
                     value:
-                      analysisResult.ai_analysis.trade_suggestion
-                        .tape_profit_recommendation,
+                      analysisResult?.ai_analysis?.trade_suggestion?.take_profit_recommendation || "—",
                   },
                   {
                     label: "Confidence",
@@ -285,16 +349,16 @@ export default function Analyser() {
           </>
         )}
       </div>
-      <AnalysisForm
-        className="md:sticky h-fit block"
-        setAnalysisResult={setAnalysisResult}
-        setLoading={setLoading}
-        loading={loading}
-        reAnalyse={analysisResult !== null}
-        showUpload={false}
-        imageFile={imageFile}
-        previewUrl={previewUrl}
-      />
+        <AnalysisForm
+          className="md:sticky h-fit block"
+          setAnalysisResult={handleSetResult}
+          setLoading={setLoading}
+          loading={loading}
+          reAnalyse={analysisResult !== null}
+          showUpload={false}
+          imageFile={imageFile}
+          previewUrl={previewUrl}
+        />
     </div>
   );
 }

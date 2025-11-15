@@ -6,6 +6,7 @@ export const analyseChartSchema = z
     image: z
       .instanceof(File, { error: "this field must be an image" })
       .refine((file) => !file || file.size > 0, "Image file cannot be empty"),
+    symbol: z.string().min(1, "Symbol/Pattern is required").optional(),
     trading_type: z.enum(["SWING", "SCALP"], {
       error: "trade type must be swing or scalp ",
     }),
