@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ManageUsers from "./components/manage-users";
 import AuditLogs from "./components/audit-logs";
 import Security from "./components/security";
+import GeneralSettings from "./components/general-settings";
 import { useEffect, useMemo, useState } from "react";
 import { listUsers } from "@/services/domain/AdminUsersService";
 import { listAuditLogs } from "@/services/domain/AdminAuditLogsService";
@@ -30,7 +31,7 @@ export default function AdminPanel() {
     { title: "Security", component: <Security />, key: "security" },
     {
       title: "General Settings",
-      component: <Card>general settings</Card>,
+      component: <GeneralSettings />,
       key: "generalSettings",
     },
   ];
