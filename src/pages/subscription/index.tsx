@@ -1,20 +1,25 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import SubscribeDetails from "./components/SubscriptionDetails";
-import BillingPlanCard from "./components/BillingPlanCard";
+import BillingPlanCard, {
+  BillingPlanCardLoader,
+} from "./components/BillingPlanCard";
 import Settings from "./components/Settings";
 import Usage from "./components/Usage";
-import { billingPlans } from "@/seeds/subscribtion-plans";
 import { PaymentModal } from "./components/PaymentModal";
-import { SubscriptionPlan } from "@/types/subscription-plans";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { getOrThrow } from "@/config";
 import { useSearchParams } from "react-router-dom";
 import { toastNotification } from "@/lib/toast";
+import { getSubscriptionPlans } from "@/services/domain/SubscriptionPlanService";
+import { ISubscriptionPlan } from "@/types/subscription-plan-type";
 
 export default function Subscription() {
-  const [selectedPlan, setSelectedPlan] = useState<SubscriptionPlan>();
+  const [selectedPlan, setSelectedPlan] = useState<ISubscriptionPlan>();
   const [paymentModalOpen, setPaymentModalOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [plans, setPlans] = useState<ISubscriptionPlan[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (
@@ -40,6 +45,25 @@ export default function Subscription() {
     }
   }, []);
 
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const res = await getSubscriptionPlans();
+      setPlans(res.data);
+    } catch (err: any) {
+      toastNotification({
+        type: "error",
+        message: err.message,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <PayPalScriptProvider
       options={{
@@ -62,17 +86,21 @@ export default function Subscription() {
           <div>
             <h2 className="text-xl font-semibold mb-3">Available Plans</h2>
             <div className="grid md:grid-cols-3 gap-4">
-              {billingPlans.map((plan) => (
-                <BillingPlanCard
-                  key={plan.id}
-                  plan={plan}
-                  {...plan}
-                  onSelect={() => {
-                    setSelectedPlan(plan);
-                    setPaymentModalOpen(true);
-                  }}
-                />
-              ))}
+              {!loading
+                ? plans.map((plan) => (
+                    <BillingPlanCard
+                      key={plan.plan_id}
+                      plan={plan}
+                      {...plan}
+                      onSelect={() => {
+                        setSelectedPlan(plan);
+                        setPaymentModalOpen(true);
+                      }}
+                    />
+                  ))
+                : [1, 2, 3].map((index) => (
+                    <BillingPlanCardLoader key={index} />
+                  ))}
             </div>
           </div>
         </div>

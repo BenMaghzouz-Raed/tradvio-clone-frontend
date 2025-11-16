@@ -1,10 +1,18 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Check, X } from "lucide-react";
-import { SubscriptionPlan } from "@/types/subscription-plans";
+import { Feature, ISubscriptionPlan } from "@/types/subscription-plan-type";
+import { FEATURES_LABELS_MAP } from "@/pages/admin-panel/components/subscription-plan/columns";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface BillingPlanCardProps {
-  plan: SubscriptionPlan;
+  plan: ISubscriptionPlan;
   isSelected?: boolean;
   onSelect?: () => void;
 }
@@ -19,8 +27,8 @@ export default function BillingPlanCard({
 
   return (
     <Card
-      id={plan.id}
-      className={`transition-all ${
+      id={plan.plan_id}
+      className={`flex flex-col justify-between transition-all ${
         isSelected ? "border-[#1C1917] shadow-md" : ""
       }`}
     >
@@ -40,23 +48,24 @@ export default function BillingPlanCard({
         <p className="text-sm text-muted-foreground">{plan.description}</p>
 
         <ul className="space-y-1 text-sm">
-          {plan.features.map((feature, index) => (
+          {Object.keys(plan.features).map((key, index) => (
             <li
               key={index}
               className={`flex items-center gap-2 ${
-                feature.available ? "text-black" : "text-gray-400"
+                plan.features[key] ? "text-black" : "text-gray-400"
               }`}
             >
-              {feature.available ? (
+              {plan.features[key] ? (
                 <Check size={14} className="text-green-600" />
               ) : (
                 <X size={14} />
               )}
-              {feature.label}
+              {FEATURES_LABELS_MAP[key as Feature]}
             </li>
           ))}
         </ul>
-
+      </CardContent>
+      <CardFooter>
         <Button
           className={`cursor-pointer w-full mt-3 transition-all ${
             !isSelected
@@ -67,6 +76,37 @@ export default function BillingPlanCard({
         >
           Subscribe Now
         </Button>
+      </CardFooter>
+    </Card>
+  );
+}
+
+export function BillingPlanCardLoader() {
+  return (
+    <Card className="transition-all">
+      <CardHeader className="pb-2 text-center">
+        <CardTitle className="text-xl font-semibold">
+          <Skeleton className="w-full h-12" />
+        </CardTitle>
+        <div className="flex justify-center items-end mt-1 mb-2">
+          <Skeleton className="w-full h-8" />
+        </div>
+      </CardHeader>
+
+      <CardContent className="space-y-2">
+        <p className="text-sm text-muted-foreground">
+          <Skeleton className="w-full h-30" />
+        </p>
+
+        <ul className="space-y-1 text-sm">
+          {[1, 2, 3, 4, 5].map((index) => (
+            <li key={index} className="flex items-center gap-2">
+              <Skeleton className="h-8 w-8" />
+              <Skeleton className="h-8 w-full" />
+            </li>
+          ))}
+        </ul>
+        <Skeleton className="h-10 w-full" />
       </CardContent>
     </Card>
   );

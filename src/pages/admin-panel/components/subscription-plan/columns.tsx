@@ -1,12 +1,8 @@
 import Tag from "@/components/tag";
 import { Checkbox } from "@/components/ui/checkbox";
 import { formatAmount, formatDate } from "@/lib/utils";
-import { ISubscriptionPlan } from "@/types/subscription-plan-type";
+import { Feature, ISubscriptionPlan } from "@/types/subscription-plan-type";
 import { ColumnDef } from "@tanstack/react-table";
-type Feature =
-  | "analyse_charts"
-  | "get_analysis_history"
-  | "get_trade_recommedations";
 
 export const FEATURES_LABELS_MAP: Record<Feature, string> = {
   analyse_charts: "Analyse Charts",

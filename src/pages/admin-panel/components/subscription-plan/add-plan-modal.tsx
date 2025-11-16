@@ -26,7 +26,11 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { toastNotification } from "@/lib/toast";
 import { addSubscriptionPlan } from "@/services/domain/SubscriptionPlanService";
-import { BillingIntervalType } from "@/types/subscription-plan-type";
+import {
+  BillingIntervalType,
+  Feature,
+  FEATURE_LIST,
+} from "@/types/subscription-plan-type";
 import {
   AddSubscriptionPlanFormValues,
   addSubscriptionPlanSchema,
@@ -34,6 +38,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ReactNode, useState } from "react";
 import { useForm } from "react-hook-form";
+import { FEATURES_LABELS_MAP } from "./columns";
 
 export default function AddPlanModal({
   open,
@@ -208,68 +213,21 @@ export default function AddPlanModal({
               </div>
               <Card className="p-4">
                 <Label>Select Available features</Label>
-                <div className="flex gap-4">
-                  <Checkbox
-                    onCheckedChange={(state) =>
-                      form.setValue("features.analyse_charts", state as boolean)
-                    }
-                    defaultChecked={
-                      form.formState.defaultValues?.features?.analyse_charts
-                    }
-                    className="cursor-pointer"
-                    id="features.analyse_charts"
-                  />
-                  <Label
-                    className="cursor-pointer"
-                    htmlFor="features.analyse_charts"
-                  >
-                    Analyse charts
-                  </Label>
-                </div>
-                <div className="flex gap-4">
-                  <Checkbox
-                    onCheckedChange={(state) =>
-                      form.setValue(
-                        "features.get_analysis_history",
-                        state as boolean
-                      )
-                    }
-                    defaultChecked={
-                      form.formState.defaultValues?.features
-                        ?.get_analysis_history
-                    }
-                    className="cursor-pointer"
-                    id="features.get_analysis_history"
-                  />
-                  <Label
-                    className="cursor-pointer"
-                    htmlFor="features.get_analysis_history"
-                  >
-                    View Analysis Hitory
-                  </Label>
-                </div>
-                <div className="flex gap-4">
-                  <Checkbox
-                    className="cursor-pointer"
-                    onCheckedChange={(state) =>
-                      form.setValue(
-                        "features.get_trade_recommedations",
-                        state as boolean
-                      )
-                    }
-                    defaultChecked={
-                      form.formState.defaultValues?.features
-                        ?.get_trade_recommedations
-                    }
-                    id="features.get_trade_recommendations"
-                  />
-                  <Label
-                    htmlFor="features.get_trade_recommendations"
-                    className="cursor-pointer"
-                  >
-                    Get Trade Recommendations
-                  </Label>
-                </div>
+                {FEATURE_LIST.map((item) => (
+                  <div className="flex gap-4">
+                    <Checkbox
+                      onCheckedChange={(state) =>
+                        form.setValue(`features.${item}`, state as boolean)
+                      }
+                      defaultChecked={form.getValues().features[item]}
+                      className="cursor-pointer"
+                      id={item}
+                    />
+                    <Label className="cursor-pointer" htmlFor={item}>
+                      {FEATURES_LABELS_MAP[item as Feature]}
+                    </Label>
+                  </div>
+                ))}
               </Card>
               <div className="flex gap-4">
                 <Checkbox

@@ -1,6 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export type BillingIntervalType = "month" | "year";
 
+export type Feature =
+  | "analyse_charts"
+  | "get_analysis_history"
+  | "get_trade_recommedations";
+
+export const FEATURE_LIST: Feature[] = [
+  "analyse_charts",
+  "get_analysis_history",
+  "get_trade_recommedations",
+];
+
 export interface ISubscriptionPlan {
   plan_id: string;
   name: string;

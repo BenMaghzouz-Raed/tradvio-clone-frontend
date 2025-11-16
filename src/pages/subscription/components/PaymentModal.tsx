@@ -18,9 +18,9 @@ import {
   createPaypalOrder,
   createStripePaymentSession,
 } from "@/services/domain/SubscriptionService";
-import { SubscriptionPlan } from "@/types/subscription-plans";
 import { useState } from "react";
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
+import { ISubscriptionPlan } from "@/types/subscription-plan-type";
 
 type PaymentMethod = "PAYPAL" | "STRIPE";
 
@@ -29,7 +29,7 @@ export function PaymentModal({
   open,
   setOpen,
 }: {
-  subscription: SubscriptionPlan;
+  subscription: ISubscriptionPlan;
   open: boolean;
   setOpen: (state: boolean) => void;
 }) {
@@ -54,7 +54,7 @@ export function PaymentModal({
 
     try {
       const res: any = await createStripePaymentSession({
-        subscription_id: subscription.id,
+        subscription_id: subscription.plan_id,
       });
       window.open(res.url);
       reset();
@@ -76,8 +76,9 @@ export function PaymentModal({
       return;
     }
     try {
-      const res = await createPaypalOrder({ subscription_id: subscription.id });
-      console.log(res);
+      await createPaypalOrder({
+        subscription_id: subscription.plan_id,
+      });
     } catch (err: any) {
       toastNotification({
         type: "error",
@@ -115,7 +116,7 @@ export function PaymentModal({
           <DialogDescription>
             Select the {subscription.name} plan for a full{" "}
             {subscription.billing_interval} for only{" "}
-            {formatAmount(subscription.price)}
+            {formatAmount(Number.parseInt(subscription.price))}
           </DialogDescription>
         </DialogHeader>
         {step == 1 && (
@@ -173,7 +174,7 @@ export function PaymentModal({
                   style={{ layout: "vertical" }}
                   createOrder={async () => {
                     const res: any = await createPaypalOrder({
-                      subscription_id: subscription.id,
+                      subscription_id: subscription.plan_id,
                     });
                     return res.id;
                   }}
